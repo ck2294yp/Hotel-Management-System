@@ -1,0 +1,209 @@
+body{
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    background: white;
+}
+
+header {
+    padding: 10px 100px;
+    box-sizing: border-box;
+    position: relative;
+}
+
+h1 {
+    position: absolute;
+    top: 50px;
+    left: 300px;
+    font-size: 7em;
+    margin: 0;
+    padding: 0 0 20px;
+
+}
+
+section {
+    width: 100%;
+    height: 50vh;
+}
+
+section.sec1 {
+    background: url("https://odis.homeaway.com/odis/destination/e053ea41-fa57-452e-b265-31fedf1cb274.hw1.jpg");
+    background-size: cover;
+}
+section.sec1Member {
+    background: url("https://az760333.vo.msecnd.net/-/media/property/jdv/vitale/hotel-vitale_lobby_living-room-crpd1600x760.jpg?ts=dd7e795e-28fe-4390-8cff-0c68c5d696cf");
+    background-size: cover;
+    position: relative;
+}
+
+h3 {
+    position: absolute;
+    font-family: "Brush Script MT";
+    font-size: 7em;
+    color: lightyellow;
+    bottom: -60px;
+    left: 20px;
+}
+
+section.sec2 {
+    padding: 100px;
+    box-sizing: border-box;
+    height: auto;
+    position: relative;
+}
+
+section.sec2 h2 {
+    font-size: 3em;
+    margin: 0;
+    padding: 0 0 20px;
+}
+
+section.sec2 p {
+    font-size: 1em;
+    margin: 0;
+    padding: 0;
+}
+
+section.sec2 img {
+    position: absolute;
+    right: 0;
+    top: 0;
+
+}
+
+section.sec2Member {
+    padding: 100px;
+    box-sizing: border-box;
+    width: 100%;
+    height: auto;
+}
+
+
+/* Style for Amenities page - Start */
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-gap: 1em;
+    grid-auto-rows: minmax(350px, auto);
+}
+.grid > div.box1 {
+    background: url("https://d2v9y0dukr6mq2.cloudfront.net/video/thumbnail/vaTczDn/white-green-arrows-lines-zigzag-animation-seamless-looped-texture_euvjssnse__F0000.png");
+    background-size: cover;
+}
+.grid > div.box2 {
+    background: url("https://piloto151.com/wp-content/uploads/2017/02/161a1441e14e198d9c8a66c795f5b3bc-black-and-white-design-black-white-pattern.jpg");
+    background-size: cover;
+}
+.grid > div.box3 {
+    background: url("https://images.pexels.com/photos/4941/red-pattern-texture-lines.jpg?cs=srgb&dl=lines-pattern-red-4941.jpg&fm=jpg");
+    background-size: cover;
+}
+.grid > div.petGround {
+    grid-column: 2/4;
+    background: url("https://assets.dmagstatic.com/wp-content/uploads/2016/05/dogs-playing-in-grass.jpg");
+    background-size: cover ;
+}
+.grid > div.valetService {
+    grid-column: 1/3;
+    background: url("https://infinityvalet.com/wp-content/uploads/2018/08/14-600.jpg");
+    background-size: cover;
+}
+.grid > div.gym {
+    background: url("https://healthreviews.net/wp-content/uploads/2017/09/gym-fitness-center.jpg");
+    background-size: cover;
+}
+.grid > div.bar {
+    background: url("http://mooreforcongress.com/wp-content/uploads/2018/09/back-bar-designs-brilliant-free-online-home-decor-carmensteffens-us-throughout-2.jpg");
+    background-size: cover;
+}
+.grid > div.arcadePool {
+    background: url("http://d1s9j44aio5gjs.cloudfront.net/2016/11/Spa_Pool_Operators_Certificate.jpg");
+    background-size: cover;
+}
+
+/* Style for Amenities page - End */
+
+/*  Style for Member page - Start */
+.gridMember{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 1em;
+    grid-auto-rows: minmax(150px, auto);
+}
+.gridMember > div.memberName {
+    background: lightyellow;
+    grid-row: 1/3;
+    box-shadow: 0px 5px orange;
+    text-align: center;
+}
+.gridMember > div.gridMemberReward {
+     background: lightyellow;
+     grid-row: 1/3;
+     box-shadow: 0px 5px orange;
+     text-align: center;
+ }
+.gridMember > div.bookNow {
+    background: lightyellow;
+    grid-row: 1/3;
+    box-shadow: 0px 5px orange;
+    text-align: center;
+}
+
+
+.gridMember > div button {
+    background-color: orange;
+    border: none;
+    color: white;
+    font-size: 1em;
+    padding: 15px 80px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+
+/*  Style for Member page - End */
+
+section.sec3 {
+    background: url("https://jumbotron-production-f.squarecdn.com/assets/9147e1a4b55333a6d6c5.jpg");
+    background-size: cover;
+}
+
+nav {
+    width: 100%;
+    height:50px;
+    background: rgba(0,0,0,.7);
+    border-top: 1px solid rgba(255,255,255,.2);
+    border-bottom: 1px solid rgba(255,255,255,.2);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+nav ul {
+    display: flex;
+    margin: 0;
+    padding: 0 100px;
+    float: right;
+}
+
+nav ul li {
+    list-style: none;
+}
+
+nav ul li a {
+    display: block;
+    color: #fff;
+    padding: 0 20px;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: bold;
+    line-height: 50px;
+}
+
+nav ul li a:hover,
+nav ul li a.active {
+    background: #ff0000;
+}
