@@ -11,7 +11,7 @@ header {
     position: relative;
 }
 
-h1 {
+.headOne {
     position: absolute;
     top: 50px;
     left: 300px;

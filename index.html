@@ -1,26 +1,104 @@
 <!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Welcome to Twin Cities Inn!</title>
-    <link href="style.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <style>
+        .header {
+            text-align: center;
+            overflow: hidden;
+
+        }
+        .header li {
+            display: inline-block;
+            padding-bottom: 0px;
+            padding-top: 0px;
+        }
+        .image {
+            background-image: url("Lobby.jpg");
+            background-repeat: no-repeat;
+            height: 550px;
+            background-size: cover;
+        }
+        .features {
+
+            overflow: hidden;
+        }
+        .features ul {
+            display: inline-block;
+            float: left;
+            padding-bottom: 5px;
+
+        }
+        .sr {
+            overflow: hidden;
+        }
+
+        .sr li{
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        .sr2 {
+        }
+
+        .sr2 li{
+            display: inline-block;
+
+        }
+        .feat {
+
+        }
+        .contact {
+            text-align: center;
+            height: 100px;
+            padding-bottom: 5px;
+        }
+        .footer {
+
+            overflow: auto;
+        }
+        .footer ul {
+            padding-bottom: 5px;
+            list-style-type: none;
+        }
+        .footer li {
+            display: inline-block;
+            font-weight: bold;
+        }
+        body {
+            background-color: #DBDBDB;
+
+        }
+
+        .bord {
+
+            overflow: auto;
+        }
+    </style>
 </head>
-
 <body>
-
-<div class="bord">
-    <ul class="header">
-        <li style="padding-right:310px"><h1>Twin Cities Inn</h1></li>
-        <li>
-            <button>Sign In</button>
-        </li>
-        <li>Not a Member?</li>
-        <li style="padding-right:5px;"><a href="signUp.php">Sign Up</a></li>
+<header>
+    <img src="https://tbncdn.freelogodesign.org/4fc3ec1c-1e7a-4304-b812-4b6b0bdb6b68.png?1553471553913">
+    <h1 class="headOne"> Twin Cities Inn</h1>
+</header>
+<nav>
+    <ul>
+        <li><a href="index.html" class="active">Home</a> </li>
+        <li><a href="AboutUs.html" >About</a> </li>
+        <li><a href="#">Amenities</a> </li>
+        <li><a href="specialtyRooms.html">Specialty Rooms</a> </li>
+        <li><a href="#">Sign In</a> </li>
     </ul>
-    <p style="text-align:center">1234 Main Street, Minneapolis, MN</p>
-</div>
+</nav>
+
+<!--homepage start-->
 
 <div class="image">
+
     <div style="padding-left:400px">
-        <button style="font-size:30px;text-align:center;">Book Now</button>
+
     </div>
 </div>
 
@@ -35,7 +113,7 @@
                 <li>Gaming</li>
             </ul>
             <ul>
-                <li style="list-style-type:none;padding-right:280px;"><h2>Amenities</h2></li>
+                <li style="list-style-type:none;padding-right:280px;"><h2>Amenties</h2></li>
                 <li>Valet</li>
                 <li>Gym</li>
                 <li>Bar</li>
@@ -44,7 +122,7 @@
                 <li>Pool</li>
                 <li>Pet Ground</li>
             </ul>
-            <ul>
+            <ul style="float:right;">
                 <li style="list-style-type:none;"><h2>Rewards</h2></li>
                 <li>Earn rewards for each stay</li>
                 <li>Save money on your next stay</li>
@@ -53,26 +131,70 @@
     </div>
 </div>
 
+<!--start of specialy rooms section-->
+
+
+
+<!--end of specialy rooms section-->
+</div>
+<!--start of amenties section-->
+
+<!--end of amenties section-->
+</div>
+<div class="sr">
+    <h1 id="rewards" style="text-align:center;">Rewards</h1>
+    <ul>
+        <li><img src="https://www.rd.com/wp-content/uploads/2016/01/06-13-things-your-hotel-desk-clerk-wont-tell-you-concierge.jpg" style="width:500px;height:400px;"alt="Rewards photo"</li>
+        <li><div style="width:600px;height:400px;float:right;text-align:center;"><p>Twin Cities Inn has a rewards program!</p>
+            <p>Earn rewards each time you book with Twins Cities Inn!</p>
+            <p>Earn one point each night you stay.</p>
+            <p>Use those points to save money on your next stay.</p></div></li>
+    </ul>
+</div>
+
 <div class="contact">
-    <h1>Contact Twin Cities Inn</h1>
-    <p>Phone Number: 651-000-0000</p>
-    <p>Email: twincitiesinnsupport@twincitiesinn.com</p>
-</div>
-
-<div class="footer">
-    <h3 style="text-align:center;">Twin Cities Inn</h3>
-    <ul style="list-style-type:none;">
-        <li><a href="">Amenities</a></li>
-        <li><a href="">Specialty Rooms</a></li>
-        <li><a href="">Rewards</a></li>
-        <li><a href="">About</a></li>
-    </ul>
-    <ul style="list-style-type:none;padding-left:300px;">
-        <li>twincitiesinnsupport@twincitiesinn.com</li>
-        <li>651-000-0000</li>
+    <ul class="footer">
+        <li>Contact Twin Cities Inn</li>
+        <li>|</li>
+        <li>Phone Number: 651-000-0000</li>
+        <li>|</li>
+        <li>Email: twincitiesinnsupport@twincitiesinn.com</li>
     </ul>
 </div>
 
+<script>
 
+    function sRooms(){
+        var x = document.getElementById('spr');
+        if (x.style.display == "none") {
+            x.style.display = "block";
+        }else {
+            x.style.display = "none";
+        }
+    }
+
+    function amenties(){
+        var x = document.getElementById('amt');
+        if (x.style.display == "none") {
+            x.style.display = "block";
+        }else {
+            x.style.display = "none";
+        }
+    }
+
+</script>
+
+<!--homepage end-->
+<section class="sec3"></section>
+<footer>
+    <nav>
+        <ul>
+            <li><a href="#">Facebook</a href="#"> </li>
+            <li><a href="#">Twitter</a> </li>
+            <li><a href="#">Google+</a> </li>
+            <li><a href="#">© 2019 Twin Cities Inn</a> </li>
+        </ul>
+    </nav>
+</footer>
 </body>
 </html>
