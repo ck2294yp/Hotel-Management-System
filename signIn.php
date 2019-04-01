@@ -7,8 +7,9 @@ require_once "settings/settings.php";
 require_once "bin/inputSanitization.php";
 
 # If member is already logged in, send them to the member's page.
-if (isset($_SESSION['loggedIn']) && isset($_SESSION['username'])){
-    header("membersPage.php");
+if ($_SESSION['loggedIn'] === false) {
+    echo"<script> alert(\"You are already logged in! Redirecting you to the membership page...\"); </script>";
+    header('Location: membersPage.php');
 }
 
 
@@ -36,6 +37,9 @@ if (isset($_REQUEST['username']) && isset($_REQUEST['password'])){
         $checkValidStmt->execute();
         $conn->rollBack();
 
+        # Closes the database connection.
+        $conn = null;
+
         #TODO: This WILL be useful for the membership page.
         # Gets the result of the SQL statement. (Ths returns an associative array).
         #$returnedAccount = $checkValidStmt->fetch(PDO::FETCH_ASSOC);
@@ -43,7 +47,13 @@ if (isset($_REQUEST['username']) && isset($_REQUEST['password'])){
         # If user has entered a valid username and password. (value with the specified username and password DOES exist in the database).
         if ($checkValidStmt->rowCount() === 1 ){
             echo "<script> alert(\"Login successful! Logging you in...\"); </script>";
-            header("membersPage.php");
+
+            # Sets the username and logged in session variables.
+            $_SESSION['username'] = $userInput['username'];
+            $_SESSION['loggedIn'] = true;
+
+            # Redirects the user to members page after successful login
+            header('Location: membersPage.php');
 
         # If user has entered a INVALID username and password. Log the user's IP Address and return them back to this login page.
         } else {
@@ -72,7 +82,7 @@ if (isset($_REQUEST['username']) && isset($_REQUEST['password'])){
 
             # Tells the user that their username/password combination was wrong.
             echo "<script> alert(\"Incorrect username or password. Please try again.\"); </script>";
-            header("#");
+            header('Location: signIn.php');
         }
 
     } catch (PDOException $e) {
@@ -81,7 +91,6 @@ if (isset($_REQUEST['username']) && isset($_REQUEST['password'])){
 
         # Sends a JavaScript alert message back to the user notifying them that there was an error processing their request.
         echo "<script> alert(\"We are sorry, there seems to be a problem with our systems. Please try again. If problems still persist, please notify TCI at 651-000-0000.\"); </script>";
-        echo $e->getMessage(), "\n";
     }
 
 }
@@ -117,25 +126,24 @@ if (isset($_REQUEST['username']) && isset($_REQUEST['password'])){
     <form action="signIn.php" method="post">
         <p>
             <b>Member Sign In</b><br>
+            <br>
         </p>
 
         <label>Username</label><br>
-        <input type="email" placeholder="Enter Username" name="username" maxlength="254" required><br />
+        <input type="email" placeholder="Enter Username" name="username" maxlength="254" required><br>
+        <br>
 
         <label>Password</label><br>
-        <input type="password" placeholder="Enter Password" name="password" maxlength="254" pattern="(?=.{8,256})(?=.*?[^\w\s])(?=.*?[0-9])(?=.*?[A-Z]).*?[a-z].*" required><br/><br/>
+        <input type="password" placeholder="Enter Password" name="password" maxlength="254" pattern="(?=.{8,256})(?=.*?[^\w\s])(?=.*?[0-9])(?=.*?[A-Z]).*?[a-z].*" required><br>
+        <a href="#">Forgot Username</a><br>
+        <a href="#">Forgot Password</a><br>
+        <br>
 
         <button type="submit">Login</button><br>
 
-        <br>
-        <br>
         <p>
-            <a href="#">Forgot Username</a><br>
-            <a href="#">Forgot Password</a><br>
-        </p>
-
-        <p>
-            Not a member yet?<br>
+            <br>
+            <br>Not a member yet?<br>
             <a href="signUp.php">Create Account</a><br>
         </p>
 
