@@ -154,10 +154,9 @@ if (sizeof($_REQUEST) > 0) {
 </header>
 <nav>
     <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="aboutUs.html">About</a></li>
-        <li><a href="#">Amenities</a></li>
-        <li><a href="#">Specialty Rooms</a></li>
+        <li><a href="index.html">Home</a> </li>
+        <li><a href="aboutUs.html" >About</a> </li>
+        <li><a href="whyTci.html">Why TCI?</a> </li>
         <li><a href="signIn.php" class="active">Sign In</a></li>
     </ul>
 </nav>

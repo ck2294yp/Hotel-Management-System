@@ -74,11 +74,9 @@ if ($_SESSION['loggedIn'] === 0){
 
 <nav>
     <ul>
-        <li><a href="#">Home</a> </li>
+        <li><a href="index.html">Home</a> </li>
         <li><a href="aboutUs.html">About</a> </li>
-        <li><a href="amenities.html">Amenities</a> </li>
-        <li><a href="#">Specialty Room</a> </li>
-        <li><a href="#">Contact</a> </li>
+        <li><a href="whyTci.html">Why TCI?</a> </li>
         <li><a href="#">Sign Out</a> </li>
     </ul>
 </nav>
