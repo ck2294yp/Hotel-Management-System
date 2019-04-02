@@ -4,6 +4,7 @@
 function sanitizeEmail($input) {
     if (isset($input) && $input !== "" && filter_var($input, FILTER_SANITIZE_EMAIL)) {
         $input = stripslashes($input);
+        $input = htmlspecialchars($input);
         return $input;
     } else {
         echo "<script> alert(\"Invalid username/email address specified, please try again.\"); </script>";
@@ -19,6 +20,7 @@ function sanitizePassword($password, $passwordConfirm, $passwdHashAlgo, $beginin
     } elseif ($password !== "" && filter_var($password, FILTER_SANITIZE_STRING)) {
         $password = hash($passwdHashAlgo,$beginingSalt.$password.$endingSalt);
         $password = stripslashes($password);
+        $password = htmlspecialchars($password);
         return $password;
     } else {
         echo "<script> alert(\"Invalid password specified, please try again.\"); </script>";
@@ -30,6 +32,7 @@ function sanitizePassword($password, $passwordConfirm, $passwdHashAlgo, $beginin
 function sanitizeAlphaString($input) {
     if (isset($input) && $input !== "" && preg_match('/[A-Za-z]/', $input)) {
         $input = stripslashes($input);
+        $input = htmlspecialchars($input);
         return $input;
     } else {
         echo "<script> alert(\"Invalid value \".$input.\"specified, please try again.\"); </script>";
@@ -41,6 +44,7 @@ function sanitizeAlphaString($input) {
 function sanitizeNumString($input) {
     if (isset($input) && preg_match('/[0-9]/', $input)) {
         $input = stripslashes($input);
+        $input = htmlspecialchars($input);
         return $input;
     } else {
         echo "<script> alert(\"Invalid numerical value \".$input.\"specified, please try again.\"); </script>";
