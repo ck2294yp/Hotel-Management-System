@@ -41,7 +41,7 @@ if ($_SESSION['loggedIn'] === 0){
 
 
         # Gets the member's account details from out of the database query.
-        $userInfoStmt ->setFetchMode(PDO::FETCH_ASSOC);
+        $userInfoStmt->setFetchMode(PDO::FETCH_ASSOC);
         $memInfo = $userInfoStmt->fetch(PDO::FETCH_ASSOC);
 
     } catch (PDOException $e) {
