@@ -88,19 +88,19 @@ if ($_SESSION['loggedIn'] === 0){
     </ul>
 </nav>
 <section class="sec1Member">
-    <h3>Welcome to TCI Rewards Club</h3>
+    <h3> Welcome back, <br> <?php echo($memInfo['memFname']);?>! </h3>
 </section>
 
 <section class="sec2Member">
     <div class="gridMember">
         <div class="memberName">
             <h2 style="font-style: italic">My Account</h2>
-            <p>Hello, <?php echo($memInfo['memFname']." ".$memInfo['memLname']."!")?>  </p>
-            <p>Member ID: <?php echo($memInfo['memID'])?>  </p>
-            <p>Member Email: <?php echo($memInfo['memEmail'])?>  </p>
-            <p>Member DOB: <?php echo($memInfo['memDob'])?>  </p>
-            <br/>
-            <br/>
+            <p>Hello, <?php echo($memInfo['memFname']." ".$memInfo['memLname']."!");?>  </p>
+            <p>Member ID: <?php echo($memInfo['memID']);?>  </p>
+            <p>Member Email: <?php echo($memInfo['memEmail']);?>  </p>
+            <p>Member DOB: <?php echo($memInfo['memDob']);?>  </p>
+            <button class="editProfile">Edit Profile</button><br/><br/>
+            <br>
         </div>
         <div class="gridMemberReward">
             <h2 style="font-style: italic">Available to Redeem</h2>
