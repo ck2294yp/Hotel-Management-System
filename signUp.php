@@ -89,7 +89,6 @@ if (sizeof($_REQUEST) > 0) {
             $memStmt->bindParam(':memLname', $userInput['lName'],PDO::PARAM_STR, 64);
             $memStmt->bindParam(':memDob', $userInput['dob']);
 
-            #TODO: Make the Address connect to the member's account.
             # Creates prepared SQL statement for the Member's address.
             $addrStmt = $conn->prepare("INSERT INTO Address (addressBuildNum, addressStreetName, addressCity, addressZip, addressProvence, addressCountry, addressAptNum) 
               VALUES (:addressBuildNum, :addressStreetName, :addressCity, :addressZip, :addressProvence, :addressCountry, :addressAptNum)");

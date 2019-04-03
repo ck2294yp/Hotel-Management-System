@@ -40,10 +40,8 @@ if (isset($_REQUEST['username']) && isset($_REQUEST['password'])){
         # Closes the database connection.
         $conn = null;
 
-        #TODO: This WILL be useful for the membership page.
-        # Gets the result of the SQL statement. (Ths returns an associative array).
-        #$returnedAccount = $checkValidStmt->fetch(PDO::FETCH_ASSOC);
 
+        
         # If user has entered a valid username and password. (value with the specified username and password DOES exist in the database).
         if ($checkValidStmt->rowCount() === 1 ){
             echo "<script> alert(\"Login successful! Logging you in...\"); </script>";
