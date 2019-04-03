@@ -70,11 +70,9 @@ if (sizeof($_REQUEST) > 0) {
     }else {$isError = true;}
 
 
-    print_r($userInput);
-
     # Checks if there where any when parsing though the user input.
     if ($isError === true){
-        echo "<script> alert(\"Incomplete or Incorrect information specifed. Please Try again.\"); </script>";
+        echo "<script> alert(\"Incomplete or Incorrect information specified Please Try again.\"); </script>";
     } else {
         ###### Tries to connect to the MySQL database using PDO (rather then MySQLi) #####
         try {
@@ -91,6 +89,7 @@ if (sizeof($_REQUEST) > 0) {
             $memStmt->bindParam(':memLname', $userInput['lName'],PDO::PARAM_STR, 64);
             $memStmt->bindParam(':memDob', $userInput['dob']);
 
+            #TODO: Make the Address connect to the member's account.
             # Creates prepared SQL statement for the Member's address.
             $addrStmt = $conn->prepare("INSERT INTO Address (addressBuildNum, addressStreetName, addressCity, addressZip, addressProvence, addressCountry, addressAptNum) 
               VALUES (:addressBuildNum, :addressStreetName, :addressCity, :addressZip, :addressProvence, :addressCountry, :addressAptNum)");
@@ -106,24 +105,35 @@ if (sizeof($_REQUEST) > 0) {
             $conn->beginTransaction();
             $memStmt->execute();
             $addrStmt->execute();
+
+            # Link the member to their entered address. (Done here because the lastInsertId is used).
+            $userInput['addressID'] = $conn->lastInsertId();
+            $linkStmt = $conn->prepare("UPDATE Member SET `addressID`=:addressID WHERE `memEmail`=:memEmail");
+            $linkStmt->bindParam(':addressID',$userInput['addressID']);
+            $linkStmt->bindParam(':memEmail', $userInput['email'],PDO::PARAM_STR, 254);
+            # Executes the above link statement.
+            $linkStmt->execute();
+            # Commits the changes to the database.
             $conn->commit();
 
-            # Close the database connection.
+            # Closes the database connection.
             $conn = null;
 
             # Sends a JavaScript alert message back to the user notifying them of successful account creation.
             echo "<script> alert(\"Account created successfully!\"); </script>";
 
+
+
         } catch (PDOException $e) {
-            # Rollback any changes to the database (if possible).
+            # Rollback any changes to the database (if possible/required).
             $conn->rollBack();
 
-            echo $e->getMessage( )."\n";
-            echo $e->getCode( )."\n";
-
+            #DEBUG:
+            echo "<br>".$e->getMessage().'\n<br>';
+            echo $e->errorInfo().'\n<br>';
 
             # Sends a JavaScript alert message back to the user notifying them that there was an error processing their request.
-            echo "<script> alert(\"Account could not be created. Please try again. If you believe this is in error, please notify TCI at 651-000-0000.\"); </script>";
+            echo "<script> alert(\"Sorry an error occurred, Please try again. If problem persists, please notify TCI at 651-000-0000.\"); </script>";
         }
     }
 }
@@ -144,10 +154,9 @@ if (sizeof($_REQUEST) > 0) {
 </header>
 <nav>
     <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="aboutUs.html">About</a></li>
-        <li><a href="#">Amenities</a></li>
-        <li><a href="#">Specialty Rooms</a></li>
+        <li><a href="index.html">Home</a> </li>
+        <li><a href="aboutUs.html" >About</a> </li>
+        <li><a href="whyTci.html">Why TCI?</a> </li>
         <li><a href="signIn.php" class="active">Sign In</a></li>
     </ul>
 </nav>

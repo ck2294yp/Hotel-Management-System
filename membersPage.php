@@ -1,3 +1,64 @@
+<?php
+# All of this runs before the HTML code is rendered.
+session_start();
+
+require_once "settings/settings.php";
+require_once  "bin/inputSanitization.php";
+
+
+# If member is NOT already signed in (loggedIn is false) then redirect them to the SignIn page IMMEDIATELY.
+if ($_SESSION['loggedIn'] === 0){
+    echo "<script> alert(\"Your session has timed out, please sign in again.\"); </script>";
+    header('Location: signIn.php');
+
+
+# Otherwise (loggedIn is true) continue on with the code and the creation of the webpage.
+} else {
+    # Create array to hold the client's information.
+    $memInfo = array();
+    # Sanitize session data.
+    $memInfo['username'] = sanitizeEmail($_SESSION['username']);
+
+
+
+    # Connects to the SQL database.
+    try {
+        $conn = new PDO("mysql:host=$dbAddress;dbname=$dbLocation", $dbUsername, $dbPassword);
+        # Set the PDO error mode to exception
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        # Queries the database to get the username and the password of the user.
+        $userInfoStmt = $conn->prepare('select memID, memEmail, memFname, memLname, memDob, memRewardPoints from `Member` where `memEmail`=:email');
+        $userInfoStmt->bindParam(':email', $memInfo['username'], PDO::PARAM_STR, 254);
+
+        # Begins a transaction, if there are any changes (which there shouldn't be) rollback the changes.
+        $conn->beginTransaction();
+        $userInfoStmt->execute();
+        $conn->rollBack();
+
+        # Closes the database connection.
+        $conn = null;
+
+
+        # Gets the member's account details from out of the database query.
+        $userInfoStmt->setFetchMode(PDO::FETCH_ASSOC);
+        $memInfo = $userInfoStmt->fetch(PDO::FETCH_ASSOC);
+
+    } catch (PDOException $e) {
+        # Rollback any changes to the database (if possible).
+        $conn->rollBack();
+
+        # Sends a JavaScript alert message back to the user notifying them that there was an error processing their request.
+        echo "<script> alert(\"We are sorry, there seems to be a problem with our systems. Please try again. If problems still persist, please notify TCI at 651-000-0000.\"); </script>";
+        #header('Location: membersPage.php');
+    }
+
+}
+
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,11 +74,9 @@
 
 <nav>
     <ul>
-        <li><a href="#">Home</a> </li>
+        <li><a href="index.html">Home</a> </li>
         <li><a href="aboutUs.html">About</a> </li>
-        <li><a href="amenities.html">Amenities</a> </li>
-        <li><a href="#">Specialty Room</a> </li>
-        <li><a href="#">Contact</a> </li>
+        <li><a href="whyTci.html">Why TCI?</a> </li>
         <li><a href="#">Sign Out</a> </li>
     </ul>
 </nav>
@@ -36,14 +95,16 @@
     <div class="gridMember">
         <div class="memberName">
             <h2 style="font-style: italic">My Account</h2>
-            <P>Hello, Bob</P>
-            <p>Member ID: 2345678</p>
+            <p>Hello, <?php echo($memInfo['memFname']." ".$memInfo['memLname']."!")?>  </p>
+            <p>Member ID: <?php echo($memInfo['memID'])?>  </p>
+            <p>Member Email: <?php echo($memInfo['memEmail'])?>  </p>
+            <p>Member DOB: <?php echo($memInfo['memDob'])?>  </p>
             <br/>
             <br/>
         </div>
         <div class="gridMemberReward">
             <h2 style="font-style: italic">Available to Redeem</h2>
-            <p>500 points</p>
+            <p><?php echo($memInfo['memRewardPoints'])?> points</p>
             <button class="redeemPoints">Redeem</button><br/><br/>
             <a href="#" style="color: orange">Report Missing Points</a>
         </div>
