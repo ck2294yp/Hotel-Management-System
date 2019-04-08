@@ -7,7 +7,7 @@ require_once "settings/settings.php";
 require_once "bin/inputSanitization.php";
 
 # If member is already logged in, send them to the member's page.
-if ($_SESSION['loggedIn'] === false) {
+if (key_exists('loggedIn', $_SESSION)) {
     echo"<script> alert(\"You are already logged in! Redirecting you to the membership page...\"); </script>";
     header('Location: membersPage.php');
 }

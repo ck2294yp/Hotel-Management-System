@@ -3,9 +3,10 @@
 
 
 # MySQL Database connection settings.
-$dbAddress = "127.0.0.1";
-$dbUsername = "TciWebsite";
-$dbPassword = "7gj35deM7rNR#y9*D57&";
+$dbAddress = "aetacraft.tk";
+$dbPort = "3306";
+$dbUsername = "root";
+$dbPassword = "JspP#2HaxUd^FDTQgAsr";
 $dbLocation = "tci";
 
 
