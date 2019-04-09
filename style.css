@@ -11,6 +11,16 @@ header {
     position: relative;
 }
 
+h1 {
+    position: absolute;
+    top: 50px;
+    left: 300px;
+    font-size: 7em;
+    margin: 0;
+    padding: 0 0 20px;
+
+}
+
 footer {
     position: static;
     bottom:0;
