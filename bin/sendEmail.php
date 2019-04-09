@@ -56,15 +56,15 @@ function getTemplate($filename, $memInfo ) {
 function sendActivationEmail($adminEmailAddress, $sendTo) {
     # Include the Autoloader (see "Libraries" for install instructions)
     require 'vendor/autoload.php';
-    ##use Mailgun\Mailgun;
+    ## use Mailgun\Mailgun;   ### ucomment this later, just got to get MailGun's web app to work properally (how not to create a webpage 101).
     # Instantiate the client.
     $mgClient = new Mailgun('YOUR_API_KEY');
     $domain = "YOUR_DOMAIN_NAME";
     # Make the call to the client.
     $result = $mgClient->sendMessage($domain, array(
         'from'	=> 'Excited User <mailgun@YOUR_DOMAIN_NAME>',
-        'to'	=> 'Baz <YOU@YOUR_DOMAIN_NAME>',
-        'subject' => 'Hello',
+        'to'	=> $sendTo,
+        'subject' => 'Welcome to TCI!',
         'text'	=> 'Testing some Mailgun awesomness!'
     ));
 
