@@ -77,7 +77,7 @@ if ($_SESSION['loggedIn'] === 0){
         <li><a href="index.html">Home</a> </li>
         <li><a href="aboutUs.html">About</a> </li>
         <li><a href="whyTci.html">Why TCI?</a> </li>
-        <li><a href="#">Sign Out</a> </li>
+        <li><a href="bin/signOut.php">Sign Out</a> </li>
     </ul>
 </nav>
 <nav style="top: 50px;">

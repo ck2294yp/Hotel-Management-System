@@ -54,19 +54,19 @@ function getTemplate($filename, $memInfo ) {
 
 // Sends activation email.
 function sendActivationEmail($adminEmailAddress, $sendTo) {
-    # Include the Autoloader (see "Libraries" for install instructions)
-    require 'vendor/autoload.php';
-    ## use Mailgun\Mailgun;   ### ucomment this later, just got to get MailGun's web app to work properally (how not to create a webpage 101).
-    # Instantiate the client.
-    $mgClient = new Mailgun('YOUR_API_KEY');
-    $domain = "YOUR_DOMAIN_NAME";
-    # Make the call to the client.
-    $result = $mgClient->sendMessage($domain, array(
-        'from'	=> 'Excited User <mailgun@YOUR_DOMAIN_NAME>',
-        'to'	=> $sendTo,
-        'subject' => 'Welcome to TCI!',
-        'text'	=> 'Testing some Mailgun awesomness!'
-    ));
+    // Sets php.ini's settings accordingly.
+    ini_set('SMTP', 'localhost');
+    ini_set('smtp_port', '25');
+    ini_set('sendmail_from', $adminEmailAddress);
+    ini_set('sendmail_path', '/usr/sbin/sendmail -t -i');
+
+    #TODO: More advanced stuff that will be taken out for the purpose of testing
+    #$memInfo = getUserData($sendTo);
+    #$messageBody = getTemplate('emailTemplates/accountInfo.php', $memInfo);
+    #DEBUG: Make this more personalized.
+    $messageBody = "This is a test message.";
+
+    $subject = "Welcome to TCI!";
 
     // Sends the email out to the customer.
     mail("$sendTo", "$subject", "$messageBody", "From:" . $adminEmailAddress);

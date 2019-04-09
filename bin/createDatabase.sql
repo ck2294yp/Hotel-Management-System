@@ -1,3 +1,5 @@
+SET sql_mode = '';
+
 DROP DATABASE IF EXISTS tci;
 CREATE DATABASE tci; 
 
@@ -179,3 +181,20 @@ VALUES
 	(467,12),
 	(475,12),
 	(476,12);
+    
+INSERT INTO Member (memID, memEmail, memPasswd, memFname, memLname, memDob, memPhone, memRewardPoints, memActivationLink, isMember)
+	VALUES 
+	('1', 'Joe@gmail.com', 'c7b0f1b6ac6cfff2062f0ce4d7d9d96e4a6e49cb602732ef5c6b84ad725ae89d', 'Joe', 'Smith', '1983-09-23', '1234567890', '0', '807453141', '0');
+    
+INSERT INTO Address (addressID, memID, addressType, addressBuildNum, addressStreetName, addressCity, addressZip, addressProvence, addressCountry, addressAptNum)
+	VALUES
+    ('1', '1', 'mailing', '1234', 'Main St.', 'St. Paul', '12345', 'MN', 'United States', '14'),
+    ('2', '1', 'billing', '1234', 'Main St.', 'St. Paul', '12345', 'MN', 'United States', '14');
+    
+INSERT INTO ChargeCard (cardNum, memID, cardExpDate, cardFname, cardMinitial, cardLname)
+	VALUES
+    ('5825762462363553498', '1', '2022-09-23', 'Joe', 'A', 'Smith');
+    
+INSERT INTO InvoiceReservation (cardNum, memID, invoiceStartDate, invoiceEndDate, roomNum, paidInFull)
+	VALUES
+    ('5825762462363553498', '1', '2019-04-15', '2019-04-22', '555', '0')
