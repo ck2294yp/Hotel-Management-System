@@ -5,6 +5,8 @@ function sanitizeEmail($input) {
     if (isset($input) && $input !== "" && filter_var($input, FILTER_SANITIZE_EMAIL)) {
         $input = stripslashes($input);
         $input = htmlspecialchars($input);
+        $input = ucfirst($input);
+        $input = trim($input);
         return $input;
     } else {
         echo "<script> alert(\"Invalid username/email address specified, please try again.\"); </script>";
@@ -33,6 +35,8 @@ function sanitizeAlphaString($input) {
     if (isset($input) && $input !== "" && preg_match('/[A-Za-z]/', $input)) {
         $input = stripslashes($input);
         $input = htmlspecialchars($input);
+        $input = ucfirst($input);
+        $input = trim($input);
         return $input;
     } else {
         echo "<script> alert(\"Invalid value \".$input.\"specified, please try again.\"); </script>";
@@ -45,6 +49,7 @@ function sanitizeNumString($input) {
     if (isset($input) && preg_match('/[0-9]/', $input)) {
         $input = stripslashes($input);
         $input = htmlspecialchars($input);
+        $input = trim($input);
         return $input;
     } else {
         echo "<script> alert(\"Invalid numerical value \".$input.\"specified, please try again.\"); </script>";

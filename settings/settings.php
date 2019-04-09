@@ -1,5 +1,5 @@
 <?php
-# This file defines the settings that TCI website should use in order to connect to the database server.
+# This file defines the settings for the TCI website.
 
 
 # MySQL Database connection settings.
@@ -15,5 +15,12 @@ $passwordComplexityRequirements = '/(?=.{8,256})(?=.*?[^\w\s])(?=.*?[0-9])(?=.*?
 
 # Password storage settings.
 $passwdHashAlgo = "sha256";
-$beginingSalt= "!4~G=Q";
-$endingSalt = "%4d^36E*";
+$beginingSalt= "i9_VE~xd!6G%:m%zDJ-MuWk)T&5={8<#>3p$}g.h";
+$endingSalt = "z)^|u|lJPJ!(NwgE{bb#>fp>r@7HAFH#,#MWl0(f";
+
+
+# Administrative Email Account Information (used to send emails OUT to customers).
+$sendEmails = false;
+$adminEmailAddress = "no-reply@TwinCitiesInn.com";
+
+

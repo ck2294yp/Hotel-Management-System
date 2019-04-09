@@ -5,11 +5,12 @@ session_start();
 
 require_once "settings/settings.php";
 require_once "bin/inputSanitization.php";
+require_once "bin/sendEmail.php";
 
 
 # If member is already logged in, send them to the member's page.
 if (key_exists('loggedIn', $_SESSION)) {
-    echo"<script> alert(\"You are already logged in! Redirecting you to the membership page...\"); </script>";
+    echo "<script> alert(\"You are already logged in! Redirecting you to the membership page...\"); </script>";
     header('Location: membersPage.php');
 }
 
@@ -54,7 +55,7 @@ if (sizeof($_REQUEST) > 0) {
     ######## Address Entry ########
 
     # Sanitizes and creates variable for the addressBuildNum.
-    $userInput['buildNum']= sanitizeNumString($_REQUEST['buildNum']);
+    $userInput['buildNum'] = sanitizeNumString($_REQUEST['buildNum']);
     if ($userInput['buildNum'] === false) {
         $isError = true;
     }
@@ -96,7 +97,7 @@ if (sizeof($_REQUEST) > 0) {
     ######### Checks if billing address is the same. ###########
 
     # If the check box was NOT checked (Member has a separate billing address).
-    if (empty($_REQUEST['billingMailingAddressIsSame'])) {
+    if (!empty($_REQUEST['billingMailingAddressIsSame'])) {
 
         # Sanitizes and creates variable for the addressBuildNum.
         $userInput['billBuildNum'] = sanitizeNumString($_REQUEST['billBuildNum']);
@@ -215,6 +216,11 @@ if (sizeof($_REQUEST) > 0) {
             $conn->commit();
             $conn = null;
 
+            # Sends an email out to the customer (if administrators allow it).
+            if ($sendEmails === true) {
+                sendActivationEmail($adminEmailAddress, $userInput['email']);
+            }
+
             # Sends a JavaScript alert message back to the user notifying them of successful account creation.
             echo "<script> alert(\"Account created successfully!\"); </script>";
 
@@ -228,7 +234,7 @@ if (sizeof($_REQUEST) > 0) {
             echo $e->errorInfo() . '\n<br>';
 
             # Sends a JavaScript alert message back to the user notifying them that there was an error processing their request.
-            echo "<script> alert(\"Sorry an error occurred, Please try again. If problem persists, please notify TCI at 651-000-0000.\"); </script>";
+            echo "<script> alert(\"We are sorry. There was a problem processing your request. Please try again, if problem persists please call TCI at 651-000-0000.\"); </script>";
         }
     }
 }
@@ -406,7 +412,7 @@ if (sizeof($_REQUEST) > 0) {
         </script>
 
         Mailing Address is different than my Billing Address. <br>
-        <input type="checkbox" id="billingMailingAddressIsSame" name="billingMailingAddressIsSame" checked="checked"
+        <input type="checkbox" id="billingMailingAddressIsSame" name="billingMailingAddressIsSame"
                onclick="billingSection()"> <br>
 
 

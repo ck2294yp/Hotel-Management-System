@@ -28,7 +28,7 @@ if ($_SESSION['loggedIn'] === 0){
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         # Queries the database to get the username and the password of the user.
-        $userInfoStmt = $conn->prepare('select memID, memEmail, memFname, memLname, memDob, memRewardPoints from `Member` where `memEmail`=:email');
+        $userInfoStmt = $conn->prepare('select memID, memEmail, memFname, memLname, createdAt, updatedAt, memRewardPoints from `Member` where `memEmail`=:email');
         $userInfoStmt->bindParam(':email', $memInfo['username'], PDO::PARAM_STR, 254);
 
         # Begins a transaction, if there are any changes (which there shouldn't be) rollback the changes.
@@ -82,7 +82,7 @@ if ($_SESSION['loggedIn'] === 0){
 </nav>
 <nav style="top: 50px;">
     <ul>
-        <li><a href="#" class="active">Member's Page</a></li>
+        <li><a href="membersPage.php" class="active">Member's Page</a></li>
         <li><a href="#">Profile</a></li>
         <li><a href="#">Reservations</a></li>
     </ul>
@@ -97,20 +97,21 @@ if ($_SESSION['loggedIn'] === 0){
             <h2 style="font-style: italic">My Account</h2>
             <p>Hello, <?php echo($memInfo['memFname']." ".$memInfo['memLname']."!");?>  </p>
             <p>Member ID: <?php echo($memInfo['memID']);?>  </p>
-            <p>Member Email: <?php echo($memInfo['memEmail']);?>  </p>
-            <p>Member DOB: <?php echo($memInfo['memDob']);?>  </p>
+            <p>Email: <?php echo($memInfo['memEmail']);?>  </p>
+            <p>Member Since: <?php echo(date('M Y',strtotime($memInfo['createdAt'])));?>  </p>
             <button class="editProfile">Edit Profile</button><br/><br/>
             <br>
         </div>
         <div class="gridMemberReward">
-            <h2 style="font-style: italic">Available to Redeem</h2>
+            <h2 style="font-style: italic">Reward Points</h2>
             <p><?php echo($memInfo['memRewardPoints'])?> points</p>
             <button class="redeemPoints">Redeem</button><br/><br/>
             <a href="#" style="color: orange">Report Missing Points</a>
         </div>
         <div class="bookNow">
-            <h2 style="font-style: italic">Need to make a reservation?</h2>
-            <p>Click below.</p>
+            <h2 style="font-style: italic">Make Reservation</h2>
+            <p>Rooms can be booked from our website or in person.</p>
+            <p>You can use reward points, cash, or credit when booking a room.</p>
             <button class="bookNow">Book Now</button><br/><br/>
         </div>
     </div>
