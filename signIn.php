@@ -120,9 +120,9 @@ if (isset($_REQUEST['username']) && isset($_REQUEST['password'])){
 </nav>
 
 <section class="sec2">
-    <form action="signIn.php" method="post">
+    <form action="signIn.php" method="post" style="padding-bottom: 200px">
         <p>
-            <b>Member Sign In</b><br>
+            <h2>Member Sign In</h2><br>
             <br>
         </p>
 
