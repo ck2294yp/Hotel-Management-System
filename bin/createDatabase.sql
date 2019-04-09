@@ -49,7 +49,8 @@ CREATE TABLE Address (
 );
 
 CREATE TABLE ChargeCard (
-    cardNum INT(19) UNIQUE NOT NULL,
+    cardId INT(9) UNIQUE AUTO_INCREMENT NOT NULL,
+    cardNum INT(4) UNIQUE NOT NULL,
     memID INT(9) NOT NULL,
     cardExpDate DATE NOT NULL,
     cardFname CHAR(64) NOT NULL,
@@ -57,7 +58,7 @@ CREATE TABLE ChargeCard (
     cardLname CHAR(64) NOT NULL,
     createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    PRIMARY KEY (cardNum),
+    PRIMARY KEY (cardId),
     FOREIGN KEY (memID)
         REFERENCES Member (memID)
 );
@@ -193,8 +194,11 @@ INSERT INTO Address (addressID, memID, addressType, addressBuildNum, addressStre
     
 INSERT INTO ChargeCard (cardNum, memID, cardExpDate, cardFname, cardMinitial, cardLname)
 	VALUES
-    ('5825762462363553498', '1', '2022-09-23', 'Joe', 'A', 'Smith');
+    ('3498', '1', '2022-09-23', 'Joe', 'A', 'Smith'),
+    ('9734', '1', '2021-12-22', 'Fred', 'F', 'Flintstone');
     
 INSERT INTO InvoiceReservation (cardNum, memID, invoiceStartDate, invoiceEndDate, roomNum, paidInFull)
 	VALUES
-    ('5825762462363553498', '1', '2019-04-15', '2019-04-22', '555', '0')
+    ('3498', '1', '2019-04-15', '2019-04-22', '555', '0'),
+    ('3498', '1', '2019-05-23', '2019-05-28', '250', '0'),
+    ('9734', '1', '2019-04-23', '2019-05-17', '555', '0');
