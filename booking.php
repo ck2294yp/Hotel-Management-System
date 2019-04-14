@@ -1,3 +1,12 @@
+<?php
+session_start();
+
+require_once "settings/settings.php";
+require_once "bin/inputSanitization.php";
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -98,7 +107,7 @@
 <h2>Welcome To Twin Cities Inn Booking Page</h2><hr>
 <div class="details">
 
-    <form action="">
+    <form action="searchRoom.html" METHOD="post">
 
         <table>
             <tr>
