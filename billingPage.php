@@ -11,6 +11,24 @@
 </head>
 
 <style>
+    {
+        box-sizing: border-box;
+    }
+
+    /* Create two equal columns that floats next to each other */
+    .column {
+        float: left;
+        width: 50%;
+        padding: 10px;
+        height: 300px; /* Should be removed. Only for demonstration */
+    }
+
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
     .button {
         background-color: #4CAF50;
         border: none;
@@ -34,6 +52,36 @@
         display: table;
         clear: both;
     }
+    .footer {
+        overflow: auto;
+    }
+    .footer ul {
+        padding-bottom: 5px;
+        list-style-type: none;
+    }
+    .footer li {
+        display: inline-block;
+        font-weight: bold;
+    }
+    .container {
+        width: 100px;
+        clear: both;
+        text-align: center;
+        align-content: center;
+        padding: 50px;
+    }
+
+    .container input {
+        width: 100%;
+        width: 100px;
+        clear: both;
+        text-align: center;
+    }
+    .showthis {
+        display: none;
+    }
+
+
 </style>
 <body>
 <header>
@@ -50,48 +98,70 @@
         <li><a href="#">Sign In</a> </li>
     </ul>
 </nav>
-<option value="">Select Payment Option </option>
-<optgroup>
 
-</optgroup>
 <div class="row">
-    <div class="column">
+    <div class="column container ">
+        <select id = "myList">
+            <label>Select Payment Option</label>
+            <option > Select Payment Option</option>
+            <option value = "1">one</option>
+            <option value = "2">two</option>
+            <option value = "3">three</option>
+            <option value = "4">four</option>
+        </select><br>
 
-           <h1> Payment Method</h1>
-           Drop Down Menu: PlaceHolder "Please Select Card"
+        <input type="checkbox" name="billingAddress" value="Bike"> Use same Billing Address
+           <!-- Drop Down Menu: PlaceHolder "Please Select Card" -->
+
            <form>
-                <input type="checkbox">
-                <input type="checkbox" name="billingAddress" value="Bike"> Use same Billing Address<br>
-                Name: <input type="text" name="FirstName" value="First Name">
-                Last name: <input type="text" name="LastName" value="Last Name"><br>
+
+
+                First Name: <input type="text" name="FirstName" value="">
+                Last name: <input type="text" name="LastName" value=""><br>
+                Address:<input type = "text" name = "Address" value = ""><br>
+                City:<input type = "text" name = "City" value = "">
+               State:<input type = "text" name = "State" value = "">
+               Zip code :<input type = "text" name = "Zip Code" value = "">
 
            </form>
 
           <!-- Add new Card Button window pop up with --->
 
-        <h1>
-            Test 1</h1>
+
     </div>
-    <div class="column">
-        <h1>
-            Test 2
+    <div class="column ">
+
+            <p>
+                Room Type:<br>
+                Price: <br>
+                Room Information:<br>
+                Check in Date: <br>
+                Check out Date <br>
+            </p>
             <!---
-            Room Information
+            <p>
             Room Type
             Check In Date - Check Out Date
-            Amount Due
-
+            Amount Due: fetch price x date.
             -->
-        </h1>
+
     </div>
 </div>
 
 
 </div>
-<button class="button button2">Book Room</button>
+<button onclick="bookRoom()" class="button button2">Book Room</button>
 <!-- When Button is clicked there will be a display message and a SQL query for DB -->
 <!-- Thank You for booking with TCI! We Look forward to seeing you soon.
  -->
+<script>
+    function bookRoom() {
+        alert("Thank you for booking with TCI, We look forward to seeing you soon!");
+    }
+    function hideFields(){
+
+    }
+</script>
 <footer>
     <nav>
         <ul>
