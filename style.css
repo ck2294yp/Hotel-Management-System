@@ -179,6 +179,18 @@ section.sec2Member {
     cursor: pointer;
 }
 
+/* Why TCI Grid 1*/
+.grid1 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 1em;
+    grid-auto-rows: minmax(150px, auto);
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+/* End of Why TCI Grid 1 */
 
 /*  Style for Member page - End */
 
