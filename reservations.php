@@ -107,7 +107,7 @@ if ($_SESSION['loggedIn'] === 0){
         <?php
 
             echo "<table>";
-            echo"<tr> <th>Invoice ID</th> <th>Card Number</th> <th style='display: none'>Member ID</th> <th>Start Date</th> <th>End Date</th> <th>Room Number</th> <th>Paid in full</th> <th style='visibility: hidden'>Cancel Reservation</th> </tr>";
+            echo"<tr> <th>Invoice ID</th> <th>Card Number</th> <th style='display: none'>Member ID</th> <th>From</th> <th>To</th> <th>Room Number</th> <th>Paid in full</th> <th style='visibility: hidden'>Cancel Reservation</th> </tr>";
 
             while ($invoice = $getInvoiceStmt->fetch( PDO::FETCH_ASSOC )) {
                 echo "<tr><td style='text-align: center'>";
