@@ -54,8 +54,17 @@ function getTemplate($filename, $memInfo ) {
 
 // Sends activation email.
 function sendActivationEmail($adminEmailAddress, $sendTo) {
-    $memInfo = getUserData($sendTo);
-    $messageBody = getTemplate('emailTemplates/accountInfo.php', $memInfo);
+    // Sets php.ini's settings accordingly.
+    ini_set('SMTP', 'localhost');
+    ini_set('smtp_port', '25');
+    ini_set('sendmail_from', $adminEmailAddress);
+    ini_set('sendmail_path', '/usr/sbin/sendmail -t -i');
+
+    #TODO: More advanced stuff that will be taken out for the purpose of testing
+    #$memInfo = getUserData($sendTo);
+    #$messageBody = getTemplate('emailTemplates/accountInfo.php', $memInfo);
+    #DEBUG: Make this more personalized.
+    $messageBody = "This is a test message.";
 
     $subject = "Welcome to TCI!";
 

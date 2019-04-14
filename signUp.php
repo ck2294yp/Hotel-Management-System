@@ -262,6 +262,31 @@ if (sizeof($_REQUEST) > 0) {
     </ul>
 </nav>
 
+
+
+<!-- Makes a JavaScript function to check for invalid input. -->
+<script type="text/javascript" language="JavaScript">
+    function checkInput(input, message) {
+        const nameInput = document.querySelector(input);
+
+        nameInput.addEventListener('input', () => {
+            nameInput.setCustomValidity('');
+            nameInput.checkValidity();
+        });
+
+        nameInput.addEventListener('invalid', () => {
+            if(nameInput.value === '') {
+                nameInput.setCustomValidity('');
+                nameInput.checkValidity();
+            } else {
+                nameInput.setCustomValidity(message);
+            }
+        });
+    }
+</script>
+
+
+
 <section class="sec1"></section>
 
 <section class="sec2">
@@ -269,68 +294,178 @@ if (sizeof($_REQUEST) > 0) {
         <!-- Email/username and password -->
         <h2><font size="5">Login Information</font></h2>
         Enter your email address (this email address will also function as the username for your TCI account).<br>
-        * <input type="email" name="memEmail" maxlength="254" required placeholder="Email/Username"><br>
-
+        * <input type="email"
+                 name="memEmail"
+                 id="memEmail"
+                 required
+                 minlength="3"
+                 maxlength="254"
+                 autocomplete="email"
+                 autocorrect="on"
+                 title="Enter a email address."
+                 placeholder="Email/Username">
+        <script>checkInput('memEmail','Please enter a valid Email address!');</script>
         <br>
+        <br>
+
         Passwords must be at LEAST 8 characters long, and must contain one: <b>capital letter, lowercase letter, number,
             and special character</b>.<br>
         Users are STRONGLY encouraged to use more complicated passwords then just this minimum. <br>
-        * <input type="password" name="memPasswd" maxlength="254" placeholder="Desired Password" required
-                 pattern="(?=.{8,256})(?=.*?[^\w\s])(?=.*?[0-9])(?=.*?[A-Z]).*?[a-z].*"><br>
-
+        * <input type="password"
+                 name="memPasswd"
+                 id="memPasswd"
+                 required
+                 minlength="8"
+                 maxlength="254"
+                 placeholder="Desired Password"
+                 title="Passwords must be:
+                 - Between 8 at 254 characters long.
+                 - Contain at least ONE capital letter.
+                 - Contain at least ONE lowercase letter.
+                 - Contain at least ONE number.
+                 - Contain at least ONE special character."
+                 pattern="(?=.{8,256})(?=.*?[^\w\s])(?=.*?[0-9])(?=.*?[A-Z]).*?[a-z].*">
+        <script>
+            checkInput('memPasswd','Passwords must be:\n' +
+                '- Between 8 at 254 characters long.\n' +
+                '- Contain at least ONE capital letter.\n' +
+                '- Contain at least ONE lowercase letter.\n' +
+                '- Contain at least ONE number.\n' +
+                '- Contain at least ONE special character.');
+        </script>
         <br>
-        Type your password in again to confirm: <br>
-        * <input type="password" name="confirmMemPasswd" maxlength="254" placeholder="Confirm Password" required
-                 pattern="?=.{8,256})(?=.*?[^\w\s])(?=.*?[0-9])(?=.*?[A-Z]).*?[a-z].*"><br>
+        <br>
 
+        Type your password in again to confirm: <br>
+        * <input type="password"
+                 name="confirmMemPasswd"
+                 id="confirmMemPasswd"
+                 required
+                 minlength="8"
+                 maxlength="254"
+                 placeholder="Confirm Password"
+                 title="Passwords must match!"
+                 pattern="?=.{8,256})(?=.*?[^\w\s])(?=.*?[0-9])(?=.*?[A-Z]).*?[a-z].*">
+        <br>
+        <br>
 
         <!-- Personal Details (Name, DOB, etc.)-->
         <br>
-        <br>
         <h2><font size="5">Personal Information</font></h2>
         Enter your first name. <br>
-        * <input type="text" name="memFname" placeholder="First Name" maxlength="64" pattern="[A-Za-z\-\h]{2,64}"
-                 required><br>
-
+        * <input type="text"
+                 name="memFname"
+                 placeholder="First Name"
+                 autocomplete="given-name"
+                 minlength="2"
+                 maxlength="64"
+                 spellcheck="true"
+                 autocorrect="om"
+                 pattern="[A-Za-z\-\h]{2,64}"
+                 required>
+        <script>checkInput('memFname','Please enter a valid first name!');</script>
         <br>
+        <br>
+
         Enter your last name. <br>
-        * <input type="text" name="memLname" maxlength="64" placeholder="Last Name" pattern="[A-Za-z\-\h]{2-64}"
-                 required><br>
-
+        * <input type="text"
+                 name="memLname"
+                 autocomplete="family-name"
+                 required
+                 minlength="2"
+                 maxlength="64"
+                 spellcheck="true"
+                 autocorrect="om"
+                 placeholder="Last Name"
+                 pattern="[A-Za-z\-\h]{2-64}">
+        <script>checkInput('memLname','Please enter a valid last name!');</script>
         <br>
+        <br>
+
+        <!--
+        var dateControl = document.querySelector('input[type="date"]');
+        dateControl.value = '2017-06-01';
+        -->
         Enter your date of birth (DOB). <br>
-        * <input type="date" min="1900-01-01" name="memDob" placeholder="Date Of Birth" required><br>
-
+        * <input type="date"
+                 name="memDob"
+                 required
+                 autocomplete="bday"
+                 min="1919-04-10"
+                 max="2001-04-10"
+                 placeholder="Date Of Birth">
+        <script>checkInput('memDob','Please enter a valid date of birth!');</script>
         <br>
+        <br>
+
         Enter Your Phone Number: <br>
-        * <input type="number" name="phoneNum" min="10" maxlength="14" placeholder="Phone Number" pattern="[0-9\-]{14}">
+        * <input type="number"
+                 name="phoneNum"
+                 required
+                 min="10"
+                 maxlength="14"
+                 placeholder="Phone Number"
+                 autocomplete="tel"
+                 pattern="^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$">
+        <script>checkInput('phoneNum','Please enter a valid phone number!');</script>
+        <br>
         <br>
 
         <!-- Mailing/Billing Information -->
-        <br>
         <br>
         <h2><font size="5">Mailing Information</font></h2>
 
         <br>
         Enter your preferred house or building number. <br>
-        * <input type="number" name="buildNum" min="1" maxlength="8" placeholder="Building/House Number"
-                 pattern="[0-9]{8}" required><br>
-
+        * <input type="number"
+                 name="buildNum"
+                 required
+                 autocomplete="on"
+                 min="1"
+                 maxlength="8"
+                 placeholder="Building/House Number"
+                 pattern="[0-9]{8}">
+        <script>checkInput('buildNum','Please enter a valid home or building number!');</script>
         <br>
+        <br>
+
         Enter your street address. <br>
-        * <input type="text" name="strName" maxlength="64" placeholder="Street Address" pattern="[A-Za-z\.\-\h]{2,64}"
-                 required><br>
-
+        * <input type="text"
+                 name="strName"
+                 required
+                 autocomplete="on"
+                 maxlength="64"
+                 placeholder="Street Address"
+                 pattern="[A-Za-z\.\-\h]{2,64}">
+        <script>checkInput('strName','Please enter a valid street name!');</script>
         <br>
+        <br>
+
         Enter your city. <br>
-        * <input type="text" name="city" maxlength="64" required placeholder="City" pattern="[A-Za-z\-\h]{2,64}"><br>
-
+        * <input type="text"
+                 name="city"
+                 required
+                 maxlength="64"
+                 autocomplete="on"
+                 placeholder="City"
+                 pattern="[A-Za-z\-\h]{2,64}">
+        <script>checkInput('city','Please enter a valid city!');</script>
         <br>
+        <br>
+
         Enter your zip code. <br>
-        * <input type="number" name="zip" min="1" maxlength="7" required placeholder="Zip Code" pattern="[0-9]{7}"><br>
-
-
+        * <input
+                type="number"
+                name="zip"
+                required
+                min="1"
+                maxlength="7"
+                placeholder="Zip Code"
+                pattern="[0-9]{7}">
+        <script>checkInput('zip','Please enter a zip code!');</script>
         <br>
+        <br>
+
         Enter your state. <br>
         * <select required name="provence" autocomplete="on" size="1">
             <option value="AL">Alabama (AL)</option>
@@ -385,12 +520,18 @@ if (sizeof($_REQUEST) > 0) {
             <option value="WI">Wisconsin</option>
             <option value="WY">Wyoming</option>
         </select>
+        <script>checkInput('provence','Please enter a state!');</script>
         <br>
         <br>
 
         Enter your apartment number, if needed (optional). <br>
-        <input type="number" name="aptNum" min="1" maxlength="7" placeholder="Apartment Number"
-               pattern="[a-zA-Z0-9\-\h]{7}"> <br>
+        <input type="number"
+               name="aptNum"
+               min="1"
+               maxlength="7"
+               placeholder="Apartment Number"
+               pattern="[a-zA-Z0-9\-\h]{7}">
+        <script>checkInput('aptNum','Please enter a valid apartment number!');</script>
         <br>
         <br>
 
@@ -412,37 +553,60 @@ if (sizeof($_REQUEST) > 0) {
         </script>
 
         Mailing Address is different than my Billing Address. <br>
-        <input type="checkbox" id="billingMailingAddressIsSame" name="billingMailingAddressIsSame"
-               onclick="billingSection()"> <br>
+        <input type="checkbox"
+               id="billingMailingAddressIsSame"
+               name="billingMailingAddressIsSame"
+               onclick="billingSection()">
+        <br>
 
 
         <!-- Allows the member to add their billing information (if it is different then their mailing address). -->
         <section class="sec2" id="additionalBillingInfo" style="display:none">
-
             <h2><font size="5">Billing Address</font></h2>
-
             <br>
             Enter the building number you'd like to use for billing. <br>
-            * <input type="number" name="billBuildNum" min="1" maxlength="8" placeholder="Building/House Number"
-                     pattern="[0-9]{8}"><br>
-
+            * <input
+                    type="number"
+                    name="billBuildNum"
+                    min="1"
+                    maxlength="8"
+                    placeholder="Building/House Number"
+                    pattern="[0-9]{8}">
+            <script>checkInput('billBuildNum','Please enter a valid building number!');</script>
             <br>
+            <br>
+
             Enter your billing street address. <br>
-            * <input type="text" name="billStrName" maxlength="64" placeholder="Street Address"
-                     pattern="[A-Za-z\.\-\h]{2,64}"><br>
-
+            * <input type="text"
+                     name="billStrName"
+                     maxlength="64"
+                     placeholder="Street Address"
+                     pattern="[A-Za-z\.\-\h]{2,64}">
+            <script>checkInput('billStrName','Please enter a valid street name!');</script>
             <br>
+            <br>
+
             Enter your billing city. <br>
-            * <input type="text" name="billCity" maxlength="64" placeholder="City"
-                     pattern="[A-Za-z\-\h]{2,64}"><br>
-
+            * <input type="text"
+                     name="billCity"
+                     maxlength="64"
+                     placeholder="City"
+                     pattern="[A-Za-z\-\h]{2,64}">
+            <script>checkInput('billCity','Please enter a valid city name!');</script>
             <br>
+            <br>
+
             Enter your billing zip code. <br>
-            * <input type="number" name="billZip" min="1" maxlength="7" placeholder="Zip Code"
-                     pattern="[0-9]{7}"><br>
-
-
+            * <input type="number"
+                     name="billZip"
+                     min="1"
+                     maxlength="7"
+                     placeholder="Zip Code"
+                     pattern="[0-9]{7}">
+            <script>checkInput('billZip','Please enter a valid Zip code!');</script>
             <br>
+            <br>
+
             Enter your billing state. <br>
             * <select name="billProvence" autocomplete="on" size="1">
                 <option value="AL">Alabama (AL)</option>
@@ -497,12 +661,20 @@ if (sizeof($_REQUEST) > 0) {
                 <option value="WI">Wisconsin</option>
                 <option value="WY">Wyoming</option>
             </select>
+            <script>checkInput('billProvence','Please enter a valid state!');</script>
             <br>
             <br>
 
             Enter your billing apartment number, if needed (optional). <br>
-            <input type="number" name="billAptNum" min="1" maxlength="7" placeholder="Apartment Number"
-                   pattern="[a-zA-Z0-9\-\h]{7}"> <br>
+            <input type="number"
+                   name="billAptNum"
+                   min="1"
+                   maxlength="7"
+                   placeholder="Apartment Number"
+                   pattern="[a-zA-Z0-9\-\h]{7}">
+            <script>checkInput('billAptNum','Please enter a valid apartment number!');</script>
+            <br>
+            <br>
         </section>
 
 
@@ -515,7 +687,7 @@ if (sizeof($_REQUEST) > 0) {
 <section class="sec3"></section>
 <footer>
     <nav>
-        <ul>
+            <ul>
             <li><a href="#">Facebook</a href="#"></li>
             <li><a href="#">Twitter</a></li>
             <li><a href="#">Google+</a></li>

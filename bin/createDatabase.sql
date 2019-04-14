@@ -1,3 +1,5 @@
+SET sql_mode = '';
+
 DROP DATABASE IF EXISTS tci;
 CREATE DATABASE tci; 
 
@@ -47,7 +49,8 @@ CREATE TABLE Address (
 );
 
 CREATE TABLE ChargeCard (
-    cardNum INT(19) UNIQUE NOT NULL,
+    cardId INT(9) UNIQUE AUTO_INCREMENT NOT NULL,
+    cardNum INT(4) UNIQUE NOT NULL,
     memID INT(9) NOT NULL,
     cardExpDate DATE NOT NULL,
     cardFname CHAR(64) NOT NULL,
@@ -55,7 +58,7 @@ CREATE TABLE ChargeCard (
     cardLname CHAR(64) NOT NULL,
     createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    PRIMARY KEY (cardNum),
+    PRIMARY KEY (cardId),
     FOREIGN KEY (memID)
         REFERENCES Member (memID)
 );
@@ -179,3 +182,23 @@ VALUES
 	(467,12),
 	(475,12),
 	(476,12);
+    
+INSERT INTO Member (memID, memEmail, memPasswd, memFname, memLname, memDob, memPhone, memRewardPoints, memActivationLink, isMember)
+	VALUES 
+	('1', 'Joe@gmail.com', 'c7b0f1b6ac6cfff2062f0ce4d7d9d96e4a6e49cb602732ef5c6b84ad725ae89d', 'Joe', 'Smith', '1983-09-23', '1234567890', '0', '807453141', '0');
+    
+INSERT INTO Address (addressID, memID, addressType, addressBuildNum, addressStreetName, addressCity, addressZip, addressProvence, addressCountry, addressAptNum)
+	VALUES
+    ('1', '1', 'mailing', '1234', 'Main St.', 'St. Paul', '12345', 'MN', 'United States', '14'),
+    ('2', '1', 'billing', '1234', 'Main St.', 'St. Paul', '12345', 'MN', 'United States', '14');
+    
+INSERT INTO ChargeCard (cardNum, memID, cardExpDate, cardFname, cardMinitial, cardLname)
+	VALUES
+    ('3498', '1', '2022-09-23', 'Joe', 'A', 'Smith'),
+    ('9734', '1', '2021-12-22', 'Fred', 'F', 'Flintstone');
+    
+INSERT INTO InvoiceReservation (cardNum, memID, invoiceStartDate, invoiceEndDate, roomNum, paidInFull)
+	VALUES
+    ('3498', '1', '2019-04-15', '2019-04-22', '555', '0'),
+    ('3498', '1', '2019-05-23', '2019-05-28', '250', '0'),
+    ('9734', '1', '2019-04-23', '2019-05-17', '555', '0');
