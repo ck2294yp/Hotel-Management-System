@@ -112,7 +112,8 @@
     <h2 style="text-align: left">Filter by:</h2>
     <button onclick="oneBedRoom()">One Bed</button><br><br>
     <button onclick="twoBedRoom()" >Two Bed</button><br><br>
-    <button onclick="specialtyRoom()">Specialty Room</button>
+    <button onclick="specialtyRoom()">Specialty Room</button><br><br>
+    <button onclick="allRooms()">All</button>
 </div>
 <div style="float: right; height: 700px ;width:80%;">
     <h2 style="text-align: left;">Available Rooms</h2>
@@ -259,6 +260,23 @@
             c.style.display = "inline-block";
             d.style.display = "inline-block";
             e.style.display = "inline-block";
+            a.style.display = "none";
+            b.style.display = "none";
+        }
+    }
+    
+    function allRooms() {
+        if(c.style.display == "none" || d.style.display == "none" || e.style.display == "none" ||
+        a.style.display == "none" || b.style.display == "none"){
+            c.style.display = "inline-block";
+            d.style.display = "inline-block";
+            e.style.display = "inline-block";
+            a.style.display = "inline-block";
+            b.style.display = "inline-block";
+        }else{
+            c.style.display = "none";
+            d.style.display = "none";
+            e.style.display = "none";
             a.style.display = "none";
             b.style.display = "none";
         }
