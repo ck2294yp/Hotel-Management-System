@@ -51,13 +51,17 @@ section.sec1Member {
     background-size: cover;
     position: relative;
 }
+section.reservation {
+    background: url("http://newsmobile.in/wp-content/uploads/2019/01/reservation-10.jpeg");
+    background-size: cover;
+}
 
 h3 {
     position: absolute;
     font-family: "Brush Script MT";
     font-size: 7em;
     color: lightyellow;
-    bottom: -60px;
+    bottom: -100px;
     left: 20px;
 }
 
@@ -178,9 +182,51 @@ section.sec2Member {
     margin: 4px 2px;
     cursor: pointer;
 }
-
-
 /*  Style for Member page - End */
+
+
+
+/* Why TCI Grid 1*/
+.grid1 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 1em;
+    grid-auto-rows: minmax(150px, auto);
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+/* End of Why TCI Grid 1 */
+
+
+/* Start Reservation Page*/
+table {
+    background-color: whitesmoke;
+    box-shadow: 0px 5px gray;
+}
+
+th {
+    width: 150px;
+    text-align: center;
+    padding: 5px;
+}
+td {
+    padding: 5px;
+}
+
+button {
+    background-color: gray;
+    border: none;
+    color: white;
+    font-size: 1em;
+    padding: 5px 80px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+}
+
+/* End Reservation Page*/
 
 section.sec3 {
     background: url("https://jumbotron-production-f.squarecdn.com/assets/9147e1a4b55333a6d6c5.jpg");

@@ -84,11 +84,11 @@ if ($_SESSION['loggedIn'] === 0){
     <ul>
         <li><a href="membersPage.php" class="active">Member's Page</a></li>
         <li><a href="#">Profile</a></li>
-        <li><a href="#">Reservations</a></li>
+        <li><a href="reservations.php">Reservations</a></li>
     </ul>
 </nav>
 <section class="sec1Member">
-    <h3> Welcome back, <br> <?php echo($memInfo['memFname']);?>! </h3>
+    <h3> Welcome back, <?php echo($memInfo['memFname']);?>! </h3>
 </section>
 
 <section class="sec2Member">
