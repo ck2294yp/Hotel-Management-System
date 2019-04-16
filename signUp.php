@@ -3,7 +3,7 @@
 # All of this runs before the HTML code is rendered.
 session_start();
 
-# Imports the required files needed to ensure program page works properally.
+# Imports the required files needed to ensure program page works properly.
 require_once "settings/settings.php";
 require_once "bin/inputSanitization.php";
 require_once 'vendor/autoload.php';
@@ -419,7 +419,7 @@ if (sizeof($_REQUEST) > 0) {
         <br>
 
         Enter Your Phone Number: <br>
-        * <input type="number"
+        * <input type="text"
                  name="phoneNum"
                  required
                  min="10"
@@ -437,7 +437,7 @@ if (sizeof($_REQUEST) > 0) {
 
         <br>
         Enter your preferred house or building number. <br>
-        * <input type="number"
+        * <input type="text"
                  name="buildNum"
                  required
                  autocomplete="on"
@@ -475,7 +475,7 @@ if (sizeof($_REQUEST) > 0) {
 
         Enter your zip code. <br>
         * <input
-                type="number"
+                type="text"
                 name="zip"
                 required
                 min="1"
@@ -586,7 +586,7 @@ if (sizeof($_REQUEST) > 0) {
             <br>
             Enter the building number you'd like to use for billing. <br>
             * <input
-                    type="number"
+                    type="text"
                     name="billBuildNum"
                     min="1"
                     maxlength="8"
@@ -617,7 +617,7 @@ if (sizeof($_REQUEST) > 0) {
             <br>
 
             Enter your billing zip code. <br>
-            * <input type="number"
+            * <input type="text"
                      name="billZip"
                      min="1"
                      maxlength="7"
@@ -686,7 +686,7 @@ if (sizeof($_REQUEST) > 0) {
             <br>
 
             Enter your billing apartment number, if needed (optional). <br>
-            <input type="number"
+            <input type="text"
                    name="billAptNum"
                    min="1"
                    maxlength="7"

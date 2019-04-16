@@ -132,8 +132,8 @@ if (isset($_REQUEST['username']) && isset($_REQUEST['password'])){
 
         <label>Password</label><br>
         <input type="password" placeholder="Enter Password" name="password" maxlength="254" pattern="(?=.{8,256})(?=.*?[^\w\s])(?=.*?[0-9])(?=.*?[A-Z]).*?[a-z].*" required><br>
-        <a href="#">Forgot Username</a><br>
-        <a href="#">Forgot Password</a><br>
+        <a href="#">Forgot Username?</a><br>
+        <a href="#">Forgot Password?</a><br>
         <br>
 
         <button type="submit">Login</button><br>
