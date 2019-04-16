@@ -130,10 +130,11 @@ if (isset($_REQUEST['username']) && isset($_REQUEST['password'])){
         <input type="email" placeholder="Enter Username" name="username" maxlength="254" required><br>
         <br>
 
-        <label>Password</label><br>
+        <label>Password</label><br/>
         <input type="password" placeholder="Enter Password" name="password" maxlength="254" pattern="(?=.{8,256})(?=.*?[^\w\s])(?=.*?[0-9])(?=.*?[A-Z]).*?[a-z].*" required><br>
-        <a href="#">Forgot Username</a><br>
-        <a href="#">Forgot Password</a><br>
+        <br/>
+        <a href="#" style="color: gray">Forgot Username</a><br>
+        <a href="#" style="color: gray">Forgot Password</a><br>
         <br>
 
         <button type="submit">Login</button><br>
@@ -141,7 +142,7 @@ if (isset($_REQUEST['username']) && isset($_REQUEST['password'])){
         <p>
             <br>
             <br>Not a member yet?<br>
-            <a href="signUp.php">Create Account</a><br>
+            <a href="signUp.php" style="color: gray">Create Account</a><br>
         </p>
 
     </form>

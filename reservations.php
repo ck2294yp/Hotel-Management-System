@@ -110,21 +110,21 @@ if ($_SESSION['loggedIn'] === 0){
             echo"<tr> <th>Invoice ID</th> <th>Card Number</th> <th style='display: none'>Member ID</th> <th>From</th> <th>To</th> <th>Room Number</th> <th>Paid in full</th> <th style='visibility: hidden'>Cancel Reservation</th> </tr>";
 
             while ($invoice = $getInvoiceStmt->fetch( PDO::FETCH_ASSOC )) {
-                echo "<tr><td style='text-align: center'>";
+                echo "<tr><td>";
                 echo $invoice['invoiceID'];
-                echo "</td><td style='text-align: center'>";
+                echo "</td><td>";
                 echo $invoice['cardNum'];
                 echo "</td><td style='display: none;'>";
                 echo $invoice['memID'];
-                echo "</td><td style='text-align: center'>";
-                $timestamp = strtotime($invoice['invoiceStartDate']);
-                echo date('m-d-Y',$timestamp);
-                echo "</td><td style='text-align: center'>";
-                $timestamp = strtotime($invoice['invoiceEndDate']);
-                echo date('m-d-Y',$timestamp);
-                echo "</td><td style='text-align: center'>";
+                echo "</td><td>";
+                $timestamp1 = strtotime($invoice['invoiceStartDate']);
+                echo date('m-d-Y',$timestamp1);
+                echo "</td><td>";
+                $timestamp2 = strtotime($invoice['invoiceEndDate']);
+                echo date('m-d-Y',$timestamp2);
+                echo "</td><td>";
                 echo $invoice['roomNum'];
-                echo "</td><td style='text-align: center'>";
+                echo "</td><td>";
                 if ($invoice['paidInFull'] == 0) {
                     echo 'No';
                 }
@@ -133,26 +133,55 @@ if ($_SESSION['loggedIn'] === 0){
                 }
                 echo "</td><td>";
                 $date = time();
-                if ($timestamp > $date) {
-                    echo "<button class='cancel'>Cancel Reservation</button>";
-                }
+                if ($timestamp1 > $date): ?>
+                    <button id="btn-show-dialog">Cancel Reservation</button>
+                <?php endif; ?>
+                <?php
                 echo "</td></tr>";
             }
             echo "</table>";
 
-        # Closes the database connection.
-        $conn = null;
-
-
-
         ?>
 
     </form>
-    <br/>
-    <br/>
-    <div>
 
+    <div class="overlay" id="dialog-container">
+        <div class="popup">
+            <p>Are you sure you want to cancel reservation?</p>
+            <div class="text-right">
+                <button class="dialog-btn btn-cancel" id="cancel">Cancel</button>
+                <button class="dialog-btn btn-primary" id="confirm">Yes</button>
+            </div>
+        </div>
     </div>
+
+
+    <script>
+        // Call function when show dialog btn is clicked
+        document.getElementById('btn-show-dialog').onclick = function(){show_dialog()};
+        var overlayme = document.getElementById("dialog-container");
+
+        function show_dialog() {
+            /* A function to show the dialog window */
+            overlayme.style.display = "block";
+        }
+
+        // If confirm btn is clicked , the function confirm() is executed
+        document.getElementById("confirm").onclick = function(){confirm()};
+        function confirm() {
+            /* code executed if confirm is clicked */
+            overlayme.style.display = "none";
+        }
+
+        // If cancel btn is clicked , the function cancel() is executed
+        document.getElementById("cancel").onclick = function(){cancel()};
+        function cancel() {
+            /* code executed if cancel is clicked */
+            overlayme.style.display = "none";
+        }
+
+    </script>
+
 </section>
 
 <!-- <section class="sec3"></section> -->
