@@ -70,6 +70,9 @@
     .align{
         text-align: right;
     }
+    .alignmid{
+        text-align: center;
+    }
 
 
 </style>
@@ -91,23 +94,24 @@
         <p>Room Type:</p>
         <label>Total Amount Due: </label>
     </div>
-    <div class="column" ">
+    <div class="column " style = "text-align: center;">
         <h4>Points available: </h4>
     <select id = "myList">
         <option value = ""> Select Payment Option</option>
         <option value = "1">one</option>
-    </select>
-
+    </select><br>
+        <label> Add New Card </label>
         <form>
             <!--
             Name on card, Card number, Expiration date and cvv number
             -->
         </form>
+    <div class = "payNow" style = "text-align: center;">
+        <button  onclick="bookRoom() " class="button button2 main">Pay Now</button>
+    </div>
     </div>
 </div >
-<div class = "payNow" style = "text-align: center;">
-<button  onclick="bookRoom() " class="button button2 main">Pay Now</button>
-</div>
+
 <!-- When Button is clicked there will be a display message and a SQL query for DB -->
 <!-- Thank You for booking with TCI! We Look forward to seeing you soon.
  -->
