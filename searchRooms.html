@@ -153,7 +153,7 @@
         </div>
     </section>
 
-    <section id="petRoom" class="roomBox" style="display: inline-block;">
+   <!-- <section id="petRoom" class="roomBox" style="display: inline-block;">
         <div style="border:solid 1px black;">
 
             <div style="width: 30%;height:inherit;float: left;"><img class="pic" src="https://media.defense.gov/2017/Jul/27/2001784176/780/780/0/110911-F-XX000-0001.JPG"
@@ -163,7 +163,7 @@
             <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$300</p></div>
             <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button class="bButton">Book</button></div>
         </div>
-    </section>
+    </section>-->
 
     <section id="chefRoom" class="roomBox" style="display: inline-block;">
         <div style="border-top:solid 1px black;">
@@ -197,7 +197,7 @@
     var a = document.getElementById("oneBed");
     var c = document.getElementById("chefRoom");
     var d = document.getElementById("gamingRoom");
-    var e = document.getElementById("petRoom");
+   // var e = document.getElementById("petRoom");
 
     function oneBedRoom() {
 
@@ -207,7 +207,7 @@
             b.style.display = "none";
             c.style.display = "none";
             d.style.display = "none";
-            e.style.display = "none";
+           // e.style.display = "none";
         }else {
             a.style.display = "none";
         }
@@ -217,7 +217,7 @@
             b.style.display = "none";
             c.style.display = "none";
             d.style.display = "none";
-            e.style.display = "none";
+            //e.style.display = "none";
         }
     }
 
@@ -228,7 +228,7 @@
             a.style.display = "none";
             c.style.display = "none";
             d.style.display = "none";
-            e.style.display = "none";
+           // e.style.display = "none";
         }else {
             b.style.display = "none";
         }
@@ -238,45 +238,45 @@
             a.style.display = "none";
             c.style.display = "none";
             d.style.display = "none";
-            e.style.display = "none";
+            //e.style.display = "none";
         }
     }
 
     function specialtyRoom() {
 
-        if (c.style.display == "inline-block" && d.style.display == "inline-block" && e.style.display == "inline-block") {
+        if (c.style.display == "inline-block" && d.style.display == "inline-block") {
             c.style.display = "inline-block";
             d.style.display = "inline-block";
-            e.style.display = "inline-block";
+           // e.style.display = "inline-block";
             a.style.display = "none";
             b.style.display = "none";
         }else {
             c.style.display = "none";
             d.style.display = "none";
-            e.style.display = "none";
+            //e.style.display = "none";
         }
 
-        if (c.style.display == "none" && d.style.display == "none" && e.style.display == "none") {
+        if (c.style.display == "none" && d.style.display == "none") {
             c.style.display = "inline-block";
             d.style.display = "inline-block";
-            e.style.display = "inline-block";
+            //e.style.display = "inline-block";
             a.style.display = "none";
             b.style.display = "none";
         }
     }
     
     function allRooms() {
-        if(c.style.display == "none" || d.style.display == "none" || e.style.display == "none" ||
+        if(c.style.display == "none" || d.style.display == "none"||
         a.style.display == "none" || b.style.display == "none"){
             c.style.display = "inline-block";
             d.style.display = "inline-block";
-            e.style.display = "inline-block";
+            //e.style.display = "inline-block";
             a.style.display = "inline-block";
             b.style.display = "inline-block";
         }else{
             c.style.display = "none";
             d.style.display = "none";
-            e.style.display = "none";
+            //e.style.display = "none";
             a.style.display = "none";
             b.style.display = "none";
         }
