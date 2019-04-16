@@ -3,10 +3,10 @@
 # All of this runs before the HTML code is rendered.
 session_start();
 
+# Imports the required files needed to ensure program page works properly.
 require_once "settings/settings.php";
 require_once "bin/inputSanitization.php";
-require_once "bin/sendEmail.php";
-
+require_once 'vendor/autoload.php';
 
 # If member is already logged in, send them to the member's page.
 if (key_exists('loggedIn', $_SESSION)) {
@@ -47,7 +47,8 @@ if (sizeof($_REQUEST) > 0) {
     $userInput['dob'] = $_REQUEST['memDob'];
 
     # Sanitizes and creates variable for the member's phone number.
-    $userInput['phoneNum'] = sanitizeNumString(str_replace(array("-", "(", ")"), "", $_REQUEST['phoneNum']));
+    $userInput['phoneNum'] = sanitizeNumString(str_replace(array("-", "(", ")", "+"), "", $_REQUEST['phoneNum']));
+
     if ($userInput['phoneNum'] === false) {
         $isError = true;
     }
@@ -87,10 +88,16 @@ if (sizeof($_REQUEST) > 0) {
     # Sets the country of the user. (currently set to ONLY the US!)
     $userInput['country'] = "United States";
 
-    # Sanitizes and creates variable for the optional apartment number.
-    $userInput['aptNum'] = sanitizeNumString($_REQUEST['aptNum']);
-    if ($userInput['aptNum'] === false) {
-        $isError = true;
+    # Sanitizes and creates variable for the OPTIONAL apartment number.
+    # If user doesn't input an apartment number then just bring in an empty string.
+    if ($_REQUEST['aptNum'] === "") {
+        $userInput['aptNum'] = "";
+        # If user DOES input an apartment number then sanitize it and use it in the rest of the program.
+    } else {
+        $userInput['aptNum'] = sanitizeNumString($_REQUEST['aptNum']);
+        if ($userInput['aptNum'] === false) {
+            $isError = true;
+        }
     }
 
 
@@ -152,7 +159,7 @@ if (sizeof($_REQUEST) > 0) {
 
     # Checks if there where any errors while parsing though the user input.
     if ($isError === true) {
-        echo "<script> alert(\"Incomplete or Incorrect information specified Please Try again.\"); </script>";
+        echo "<script> alert(\"Sorry an error reading your data occurred Please try again!\"); </script>";
 
     } else {
         ###### Tries to connect to the MySQL database using PDO (rather then MySQLi) #####
@@ -218,7 +225,22 @@ if (sizeof($_REQUEST) > 0) {
 
             # Sends an email out to the customer (if administrators allow it).
             if ($sendEmails === true) {
-                sendActivationEmail($adminEmailAddress, $userInput['email']);
+                // Create the Transport
+                $transport = (new Swift_SmtpTransport($emailSvrAddress, $emailSvrSMTPPort, 'ssl'))
+                    ->setUsername($adminEmailAddress)
+                    ->setPassword($adminEmailPassword);
+
+                // Create the Mailer using your created Transport
+                $mailer = new Swift_Mailer($transport);
+
+                // Create a message
+                $message = (new Swift_Message('Welcome to TCI!'))
+                    ->setFrom([$adminEmailAddress => 'TCI Account Manager'])
+                    ->setTo([$userInput['email'] => $userInput['fName'] . " " . $userInput['lName']])
+                    ->setBody("Welcome to TCI hotels!");
+
+                // Send the message
+                $result = $mailer->send($message);
             }
 
             # Sends a JavaScript alert message back to the user notifying them of successful account creation.
@@ -229,7 +251,7 @@ if (sizeof($_REQUEST) > 0) {
             # Rollback any changes to the database (if possible/required).
             $conn->rollBack();
 
-            #DEBUG:
+            #TODO: DEBUG:
             echo "<br>" . $e->getMessage() . '\n<br>';
             echo $e->errorInfo() . '\n<br>';
 
@@ -263,7 +285,6 @@ if (sizeof($_REQUEST) > 0) {
 </nav>
 
 
-
 <!-- Makes a JavaScript function to check for invalid input. -->
 <script type="text/javascript" language="JavaScript">
     function checkInput(input, message) {
@@ -275,7 +296,7 @@ if (sizeof($_REQUEST) > 0) {
         });
 
         nameInput.addEventListener('invalid', () => {
-            if(nameInput.value === '') {
+            if (nameInput.value === '') {
                 nameInput.setCustomValidity('');
                 nameInput.checkValidity();
             } else {
@@ -284,7 +305,6 @@ if (sizeof($_REQUEST) > 0) {
         });
     }
 </script>
-
 
 
 <section class="sec1"></section>
@@ -304,7 +324,7 @@ if (sizeof($_REQUEST) > 0) {
                  autocorrect="on"
                  title="Enter a email address."
                  placeholder="Email/Username">
-        <script>checkInput('memEmail','Please enter a valid Email address!');</script>
+        <script>checkInput('memEmail', 'Please enter a valid Email address!');</script>
         <br>
         <br>
 
@@ -326,7 +346,7 @@ if (sizeof($_REQUEST) > 0) {
                  - Contain at least ONE special character."
                  pattern="(?=.{8,256})(?=.*?[^\w\s])(?=.*?[0-9])(?=.*?[A-Z]).*?[a-z].*">
         <script>
-            checkInput('memPasswd','Passwords must be:\n' +
+            checkInput('memPasswd', 'Passwords must be:\n' +
                 '- Between 8 at 254 characters long.\n' +
                 '- Contain at least ONE capital letter.\n' +
                 '- Contain at least ONE lowercase letter.\n' +
@@ -363,7 +383,7 @@ if (sizeof($_REQUEST) > 0) {
                  autocorrect="om"
                  pattern="[A-Za-z\-\h]{2,64}"
                  required>
-        <script>checkInput('memFname','Please enter a valid first name!');</script>
+        <script>checkInput('memFname', 'Please enter a valid first name!');</script>
         <br>
         <br>
 
@@ -378,7 +398,7 @@ if (sizeof($_REQUEST) > 0) {
                  autocorrect="om"
                  placeholder="Last Name"
                  pattern="[A-Za-z\-\h]{2-64}">
-        <script>checkInput('memLname','Please enter a valid last name!');</script>
+        <script>checkInput('memLname', 'Please enter a valid last name!');</script>
         <br>
         <br>
 
@@ -394,12 +414,12 @@ if (sizeof($_REQUEST) > 0) {
                  min="1919-04-10"
                  max="2001-04-10"
                  placeholder="Date Of Birth">
-        <script>checkInput('memDob','Please enter a valid date of birth!');</script>
+        <script>checkInput('memDob', 'Please enter a valid date of birth!');</script>
         <br>
         <br>
 
         Enter Your Phone Number: <br>
-        * <input type="number"
+        * <input type="text"
                  name="phoneNum"
                  required
                  min="10"
@@ -407,7 +427,7 @@ if (sizeof($_REQUEST) > 0) {
                  placeholder="Phone Number"
                  autocomplete="tel"
                  pattern="^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$">
-        <script>checkInput('phoneNum','Please enter a valid phone number!');</script>
+        <script>checkInput('phoneNum', 'Please enter a valid phone number!');</script>
         <br>
         <br>
 
@@ -417,7 +437,7 @@ if (sizeof($_REQUEST) > 0) {
 
         <br>
         Enter your preferred house or building number. <br>
-        * <input type="number"
+        * <input type="text"
                  name="buildNum"
                  required
                  autocomplete="on"
@@ -425,7 +445,7 @@ if (sizeof($_REQUEST) > 0) {
                  maxlength="8"
                  placeholder="Building/House Number"
                  pattern="[0-9]{8}">
-        <script>checkInput('buildNum','Please enter a valid home or building number!');</script>
+        <script>checkInput('buildNum', 'Please enter a valid home or building number!');</script>
         <br>
         <br>
 
@@ -437,7 +457,7 @@ if (sizeof($_REQUEST) > 0) {
                  maxlength="64"
                  placeholder="Street Address"
                  pattern="[A-Za-z\.\-\h]{2,64}">
-        <script>checkInput('strName','Please enter a valid street name!');</script>
+        <script>checkInput('strName', 'Please enter a valid street name!');</script>
         <br>
         <br>
 
@@ -449,20 +469,20 @@ if (sizeof($_REQUEST) > 0) {
                  autocomplete="on"
                  placeholder="City"
                  pattern="[A-Za-z\-\h]{2,64}">
-        <script>checkInput('city','Please enter a valid city!');</script>
+        <script>checkInput('city', 'Please enter a valid city!');</script>
         <br>
         <br>
 
         Enter your zip code. <br>
         * <input
-                type="number"
+                type="text"
                 name="zip"
                 required
                 min="1"
                 maxlength="7"
                 placeholder="Zip Code"
                 pattern="[0-9]{7}">
-        <script>checkInput('zip','Please enter a zip code!');</script>
+        <script>checkInput('zip', 'Please enter a zip code!');</script>
         <br>
         <br>
 
@@ -520,7 +540,7 @@ if (sizeof($_REQUEST) > 0) {
             <option value="WI">Wisconsin</option>
             <option value="WY">Wyoming</option>
         </select>
-        <script>checkInput('provence','Please enter a state!');</script>
+        <script>checkInput('provence', 'Please enter a state!');</script>
         <br>
         <br>
 
@@ -531,7 +551,7 @@ if (sizeof($_REQUEST) > 0) {
                maxlength="7"
                placeholder="Apartment Number"
                pattern="[a-zA-Z0-9\-\h]{7}">
-        <script>checkInput('aptNum','Please enter a valid apartment number!');</script>
+        <script>checkInput('aptNum', 'Please enter a valid apartment number!');</script>
         <br>
         <br>
 
@@ -566,13 +586,13 @@ if (sizeof($_REQUEST) > 0) {
             <br>
             Enter the building number you'd like to use for billing. <br>
             * <input
-                    type="number"
+                    type="text"
                     name="billBuildNum"
                     min="1"
                     maxlength="8"
                     placeholder="Building/House Number"
                     pattern="[0-9]{8}">
-            <script>checkInput('billBuildNum','Please enter a valid building number!');</script>
+            <script>checkInput('billBuildNum', 'Please enter a valid building number!');</script>
             <br>
             <br>
 
@@ -582,7 +602,7 @@ if (sizeof($_REQUEST) > 0) {
                      maxlength="64"
                      placeholder="Street Address"
                      pattern="[A-Za-z\.\-\h]{2,64}">
-            <script>checkInput('billStrName','Please enter a valid street name!');</script>
+            <script>checkInput('billStrName', 'Please enter a valid street name!');</script>
             <br>
             <br>
 
@@ -592,18 +612,18 @@ if (sizeof($_REQUEST) > 0) {
                      maxlength="64"
                      placeholder="City"
                      pattern="[A-Za-z\-\h]{2,64}">
-            <script>checkInput('billCity','Please enter a valid city name!');</script>
+            <script>checkInput('billCity', 'Please enter a valid city name!');</script>
             <br>
             <br>
 
             Enter your billing zip code. <br>
-            * <input type="number"
+            * <input type="text"
                      name="billZip"
                      min="1"
                      maxlength="7"
                      placeholder="Zip Code"
                      pattern="[0-9]{7}">
-            <script>checkInput('billZip','Please enter a valid Zip code!');</script>
+            <script>checkInput('billZip', 'Please enter a valid Zip code!');</script>
             <br>
             <br>
 
@@ -661,18 +681,18 @@ if (sizeof($_REQUEST) > 0) {
                 <option value="WI">Wisconsin</option>
                 <option value="WY">Wyoming</option>
             </select>
-            <script>checkInput('billProvence','Please enter a valid state!');</script>
+            <script>checkInput('billProvence', 'Please enter a valid state!');</script>
             <br>
             <br>
 
             Enter your billing apartment number, if needed (optional). <br>
-            <input type="number"
+            <input type="text"
                    name="billAptNum"
                    min="1"
                    maxlength="7"
                    placeholder="Apartment Number"
                    pattern="[a-zA-Z0-9\-\h]{7}">
-            <script>checkInput('billAptNum','Please enter a valid apartment number!');</script>
+            <script>checkInput('billAptNum', 'Please enter a valid apartment number!');</script>
             <br>
             <br>
         </section>
@@ -687,7 +707,7 @@ if (sizeof($_REQUEST) > 0) {
 <section class="sec3"></section>
 <footer>
     <nav>
-            <ul>
+        <ul>
             <li><a href="#">Facebook</a href="#"></li>
             <li><a href="#">Twitter</a></li>
             <li><a href="#">Google+</a></li>

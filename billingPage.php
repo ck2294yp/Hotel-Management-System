@@ -9,25 +9,13 @@
     <title>Billing page</title>
     <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
-
+<header>
+    <img src="https://tbncdn.freelogodesign.org/4fc3ec1c-1e7a-4304-b812-4b6b0bdb6b68.png?1553471553913">
+    <h1> Twin Cities Inn</h1>
+</header>
 <style>
-    {
+    * {
         box-sizing: border-box;
-    }
-
-    /* Create two equal columns that floats next to each other */
-    .column {
-        float: left;
-        width: 50%;
-        padding: 10px;
-        height: 300px; /* Should be removed. Only for demonstration */
-    }
-
-    /* Clear floats after the columns */
-    .row:after {
-        content: "";
-        display: table;
-        clear: both;
     }
     .button {
         background-color: #4CAF50;
@@ -63,31 +51,29 @@
         display: inline-block;
         font-weight: bold;
     }
-    .container {
-        width: 100px;
-        clear: both;
-        text-align: center;
-        align-content: center;
-        padding: 50px;
+    .column {
+        float: left;
+        width: 50%;
+        padding: 10px;
+        height: 300px; /* Should be removed. Only for demonstration */
     }
-
-    .container input {
-        width: 100%;
-        width: 100px;
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
         clear: both;
-        text-align: center;
     }
-    .showthis {
-        display: none;
+    .payNow{
+        margin:0 auto;
+        display:block;
+    }
+    .align{
+        text-align: right;
     }
 
 
 </style>
 <body>
-<header>
-    <img src="https://tbncdn.freelogodesign.org/4fc3ec1c-1e7a-4304-b812-4b6b0bdb6b68.png?1553471553913">
-    <h1> Twin Cities Inn</h1>
-</header>
 <nav>
     <ul>
         <li><a href="#">Home</a> </li>
@@ -98,59 +84,30 @@
         <li><a href="#">Sign In</a> </li>
     </ul>
 </nav>
-
 <div class="row">
-    <div class="column container ">
-        <select id = "myList">
-            <label>Select Payment Option</label>
-            <option > Select Payment Option</option>
-            <option value = "1">one</option>
-            <option value = "2">two</option>
-            <option value = "3">three</option>
-            <option value = "4">four</option>
-        </select><br>
+    <div class="column align" >
+        <h4>Checkout Summary</h4>
 
-        <input type="checkbox" name="billingAddress" value="Bike"> Use same Billing Address
-           <!-- Drop Down Menu: PlaceHolder "Please Select Card" -->
-
-           <form>
-
-
-                First Name: <input type="text" name="FirstName" value="">
-                Last name: <input type="text" name="LastName" value=""><br>
-                Address:<input type = "text" name = "Address" value = ""><br>
-                City:<input type = "text" name = "City" value = "">
-               State:<input type = "text" name = "State" value = "">
-               Zip code :<input type = "text" name = "Zip Code" value = "">
-
-           </form>
-
-          <!-- Add new Card Button window pop up with --->
-
-
+        <p>Room Type:</p>
+        <label>Total Amount Due: </label>
     </div>
-    <div class="column ">
+    <div class="column" ">
+        <h4>Points available: </h4>
+    <select id = "myList">
+        <option value = ""> Select Payment Option</option>
+        <option value = "1">one</option>
+    </select>
 
-            <p>
-                Room Type:<br>
-                Price: <br>
-                Room Information:<br>
-                Check in Date: <br>
-                Check out Date <br>
-            </p>
-            <!---
-            <p>
-            Room Type
-            Check In Date - Check Out Date
-            Amount Due: fetch price x date.
+        <form>
+            <!--
+            Name on card, Card number, Expiration date and cvv number
             -->
-
+        </form>
     </div>
+</div >
+<div class = "payNow" style = "text-align: center;">
+<button  onclick="bookRoom() " class="button button2 main">Pay Now</button>
 </div>
-
-
-</div>
-<button onclick="bookRoom()" class="button button2">Book Room</button>
 <!-- When Button is clicked there will be a display message and a SQL query for DB -->
 <!-- Thank You for booking with TCI! We Look forward to seeing you soon.
  -->

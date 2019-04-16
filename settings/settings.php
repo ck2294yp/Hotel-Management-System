@@ -21,6 +21,9 @@ $endingSalt = "z)^|u|lJPJ!(NwgE{bb#>fp>r@7HAFH#,#MWl0(f";
 
 # Administrative Email Account Information (used to send emails OUT to customers).
 $sendEmails = true;
-$adminEmailAddress = "TCI Account Manager <no-reply@TwinCitiesInn.com>";
+$adminEmailAddress = "TCIHotelsMN@gmail.com";
+$adminEmailPassword = "#Sny)-?Ni*:SitT8LTFjE{xm$#";
+$emailSvrAddress = "smtp.gmail.com";
+$emailSvrSMTPPort = "465";
 
 
