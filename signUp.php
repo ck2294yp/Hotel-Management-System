@@ -6,7 +6,8 @@ session_start();
 # Imports the required files needed to ensure program page works properly.
 require_once "settings/settings.php";
 require_once "bin/inputSanitization.php";
-require_once 'vendor/autoload.php';
+require_once "bin/sendEmail.php";
+require_once "vendor/autoload.php";
 
 # If member is already logged in, send them to the member's page.
 if (key_exists('loggedIn', $_SESSION)) {
@@ -22,24 +23,28 @@ if (sizeof($_REQUEST) > 0) {
     # Sanitizes and creates variable for the memEmail.
     $userInput['email'] = sanitizeEmail($_REQUEST['memEmail']);
     if ($userInput['email'] === false) {
+        echo "<script> alert(\"Invalid username/email address specified, please try again.\"); </script>";
         $isError = false;
     }
 
     # Sanitizes and creates variable for the password.
     $userInput['password'] = sanitizePassword($_REQUEST['memPasswd'], $_REQUEST['confirmMemPasswd'], $passwdHashAlgo, $beginingSalt, $endingSalt);
     if ($userInput['password'] === false) {
+        echo "<script> alert(\"Invalid password specified or passwords do not match, please try again.\"); </script>";
         $isError = true;
     }
 
     # Sanitizes and creates variable for the firstName.
     $userInput['fName'] = sanitizeAlphaString($_REQUEST['memFname']);
     if ($userInput['fName'] === false) {
+        echo "<script> alert(\"First name is invalid, please try again.\"); </script>";
         $isError = true;
     }
 
     # Sanitizes and creates variable for the lName.
     $userInput['lName'] = sanitizeAlphaString($_REQUEST['memLname']);
     if ($userInput['lName'] === false) {
+        echo "<script> alert(\"Last name is invalid, please try again.\"); </script>";
         $isError = true;
     }
 
@@ -50,6 +55,7 @@ if (sizeof($_REQUEST) > 0) {
     $userInput['phoneNum'] = sanitizeNumString(str_replace(array("-", "(", ")", "+"), "", $_REQUEST['phoneNum']));
 
     if ($userInput['phoneNum'] === false) {
+        echo "<script> alert(\"Phone number is invalid, please try again.\"); </script>";
         $isError = true;
     }
 
@@ -58,30 +64,35 @@ if (sizeof($_REQUEST) > 0) {
     # Sanitizes and creates variable for the addressBuildNum.
     $userInput['buildNum'] = sanitizeNumString($_REQUEST['buildNum']);
     if ($userInput['buildNum'] === false) {
+        echo "<script> alert(\"Building number is invalid, please try again.\"); </script>";
         $isError = true;
     }
 
     # Sanitizes and creates variable for the addrStrName.
     $userInput['strName'] = sanitizeAlphaString($_REQUEST['strName']);
     if ($userInput['strName'] === false) {
+        echo "<script> alert(\"Street name is invalid, please try again.\"); </script>";
         $isError = true;
     }
 
     # Sanitizes and creates variable for the addrCity.
     $userInput['city'] = sanitizeAlphaString($_REQUEST['city']);
     if ($userInput === false) {
+        echo "<script> alert(\"City is invalid, please try again.\"); </script>";
         $isError = true;
     }
 
     # Sanitizes and creates variable for the addrZip.
     $userInput['zip'] = sanitizeNumString($_REQUEST['zip']);
     if ($userInput['zip'] === false) {
+        echo "<script> alert(\"Zip code is invalid, please try again.\"); </script>";
         $isError = true;
     }
 
     # Sanitizes and creates variable for the Provence/State.
     $userInput['provence'] = sanitizeAlphaString($_REQUEST['provence']);
     if ($userInput['provence'] === false) {
+        echo "<script> alert(\"State/provence is invalid, please try again.\"); </script>";
         $isError = true;
     }
 
@@ -96,6 +107,7 @@ if (sizeof($_REQUEST) > 0) {
     } else {
         $userInput['aptNum'] = sanitizeNumString($_REQUEST['aptNum']);
         if ($userInput['aptNum'] === false) {
+            echo "<script> alert(\"Apartment number is invalid, please try again.\"); </script>";
             $isError = true;
         }
     }
@@ -109,30 +121,35 @@ if (sizeof($_REQUEST) > 0) {
         # Sanitizes and creates variable for the addressBuildNum.
         $userInput['billBuildNum'] = sanitizeNumString($_REQUEST['billBuildNum']);
         if ($userInput['billBuildNum'] === false) {
+            echo "<script> alert(\"Billing building number is invalid, please try again.\"); </script>";
             $isError = true;
         }
 
         # Sanitizes and creates variable for the addrStrName.
         $userInput['billStrName'] = sanitizeAlphaString($_REQUEST['billStrName']);
         if ($userInput['billStrName'] === false) {
+            echo "<script> alert(\"Billing street name is invalid, please try again.\"); </script>";
             $isError = true;
         }
 
         # Sanitizes and creates variable for the addrCity.
         $userInput['billCity'] = sanitizeAlphaString($_REQUEST['billCity']);
         if ($userInput['billCity'] === false) {
+            echo "<script> alert(\"Billing city name is invalid, please try again.\"); </script>";
             $isError = true;
         }
 
         # Sanitizes and creates variable for the addrZip.
         $userInput['billZip'] = sanitizeNumString($_REQUEST['billZip']);
         if ($userInput['billZip'] === false) {
+            echo "<script> alert(\"Billing ZIP code is invalid, please try again.\"); </script>";
             $isError = true;
         }
 
         # Sanitizes and creates variable for the Provence/State.
         $userInput['billProvence'] = sanitizeAlphaString($_REQUEST['billProvence']);
         if ($userInput['billProvence'] === false) {
+            echo "<script> alert(\"Billing state/provence is invalid, please try again.\"); </script>";
             $isError = true;
         }
 
@@ -142,6 +159,7 @@ if (sizeof($_REQUEST) > 0) {
         # Sanitizes and creates variable for the optional apartment number.
         $userInput['billAptNum'] = sanitizeNumString($_REQUEST['billAptNum']);
         if ($userInput['billAptNum'] === false) {
+            echo "<script> alert(\"Billing apartment number is invalid, please try again.\"); </script>";
             $isError = true;
         }
 
@@ -159,7 +177,6 @@ if (sizeof($_REQUEST) > 0) {
 
     # Checks if there where any errors while parsing though the user input.
     if ($isError === true) {
-        echo "<script> alert(\"Sorry an error reading your data occurred Please try again!\"); </script>";
 
     } else {
         ###### Tries to connect to the MySQL database using PDO (rather then MySQLi) #####
@@ -223,37 +240,29 @@ if (sizeof($_REQUEST) > 0) {
             $conn->commit();
             $conn = null;
 
+
             # Sends an email out to the customer (if administrators allow it).
             if ($sendEmails === true) {
-                // Create the Transport
-                $transport = (new Swift_SmtpTransport($emailSvrAddress, $emailSvrSMTPPort, 'ssl'))
-                    ->setUsername($adminEmailAddress)
-                    ->setPassword($adminEmailPassword);
-
-                // Create the Mailer using your created Transport
-                $mailer = new Swift_Mailer($transport);
-
-                // Create a message
-                $message = (new Swift_Message('Welcome to TCI!'))
-                    ->setFrom([$adminEmailAddress => 'TCI Account Manager'])
-                    ->setTo([$userInput['email'] => $userInput['fName'] . " " . $userInput['lName']])
-                    ->setBody("Welcome to TCI hotels!");
-
-                // Send the message
-                $result = $mailer->send($message);
+                if (accountActivate($userEmail) === true) {
+                    # Sends a JavaScript alert message back to the user notifying them of successful account creation.
+                    echo "<script> alert(\"Account created successfully! Please check your email inbox in order to activate your account!\"); </script>";
+                    header('Location: signUp.php');
+                    exit;
+                }
             }
 
-            # Sends a JavaScript alert message back to the user notifying them of successful account creation.
-            echo "<script> alert(\"Account created successfully!\"); </script>";
+            // If for some reason the email server fail to load or sendEmails is set to administratively be set to "off" activate the user's account.
+            $email = $userInput['email'];
+            $activationId = $userInput['activationLink'];
+            echo "<script> alert(\"Account has been created successfully! Activating your account...\"); </script>";
+            header("Location: activate.php?user='$email'&activationId='$activationId'");
+
 
 
         } catch (PDOException $e) {
             # Rollback any changes to the database (if possible/required).
-            $conn->rollBack();
-
-            #TODO: DEBUG:
-            echo "<br>" . $e->getMessage() . '\n<br>';
-            echo $e->errorInfo() . '\n<br>';
+            @$conn->rollBack();
+            @$conn = null;
 
             # Sends a JavaScript alert message back to the user notifying them that there was an error processing their request.
             echo "<script> alert(\"We are sorry. There was a problem processing your request. Please try again, if problem persists please call TCI at 651-000-0000.\"); </script>";
@@ -437,14 +446,14 @@ if (sizeof($_REQUEST) > 0) {
 
         <br>
         Enter your preferred house or building number. <br>
-        * <input type="text"
+        * <input type="number"
                  name="buildNum"
                  required
                  autocomplete="on"
                  min="1"
                  maxlength="8"
                  placeholder="Building/House Number"
-                 pattern="[0-9]{8}">
+                 pattern="[0-9]">
         <script>checkInput('buildNum', 'Please enter a valid home or building number!');</script>
         <br>
         <br>
@@ -475,13 +484,13 @@ if (sizeof($_REQUEST) > 0) {
 
         Enter your zip code. <br>
         * <input
-                type="text"
+                type="number"
                 name="zip"
                 required
                 min="1"
                 maxlength="7"
                 placeholder="Zip Code"
-                pattern="[0-9]{7}">
+                pattern="[0-9]">
         <script>checkInput('zip', 'Please enter a zip code!');</script>
         <br>
         <br>

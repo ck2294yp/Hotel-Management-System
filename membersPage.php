@@ -3,60 +3,57 @@
 session_start();
 
 require_once "settings/settings.php";
-require_once  "bin/inputSanitization.php";
+require_once "bin/inputSanitization.php";
 
-
-# If member is NOT already signed in (loggedIn is false) then redirect them to the SignIn page IMMEDIATELY.
-if ($_SESSION['loggedIn'] === 0){
+// Stops if no session exists.
+if (in_array('username', $_SESSION) === false || in_array('loggedIn', $_SESSION) === false) {
     echo "<script> alert(\"Your session has timed out, please sign in again.\"); </script>";
     header('Location: signIn.php');
+    exit;
+}
+
+$memInfo['username'] = @sanitizeEmail($_SESSION['username']);
+$memInfo['loggedIn'] = @sanitizeNumString($_SESSION['username']);
+
+# Create array to hold the client's information.
+$memInfo = array();
+# Sanitize session data.
+@$memInfo['username'] = sanitizeEmail($_SESSION['username']);
 
 
-# Otherwise (loggedIn is true) continue on with the code and the creation of the webpage.
-} else {
-    # Create array to hold the client's information.
-    $memInfo = array();
-    # Sanitize session data.
-    $memInfo['username'] = sanitizeEmail($_SESSION['username']);
+# Connects to the SQL database.
+try {
+    $conn = new PDO("mysql:host=$dbAddress;dbname=$dbLocation", $dbUsername, $dbPassword);
+    # Set the PDO error mode to exception
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    # Queries the database to get the username and the password of the user.
+    $userInfoStmt = $conn->prepare('select memID, memEmail, memFname, memLname, createdAt, updatedAt, memRewardPoints from `Member` where `memEmail`=:email');
+    $userInfoStmt->bindParam(':email', $memInfo['username'], PDO::PARAM_STR, 254);
+
+    # Begins a transaction, if there are any changes (which there shouldn't be) rollback the changes.
+    $conn->beginTransaction();
+    $userInfoStmt->execute();
+    $conn->rollBack();
+
+    # Closes the database connection.
+    $conn = null;
 
 
+    # Gets the member's account details from out of the database query.
+    $userInfoStmt->setFetchMode(PDO::FETCH_ASSOC);
+    $memInfo = $userInfoStmt->fetch(PDO::FETCH_ASSOC);
 
-    # Connects to the SQL database.
-    try {
-        $conn = new PDO("mysql:host=$dbAddress;dbname=$dbLocation", $dbUsername, $dbPassword);
-        # Set the PDO error mode to exception
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    # Rollback any changes to the database (if possible).
+    $conn->rollBack();
 
-        # Queries the database to get the username and the password of the user.
-        $userInfoStmt = $conn->prepare('select memID, memEmail, memFname, memLname, createdAt, updatedAt, memRewardPoints from `Member` where `memEmail`=:email');
-        $userInfoStmt->bindParam(':email', $memInfo['username'], PDO::PARAM_STR, 254);
-
-        # Begins a transaction, if there are any changes (which there shouldn't be) rollback the changes.
-        $conn->beginTransaction();
-        $userInfoStmt->execute();
-        $conn->rollBack();
-
-        # Closes the database connection.
-        $conn = null;
-
-
-        # Gets the member's account details from out of the database query.
-        $userInfoStmt->setFetchMode(PDO::FETCH_ASSOC);
-        $memInfo = $userInfoStmt->fetch(PDO::FETCH_ASSOC);
-
-    } catch (PDOException $e) {
-        # Rollback any changes to the database (if possible).
-        $conn->rollBack();
-
-        # Sends a JavaScript alert message back to the user notifying them that there was an error processing their request.
-        echo "<script> alert(\"We are sorry, there seems to be a problem with our systems. Please try again. If problems still persist, please notify TCI at 651-000-0000.\"); </script>";
-        #header('Location: membersPage.php');
-    }
-
+    # Sends a JavaScript alert message back to the user notifying them that there was an error processing their request.
+    echo "<script> alert(\"We are sorry, there seems to be a problem with our systems. Please try again. If problems still persist, please notify TCI at 651-000-0000.\"); </script>";
+    header('Location: membersPage.php');
 }
 
 ?>
-
 
 
 <!DOCTYPE html>
@@ -64,7 +61,7 @@ if ($_SESSION['loggedIn'] === 0){
 <head>
     <meta charset="UTF-8">
     <title>Member Page</title>
-    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="stylesheet" href="style.css" type="text/css"/>
 </head>
 <body>
 <header>
@@ -74,10 +71,10 @@ if ($_SESSION['loggedIn'] === 0){
 
 <nav>
     <ul>
-        <li><a href="index.html">Home</a> </li>
-        <li><a href="aboutUs.html">About</a> </li>
-        <li><a href="whyTci.html">Why TCI?</a> </li>
-        <li><a href="bin/signOut.php">Sign Out</a> </li>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="aboutUs.html">About</a></li>
+        <li><a href="whyTci.html">Why TCI?</a></li>
+        <li><a href="bin/signOut.php">Sign Out</a></li>
     </ul>
 </nav>
 <nav style="top: 50px;">
@@ -88,34 +85,36 @@ if ($_SESSION['loggedIn'] === 0){
     </ul>
 </nav>
 <section class="sec1Member">
-    <h3> Welcome back, <?php echo($memInfo['memFname']);?>! </h3>
+    <h3> Welcome back, <?php echo($memInfo['memFname']); ?>! </h3>
 </section>
 
 <section class="sec2Member">
     <div class="gridMember">
         <div class="memberName">
             <h2 style="font-style: italic">My Account</h2>
-            <p>Hello, <?php echo($memInfo['memFname']." ".$memInfo['memLname']."!");?>  </p>
-            <p>Member ID: <?php echo($memInfo['memID']);?>  </p>
-            <p>Email: <?php echo($memInfo['memEmail']);?>  </p>
-            <p>Member Since: <?php echo(date('M Y',strtotime($memInfo['createdAt'])));?>  </p>
-            <button class="editProfile">Edit Profile</button><br/><br/>
+            <p>Hello, <?php echo($memInfo['memFname'] . " " . $memInfo['memLname'] . "!"); ?>  </p>
+            <p>Member ID: <?php echo($memInfo['memID']); ?>  </p>
+            <p>Email: <?php echo($memInfo['memEmail']); ?>  </p>
+            <p>Member Since: <?php echo(date('M Y', strtotime($memInfo['createdAt']))); ?>  </p>
+            <button class="editProfile">Edit Profile</button>
+            <br/><br/>
             <br>
         </div>
         <div class="gridMemberReward">
             <h2 style="font-style: italic">Reward Points</h2>
-            <p><?php echo($memInfo['memRewardPoints'])?> points</p>
-            <button class="redeemPoints">Redeem</button><br/><br/>
+            <p><?php echo($memInfo['memRewardPoints']) ?> points</p>
+            <button class="redeemPoints">Redeem</button>
+            <br/><br/>
             <a href="#" style="color: orange">Report Missing Points</a>
         </div>
         <div class="bookNow">
             <h2 style="font-style: italic">Make Reservation</h2>
             <p>Rooms can be booked from our website or in person.</p>
             <p>You can use reward points, cash, or credit when booking a room.</p>
-            <button class="bookNow">Book Now</button><br/><br/>
+            <button class="bookNow">Book Now</button>
+            <br/><br/>
         </div>
     </div>
-
 
 
 </section>
@@ -125,10 +124,10 @@ if ($_SESSION['loggedIn'] === 0){
 <footer>
     <nav>
         <ul>
-            <li><a onclick="return false" href="">Facebook</a> </li>
-            <li><a onclick="return false" href="">Twitter</a> </li>
-            <li><a onclick="return false" href="">Google+</a> </li>
-            <li><a onclick="return false" href="">© 2019 Twin Cities Inn</a> </li>
+            <li><a onclick="return false" href="">Facebook</a></li>
+            <li><a onclick="return false" href="">Twitter</a></li>
+            <li><a onclick="return false" href="">Google+</a></li>
+            <li><a onclick="return false" href="">© 2019 Twin Cities Inn</a></li>
         </ul>
     </nav>
 </footer>
