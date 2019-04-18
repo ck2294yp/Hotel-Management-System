@@ -5,11 +5,7 @@
     <title>Home</title>
     <link rel="stylesheet" href="style.css" type="text/css" />
     <style>
-        .header {
-            text-align: center;
-            overflow: hidden;
 
-        }
         .header li {
             display: inline-block;
             padding-bottom: 0px;
@@ -38,9 +34,6 @@
         .sr li{
             display: inline-block;
             padding-bottom: 5px;
-        }
-
-        .sr2 {
         }
 
         .sr2 li{
@@ -72,10 +65,6 @@
 
         }
 
-        .bord {
-
-            overflow: auto;
-        }
 
 
         .details{
@@ -156,6 +145,34 @@
     </ul>
 </nav>
 
+<!-- testing check out date -->
+
+<div class="details">
+    <form action="searchRoom.html" METHOD="post">
+
+        <table>
+            <tr>
+                <th>*Checkin Date</th>
+                <th>*Checkout Date</th>
+            </tr>
+            <tr>
+                <th>
+                    <input type="date" id="checkInDate" name="checkInDate" min="2019-03-24" required>
+                </th>
+                <th>
+                    <input type="date" id="checkOutDate" name="checkOutDate" max="2021-03-24" required>
+                </th>
+            </tr>
+        </table>
+        <br>
+
+        <input type="submit" value="Search Room">
+
+    </form>
+</div>
+
+<!-- end testing -->
+
 <!--homepage start -->
 
 <div class="image">
@@ -163,34 +180,6 @@
 
     </div>
 </div>
-
-<!-- testing check out date -->
-
-<div class="details">
-<form action="searchRoom.html" METHOD="post">
-
-    <table>
-        <tr>
-            <th>*Checkin Date</th>
-            <th>*Checkout Date</th>
-        </tr>
-        <tr>
-            <th>
-                <input type="date" id="checkInDate" name="checkInDate" min="2019-03-24" required>
-            </th>
-            <th>
-                <input type="date" id="checkOutDate" name="checkOutDate" max="2021-03-24" required>
-            </th>
-        </tr>
-    </table>
-    <br>
-
-    <input type="submit" value="Search Room">
-
-</form>
-</div>
-
-<!-- end testing -->
 
 <div class="features">
     <div>

@@ -168,7 +168,7 @@ require_once "bin/inputSanitization.php";
 <footer>
     <nav>
         <ul>
-            <li><a href="#">Facebook</a> href="#"> </li>
+            <li><a href="#">Facebook</a> </li>
             <li><a href="#">Twitter</a> </li>
             <li><a href="#">Google+</a> </li>
             <li><a href="#">© 2019 Twin Cities Inn</a> </li>
