@@ -97,7 +97,7 @@ try {
 <section class="sec1Member">
     <h3> Welcome back, <?php echo($memInfo['memFname']); ?>! </h3>
 </section>
- 
+
 
 <section class="sec2Member">
     <div class="gridMember">
