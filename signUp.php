@@ -243,7 +243,7 @@ if (sizeof($_REQUEST) > 0) {
 
             # Sends an email out to the customer (if administrators allow it).
             if ($sendEmails === true) {
-                if (accountActivate($userEmail) === true) {
+                if (accountActivate($userInput['email']) === true) {
                     # Sends a JavaScript alert message back to the user notifying them of successful account creation.
                     echo "<script> alert(\"Account created successfully! Please check your email inbox in order to activate your account!\"); </script>";
                     header('Location: signUp.php');
@@ -255,7 +255,7 @@ if (sizeof($_REQUEST) > 0) {
             $email = $userInput['email'];
             $activationId = $userInput['activationLink'];
             echo "<script> alert(\"Account has been created successfully! Activating your account...\"); </script>";
-            header("Location: activate.php?user='$email'&activationId='$activationId'");
+            header("Location: activate.php?user=$email&activationId=$activationId");
 
 
 
