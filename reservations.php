@@ -77,7 +77,7 @@ if ($_SESSION['loggedIn'] === 0){
 <nav style="top: 50px;">
     <ul>
         <li><a href="membersPage.php">Member's Page</a></li>
-        <li><a href="#">Profile</a></li>
+        <li><a href="profilePage.php">Profile</a></li>
         <li><a href="reservations.php" class="active">Reservations</a></li>
     </ul>
 </nav>
