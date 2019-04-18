@@ -9,7 +9,6 @@ function sanitizeEmail($input) {
         $input = trim($input);
         return $input;
     } else {
-        echo "<script> alert(\"Invalid username/email address specified, please try again.\"); </script>";
         return false;
     }
 }
@@ -25,7 +24,6 @@ function sanitizePassword($password, $passwordConfirm, $passwdHashAlgo, $beginin
         $password = htmlspecialchars($password);
         return $password;
     } else {
-        echo "<script> alert(\"Invalid password specified, please try again.\"); </script>";
         return false;
     }
 }
@@ -39,7 +37,6 @@ function sanitizeAlphaString($input) {
         $input = trim($input);
         return $input;
     } else {
-        echo "<script> alert(\"Invalid value \".$input.\"specified, please try again.\"); </script>";
         return false;
     }
 }

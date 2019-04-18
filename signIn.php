@@ -28,7 +28,7 @@ if (isset($_REQUEST['username']) && isset($_REQUEST['password'])){
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         // Queries the database to get the username and the password of the user.
-        $checkValidStmt = $conn->prepare('select memEmail from `Member` where `memEmail`=:email AND `memPasswd`=:password');
+        $checkValidStmt = $conn->prepare('select memEmail from `Member` where `memEmail`=:email AND `memPasswd`=:password AND `isMember`=1');
         $checkValidStmt->bindParam(':email', $userInput['username'], PDO::PARAM_STR, 254);
         $checkValidStmt->bindParam(':password', $userInput['password'], PDO::PARAM_STR, 64);
 
@@ -79,13 +79,16 @@ if (isset($_REQUEST['username']) && isset($_REQUEST['password'])){
 
 
             # Tells the user that their username/password combination was wrong.
-            echo "<script> alert(\"Incorrect username or password. Please try again.\"); </script>";
+            echo "<script> alert(\"Incorrect username or password (or user is not a member). Please try again.\"); </script>";
             header('Location: signIn.php');
         }
 
     } catch (PDOException $e) {
         # Rollback any changes to the database (if possible).
-        $conn->rollBack();
+        @$conn->rollBack();
+        $conn = null;
+
+        echo $e->getMessage();
 
         # Sends a JavaScript alert message back to the user notifying them that there was an error processing their request.
         echo "<script> alert(\"We are sorry, there seems to be a problem with our systems. Please try again. If problems still persist, please notify TCI at 651-000-0000.\"); </script>";

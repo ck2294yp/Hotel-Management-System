@@ -129,12 +129,36 @@
     </div>
 </section>
 
+    <section id="twoBedPet" class="roomBox" style="display: inline-block;">
+        <div style="border:solid 1px black;">
+
+            <div style="width: 30%;height:inherit;float: left;"><img class="pic" src="http://petquarter.com/wp-content/themes/thesis_186/custom/rotator/Pet-friendly-best-western-hotel.jpg"
+                                                                     alt="Two bed hotel picture"></div>
+            <div style="float: left;text-align: center;padding-left: 100px;"><h2>Two Bed Pet Room</h2><p>Two bed room hotel room with <br>comfortable beds and clean bathroom.<br>
+                Has a desk to do work on. <br>Also has a 40 inch TV with cable.</p></div>
+            <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$200</p></div>
+            <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button class="bButton">Book</button></div>
+        </div>
+    </section>
+
     <section id="oneBed" class="roomBox" style="display: inline-block;">
         <div style="border:solid 1px black;">
 
             <div style="width: 30%;height:inherit;float: left;"><img class="pic" src="https://upload.wikimedia.org/wikipedia/commons/5/52/Hotel_Room_%289638499309%29.jpg"
                                                                      alt="One bed hotel picture"></div>
-            <div style="float: left;text-align: center;padding-left: 100px;"><h2>One Bed Room</h2><p>One bed room hotel room with <br>comfortable beds and clean bathroom.<br>
+            <div style="float: left;text-align: center;padding-left: 100px;"><h2>One Bed Room</h2><p>One bed Hotel room with <br>comfortable beds and clean bathroom.<br>
+                Has a desk to do work on. <br>Also has a 40 inch TV with cable.</p></div>
+            <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$150</p></div>
+            <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button class="bButton">Book</button></div>
+        </div>
+    </section>
+
+    <section id="oneBedPet" class="roomBox" style="display: inline-block;">
+        <div style="border:solid 1px black;">
+
+            <div style="width: 30%;height:inherit;float: left;"><img class="pic" src="https://media.defense.gov/2017/Jul/27/2001784176/780/780/0/110911-F-XX000-0001.JPG"
+                                                                     alt="One bed hotel picture"></div>
+            <div style="float: left;text-align: center;padding-left: 100px;"><h2>One Bed Pet Room</h2><p>One bed pet room with <br>comfortable beds and clean bathroom.<br>
                 Has a desk to do work on. <br>Also has a 40 inch TV with cable.</p></div>
             <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$150</p></div>
             <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button class="bButton">Book</button></div>
@@ -198,47 +222,55 @@
     var c = document.getElementById("chefRoom");
     var d = document.getElementById("gamingRoom");
    // var e = document.getElementById("petRoom");
+    var onePet = document.getElementById("oneBedPet");
+    var twoPet = document.getElementById("twoBedPet");
 
     function oneBedRoom() {
 
 
-        if (a.style.display == "inline-block") {
+        if (a.style.display == "inline-block" && onePet.style.display == "inline-block") {
             a.style.display = "inline-block";
+            onePet.style.display == "inline-block"
             b.style.display = "none";
             c.style.display = "none";
             d.style.display = "none";
-           // e.style.display = "none";
+           twoPet.style.display = "none";
         }else {
             a.style.display = "none";
+            onePet.style.display = "none";
         }
 
-        if (a.style.display == "none") {
+        if (a.style.display == "none" && onePet.style.display == "none") {
             a.style.display = "inline-block";
+            onePet.style.display == "inline-block";
             b.style.display = "none";
             c.style.display = "none";
             d.style.display = "none";
-            //e.style.display = "none";
+            twoPet.style.display = "none";
         }
     }
 
     function twoBedRoom() {
 
-        if (b.style.display == "inline-block") {
+        if (b.style.display == "inline-block" && twoPet.style.display == "inline-block") {
            b.style.display = "inline-block";
+            twoPet.style.display = "inline-block";
             a.style.display = "none";
             c.style.display = "none";
             d.style.display = "none";
-           // e.style.display = "none";
+           onePet.style.display = "none";
         }else {
             b.style.display = "none";
+            twoPet.style.display = "none";
         }
 
-        if (b.style.display == "none") {
+        if (b.style.display == "none" && twoPet.style.display == "none") {
             b.style.display = "inline-block";
+            twoPet.style.display == "inline-block"
             a.style.display = "none";
             c.style.display = "none";
             d.style.display = "none";
-            //e.style.display = "none";
+            onePet.style.display = "none";
         }
     }
 
