@@ -218,18 +218,6 @@ td {
     padding: 5px;
 }
 
-button {
-    background-color: gray;
-    border: none;
-    color: white;
-    font-size: 1em;
-    padding: 5px 80px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    cursor: pointer;
-}
-
 /* End Reservation Page*/
 
 section.sec3 {
@@ -285,7 +273,7 @@ nav ul li a.active {
     color: gray;
     background: white;
     position: absolute;
-    top: 15%;
+    top: 45%;
     box-shadow: 5px 5px 5px #000;
     z-index: 10001;
     font-weight: 700;
@@ -299,7 +287,7 @@ nav ul li a.active {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0,0,0,.85);
+    background: rgba(0,0,0,.8);
     z-index: 10000;
     display :none;
 }
@@ -327,12 +315,25 @@ nav ul li a.active {
     background-color: gray;
     color: white;
     font-weight: 700;
-    border: 1px solid gray;
     border-radius: 10px;
     height: 30px;
     width: 30%;
+    cursor: pointer;
+
 }
 .dialog-btn:hover {
     background-color:darkgray;
+    cursor: pointer;
+}
+
+input.cancel {
+    background-color: gray;
+    border-radius: 10px;
+    color: white;
+    font-size: 1em;
+    padding: 5px 80px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
     cursor: pointer;
 }
