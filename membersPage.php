@@ -6,16 +6,19 @@ require_once "settings/settings.php";
 require_once "bin/inputSanitization.php";
 
 // Stops if no session exists.
-if (in_array('username', $_SESSION) === false || in_array('loggedIn', $_SESSION) === false) {
+if (array_key_exists('loggedIn', $_SESSION) === false ) {
     echo "<script> alert(\"Your session has timed out, please sign in again.\"); </script>";
     header('Location: signIn.php');
     exit;
 }
 
-$memInfo = array();
 $memInfo['username'] = @sanitizeEmail($_SESSION['username']);
 $memInfo['loggedIn'] = @sanitizeNumString($_SESSION['loggedIn']);
 
+# Create array to hold the client's information.
+$memInfo = array();
+# Sanitize session data.
+@$memInfo['username'] = sanitizeEmail($_SESSION['username']);
 
 
 # Connects to the SQL database.
