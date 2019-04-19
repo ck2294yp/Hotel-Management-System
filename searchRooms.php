@@ -182,7 +182,7 @@ $memInfo = array();
         <div style="float: left;text-align: center;padding-left: 100px;"><h2>Two Bed Room</h2><p>Two bed room hotel room with <br>comfortable beds and clean bathroom.<br>
             Has a desk to do work on. <br>Also has a 40 inch TV with cable.</p></div>
         <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($memInfo[0]['centsPerNight']);?></p></div>
-        <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button onclick="confirmRoom()" class="bButton">Book</button></div>
+        <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button id="twoBedButton"  class="bButton">Book</button></div>
     </div>
 </section>
 
@@ -194,7 +194,7 @@ $memInfo = array();
             <div style="float: left;text-align: center;padding-left: 100px;"><h2>Two Bed Pet Room</h2><p>Two bed room hotel room with <br>comfortable beds and clean bathroom.<br>
                 Has a desk to do work on. <br>Also has a 40 inch TV with cable.</p></div>
             <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($memInfo[1]['centsPerNight']);?></p></div>
-            <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button onclick="confirmRoom()" class="bButton">Book</button></div>
+            <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button id="twoPetButton" onclick="confirmRoom()" class="bButton">Book</button></div>
         </div>
     </section>
 
@@ -206,7 +206,7 @@ $memInfo = array();
             <div style="float: left;text-align: center;padding-left: 100px;"><h2>One Bed Room</h2><p>One bed Hotel room with <br>comfortable beds and clean bathroom.<br>
                 Has a desk to do work on. <br>Also has a 40 inch TV with cable.</p></div>
             <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($memInfo[1]['centsPerNight']);?></p></div>
-            <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button onclick="confirmRoom()" class="bButton">Book</button></div>
+            <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button id="oneBedButton" onclick="confirmRoom()" class="bButton">Book</button></div>
         </div>
     </section>
 
@@ -218,7 +218,7 @@ $memInfo = array();
             <div style="float: left;text-align: center;padding-left: 100px;"><h2>One Bed Pet Room</h2><p>One bed pet room with <br>comfortable beds and clean bathroom.<br>
                 Has a desk to do work on. <br>Also has a 40 inch TV with cable.</p></div>
             <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($memInfo[1]['centsPerNight']);?></p></div>
-            <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button onclick="confirmRoom()" class="bButton">Book</button></div>
+            <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button id="onePetButton" onclick="confirmRoom()" class="bButton">Book</button></div>
         </div>
     </section>
 
@@ -230,7 +230,7 @@ $memInfo = array();
             <div style="float: left;text-align: center;padding-left: 100px;"><h2>Gaming Room</h2><p>Gaming hotel room with <br>PS4, Xbox1, Nintendo Switch and PC.<br>
                 Includes many games. <br>Has a 4K TV with cable.</p></div>
             <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($memInfo[3]['centsPerNight']);?></p></div>
-            <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button onclick="confirmRoom()" class="bButton">Book</button></div>
+            <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button id="gamingButton" onclick="confirmRoom()" class="bButton">Book</button></div>
         </div>
     </section>
 
@@ -254,12 +254,63 @@ $memInfo = array();
             <div style="float: left;text-align: center;padding-left: 100px;"><h2>Chef Room</h2><p>Hotel room with a chef kitchen. <br>Includes microwave, oven, <br>refridgerator, utinsels and cutting boards.<br>
                 Comes with fruits and vegetables. <br>Includes meats such as<br> chicken, steak, and pork.</p></div>
             <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($memInfo[19]['centsPerNight']);?></p></div>
-            <div style="float: left;text-align: center;padding-left: 60px;"><br><br><br><br><button onclick="confirmRoom()" class="bButton">Book</button></div>
+            <div style="float: left;text-align: center;padding-left: 60px;"><br><br><br><br><button id="chefButton" onclick="confirmRoom()" class="bButton">Book</button></div>
         </div>
     </section>
     </form>
 </div>
+    <div class="overlay" id="dialog-container">
+        <div class="popup">
+            <p>Are you sure you want to book reservation?</p>
+            <div class="text-right">
+                <button class="dialog-btn btn-cancel" id="cancel">Cancel</button>
+                <button class="dialog-btn btn-primary" id="confirm">Yes</button>
+            </div>
+        </div>
+    </div>
+
 </div>
+
+<script
+        src="https://code.jquery.com/jquery-3.4.0.min.js"
+        integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="
+        crossorigin="anonymous"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#twoBedButton').on('click', function () {
+            $('#dialog-container').show();
+        });
+        $('#twoPetButton').on('click', function () {
+            $('#dialog-container').show();
+        });
+        $('#oneBedButton').on('click', function () {
+            $('#dialog-container').show();
+        });
+        $('#onePetButton').on('click', function () {
+            $('#dialog-container').show();
+        });
+        $('#chefButton').on('click', function () {
+            $('#dialog-container').show();
+        });
+        $('#gamingButton').on('click', function () {
+            $('#dialog-container').show();
+        });
+        $('#cancel').on('click', function () {
+            $('#dialog-container').hide();
+        });
+        $('#confirm').on('click', function () {
+            $('#dialog-container1').show();
+            $('#dialog-container').hide();
+        });
+        $('#stop').on('click', function () {
+            $('#dialog-container1').hide();
+        });
+
+    });
+//
+</script>
+
 <!--search rooms section end-->
 <!--<section class="sec3" style="overflow: hidden;"></section>-->
 <!--<footer class="foot">
