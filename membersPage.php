@@ -12,13 +12,10 @@ if (in_array('username', $_SESSION) === false || in_array('loggedIn', $_SESSION)
     exit;
 }
 
-$memInfo['username'] = @sanitizeEmail($_SESSION['username']);
-$memInfo['loggedIn'] = @sanitizeNumString($_SESSION['username']);
-
-# Create array to hold the client's information.
 $memInfo = array();
-# Sanitize session data.
-@$memInfo['username'] = sanitizeEmail($_SESSION['username']);
+$memInfo['username'] = @sanitizeEmail($_SESSION['username']);
+$memInfo['loggedIn'] = @sanitizeNumString($_SESSION['loggedIn']);
+
 
 
 # Connects to the SQL database.
