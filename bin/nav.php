@@ -80,7 +80,7 @@
 
 <!--Navigation Bar-->
 <div class="topnav" id="topNavbar">
-    <a href="/index.html">Home</a>
+    <a href="/index.php">Home</a>
     <a href="/aboutUs.html">About</a>
     <a href="/whyTci.html">Why TCI?</a>
     <a href="signIn.php">Members</a>

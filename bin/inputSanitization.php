@@ -52,6 +52,24 @@ function sanitizeNumString($input) {
     }
 }
 
+# Sanitizes date values.
+function sanitizeDateString($input) {
+    if (isset($input) && preg_match('/[0-9\-]/', $input)) {
+        $input = stripslashes($input);
+        $input = htmlspecialchars($input);
+        $input = trim($input);
+        return $input;
+    } else {
+        return false;
+    }
+}
+
+
+
+
+
+
+
 
 
 

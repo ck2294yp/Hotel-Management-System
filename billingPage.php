@@ -5,16 +5,34 @@ session_start();
 require_once "settings/settings.php";
 require_once "bin/inputSanitization.php";
 
+
+// TODO: Fix this
+// Stops if the room Type ID is not set.
+//if (isset($_REQUEST['roomTypeID'])) {
+//    echo "<script> alert(\"Invalid room type specified please try again.\"); </script>";
+//    header('Location: searchRooms.php');
+//    exit;
+//}
+
 // Stops if no session exists.
-if (array_key_exists('loggedIn', $_SESSION) === false) {
+if (array_key_exists('loggedIn', $_SESSION) === false ) {
     echo "<script> alert(\"Your session has timed out, please sign in again.\"); </script>";
     header('Location: signIn.php');
     exit;
 }
 
+// TODO: Debug
+echo $_REQUEST['roomTypeID'];
+
+
 $_SESSION['username'] = @sanitizeEmail($_SESSION['username']);
 $_SESSION['loggedIn'] = @sanitizeNumString($_SESSION['loggedIn']);
-$_SESSION['rateID'] = @sanitizeNumString($_SESSION['rateID']);
+$_SESSION['roomTypeID'] = @sanitizeNumString($_REQUEST['roomTypeID']);
+
+# Create array to hold the client's information.
+$memInfo = array();
+# Sanitize session data.
+@$memInfo['username'] = sanitizeEmail($_SESSION['username']);
 
 
 # Connects to the SQL database.
@@ -27,31 +45,37 @@ try {
     $userInfoStmt = $conn->prepare('select memID, memEmail, memFname, memLname, memRewardPoints from `Member` where `memEmail`=:email');
     $userInfoStmt->bindParam(':email', $memInfo['username'], PDO::PARAM_STR, 254);
     # Queries the database to get all of needed room information.
-    $userInfoStmt = $conn->prepare('select memID, memEmail, memFname, memLname, memRewardPoints from `Member` where `memEmail`=:email');
-    $userInfoStmt->bindParam(':email', $memInfo['username'], PDO::PARAM_STR, 254);
+    $roomInfoStmt = $conn->prepare('select roomTypeID, pricePerNight, roomCatagory, roomNumBeds, roomAllowsPets from `RoomType` where `roomTypeID`=:roomTypeID');
+    $roomInfoStmt->bindParam(':roomTypeID', $_SESSION['roomTypeID'], PDO::PARAM_STR, 254);
 
 
 
     # Begins a transaction, if there are any changes (which there shouldn't be) rollback the changes.
     $conn->beginTransaction();
     $userInfoStmt->execute();
+    $roomInfoStmt->execute();
     $conn->rollBack();
 
     # Closes the database connection.
     $conn = null;
 
 
-    # Gets the member's account details from out of the database query.
+    # Gets the member's and room details from out of the database query.
     $userInfoStmt->setFetchMode(PDO::FETCH_ASSOC);
     $memInfo = $userInfoStmt->fetch(PDO::FETCH_ASSOC);
+    # Room info.
+    $roomInfoStmt->setFetchMode(PDO::FETCH_ASSOC);
+    $roomInfo = $roomInfoStmt->fetch(PDO::FETCH_ASSOC);
 
 } catch (PDOException $e) {
     # Rollback any changes to the database (if possible).
-    $conn->rollBack();
+    @$conn->rollBack();
 
     # Sends a JavaScript alert message back to the user notifying them that there was an error processing their request.
     echo "<script> alert(\"We are sorry, there seems to be a problem with our systems. Please try again. If problems still persist, please notify TCI at 651-000-0000.\"); </script>";
-    header('Location: searchRooms.php');
+    #TODO DEBUG:
+    //header('Location: searchRooms.php');
+    //exit;
 }
 
 ?>
@@ -100,7 +124,7 @@ try {
         float: left;
         margin:0px;
         text-align: center;
-        /* Should be removed. Only for demonstration */
+        /* TODO: Should be removed. Only for demonstration */
     }
 
     .left {
@@ -265,7 +289,7 @@ try {
 <body>
 <nav>
     <ul>
-        <li><a href="index.html">Home</a> </li>
+        <li><a href="index.php">Home</a> </li>
         <li><a href="aboutUs.html">About</a> </li>
         <li><a href="whyTci.html">Why TCI?</a> </li>
         <li><a href="bin/signOut.php">Sign Out</a> </li>
@@ -275,7 +299,7 @@ try {
     <ul>
         <li><a href="membersPage.php">Member's Page</a></li>
         <li><a href="profilePage.php">Profile</a></li>
-        <li><a href="reservations.php">Reservations</a></li>
+        <li><a href="reservations.php" class="active">Reservations</a></li>
     </ul>
 </nav>
 
@@ -283,10 +307,22 @@ try {
     <div class="row">
         <div class="column left" >
             <h2>Checkout Details</h2>
-            <h4><p>
-                    Room Type: <?php echo($_SESSION['rateID'])?>
-                    Points available: </h4>
-            <label>Total Amount Due: </label><br>
+            <h4>
+                <p>
+                    <br> Room Category: <?php echo($roomInfo['roomCatagory']); ?>
+                    <br> Number of Beds: <?php echo($roomInfo['roomNumBeds']); ?>
+                    <br> Allows Pets: <?php echo(boolval($roomInfo['roomAllowsPets'])); ?>
+                    <br> Price Per Night: $<?php echo($roomInfo['pricePerNight']); ?>
+                </p>
+                <p>
+                    <br> Check-in Date: <?php $_SESSION['checkInDate']; ?>
+                    <br> Check-out Date <?php $_SESSION['checkOutDate']; ?>
+                    <br> Total Number of Nights: <?php $_SESSION['reservTotalDays']; ?>
+                    <br> Points available: <?php $memInfo['memRewardPoints'] ?>
+                </p>
+
+
+            <label>Total Amount Due: <?php echo($_SESSION['reservTotalDays'] * $roomInfo['pricePerNight']); ?> </label><br>
             <select id = "myList">
                 <option value = ""> Select Payment Option</option>
             </select><br>

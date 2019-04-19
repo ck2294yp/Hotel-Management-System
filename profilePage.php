@@ -81,7 +81,7 @@ try {
 
 <nav>
     <ul>
-        <li><a href="index.html">Home</a></li>
+        <li><a href="index.php">Home</a></li>
         <li><a href="aboutUs.html">About</a></li>
         <li><a href="whyTci.html">Why TCI?</a></li>
         <li><a href="bin/signOut.php">Sign Out</a></li>

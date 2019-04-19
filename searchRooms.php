@@ -1,9 +1,63 @@
+<?php
+session_start();
+require_once "settings/settings.php";
+require_once "bin/inputSanitization.php";
+
+// Stops if no session exists.
+if (array_key_exists('loggedIn', $_SESSION) === false ) {
+    echo "<script> alert(\"Your session has timed out, please sign in again.\"); </script>";
+    header('Location: signIn.php');
+    exit;
+}
+
+$roomInfo['username'] = @sanitizeEmail($_SESSION['username']);
+$roomInfo['loggedIn'] = @sanitizeNumString($_SESSION['loggedIn']);
+
+# Create array to hold the client's information.
+$roomInfo = array();
+# Sanitize session data.
+@$roomInfo['username'] = sanitizeEmail($_SESSION['username']);
+
+
+# Connects to the SQL database.
+try {
+    $conn = new PDO("mysql:host=$dbAddress;dbname=$dbLocation", $dbUsername, $dbPassword);
+    # Set the PDO error mode to exception
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    # Queries the database to get the username and the password of the user.
+    $roomInfoStmt = $conn->prepare('SELECT * FROM `RoomType`');
+    # Begins a transaction, if there are any changes (which there shouldn't be) rollback the changes.
+    $conn->beginTransaction();
+    $roomInfoStmt->execute();
+    $conn->rollBack();
+
+    # Closes the database connection.
+    $conn = null;
+
+
+    # Gets the member's account details from out of the database query.
+    $roomInfoStmt->setFetchMode(PDO::FETCH_ASSOC);
+    $roomInfo = $roomInfoStmt->fetchAll(PDO::FETCH_ASSOC);
+
+} catch (PDOException $e) {
+    # Rollback any changes to the database (if possible).
+    @$conn->rollBack();
+
+    # Sends a JavaScript alert message back to the user notifying them that there was an error processing their request.
+    echo "<script> alert(\"We are sorry, there seems to be a problem with our systems. Please try again. If problems still persist, please notify TCI at 651-000-0000.\"); </script>";
+    header('Location: membersPage.php');
+    exit;
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Search Rooms</title>
-    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="stylesheet" href="style.css" type="text/css"/>
     <style>
         .header {
             text-align: center;
@@ -93,62 +147,6 @@
     </style>
 </head>
 
-<?php
-session_start();
-require_once "settings/settings.php";
-require_once "bin/inputSanitization.php";
-// Stops if no session exists.
-if (in_array('username', $_SESSION) === false || in_array('loggedIn', $_SESSION) === false) {
-    echo "<script> alert(\"Your session has timed out, please sign in again.\"); </script>";
-    header('Location: signIn.php');
-    exit;
-}
-
-$memInfo['username'] = @sanitizeEmail($_SESSION['username']);
-$memInfo['loggedIn'] = @sanitizeNumString($_SESSION['loggedIn']);
-
-# Create array to hold the client's information.
-$memInfo = array();
-# Sanitize session data.
-    @$memInfo['username'] = sanitizeEmail($_SESSION['username']);
-
-
-# Connects to the SQL database.
-    try {
-    $conn = new PDO("mysql:host=$dbAddress;dbname=$dbLocation", $dbUsername, $dbPassword);
-    # Set the PDO error mode to exception
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    # Queries the database to get the username and the password of the user.
-        $userInfoStmt = $conn->prepare('SELECT * FROM `RoomType`');
-    # Begins a transaction, if there are any changes (which there shouldn't be) rollback the changes.
-    $conn->beginTransaction();
-    $userInfoStmt->execute();
-    $conn->rollBack();
-
-    # Closes the database connection.
-        $conn = null;
-
-
-    # Gets the member's account details from out of the database query.
-    $userInfoStmt->setFetchMode(PDO::FETCH_ASSOC);
-    $memInfo = $userInfoStmt->fetchAll(PDO::FETCH_ASSOC);
-
-} catch (PDOException $e) {
-    # Rollback any changes to the database (if possible).
-    @$conn->rollBack();
-
-    # Sends a JavaScript alert message back to the user notifying them that there was an error processing their request.
-        echo "<script> alert(\"We are sorry, there seems to be a problem with our systems. Please try again. If problems still persist, please notify TCI at 651-000-0000.\"); </script>";
-        header('Location: membersPage.php');
-}
-
-
-
-
-?>
-
-
 <body>
 <header>
     <img src="https://tbncdn.freelogodesign.org/4fc3ec1c-1e7a-4304-b812-4b6b0bdb6b68.png?1553471553913">
@@ -156,13 +154,19 @@ $memInfo = array();
 </header>
 <nav>
     <ul>
-        <li><a href="index.html">Home</a> </li>
-        <li><a href="AboutUs.html" >About</a> </li>
-        <li><a href="#">Why TCI</a> </li>
-        <li><a href="#">Sign In</a> </li>
+        <li><a href="index.php">Home</a> </li>
+        <li><a href="aboutUs.html">About</a> </li>
+        <li><a href="whyTci.html">Why TCI?</a> </li>
+        <li><a href="bin/signOut.php">Sign Out</a> </li>
     </ul>
 </nav>
-<!--commnet-->
+<nav style="top: 50px;">
+    <ul>
+        <li><a href="membersPage.php">Member's Page</a></li>
+        <li><a href="profilePage.php">Profile</a></li>
+        <li><a href="reservations.php" class="active">Reservations</a></li>
+    </ul>
+</nav>
 <!--search rooms section start-->
 <div style="width: 100%;padding-left: 4px;">
 <div style="float: left; height: auto; width: 20%;">
@@ -181,7 +185,7 @@ $memInfo = array();
                                                                  alt="Two bed hotel picture"></div>
         <div style="float: left;text-align: center;padding-left: 100px;"><h2>Two Bed Room</h2><p>Two bed room hotel room with <br>comfortable beds and clean bathroom.<br>
             Has a desk to do work on. <br>Also has a 40 inch TV with cable.</p></div>
-        <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($memInfo[0]['pricePerNight']);?></p></div>
+        <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($roomInfo[0]['pricePerNight']);?></p></div>
         <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button id="twoBedButton"  class="bButton">Book</button></div>
     </div>
 </section>
@@ -193,8 +197,8 @@ $memInfo = array();
                                                                      alt="Two bed hotel picture"></div>
             <div style="float: left;text-align: center;padding-left: 100px;"><h2>Two Bed Pet Room</h2><p>Two bed room hotel room with <br>comfortable beds and clean bathroom.<br>
                 Has a desk to do work on. <br>Also has a 40 inch TV with cable.</p></div>
-            <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($memInfo[1]['pricePerNight']);?></p></div>
-            <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button id="twoPetButton" onclick="confirmRoom()" class="bButton">Book</button></div>
+            <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($roomInfo[1]['pricePerNight']);?></p></div>
+            <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button id="twoPetButton" onclick="confirmRoom(1)" class="bButton">Book</button></div>
         </div>
     </section>
 
@@ -205,8 +209,8 @@ $memInfo = array();
                                                                      alt="One bed hotel picture"></div>
             <div style="float: left;text-align: center;padding-left: 100px;"><h2>One Bed Room</h2><p>One bed Hotel room with <br>comfortable beds and clean bathroom.<br>
                 Has a desk to do work on. <br>Also has a 40 inch TV with cable.</p></div>
-            <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($memInfo[1]['pricePerNight']);?></p></div>
-            <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button id="oneBedButton" onclick="confirmRoom()" class="bButton">Book</button></div>
+            <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($roomInfo[1]['pricePerNight']);?></p></div>
+            <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button id="oneBedButton" onclick="confirmRoom(1)" class="bButton">Book</button></div>
         </div>
     </section>
 
@@ -217,8 +221,8 @@ $memInfo = array();
                                                                      alt="One bed hotel picture"></div>
             <div style="float: left;text-align: center;padding-left: 100px;"><h2>One Bed Pet Room</h2><p>One bed pet room with <br>comfortable beds and clean bathroom.<br>
                 Has a desk to do work on. <br>Also has a 40 inch TV with cable.</p></div>
-            <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($memInfo[1]['pricePerNight']);?></p></div>
-            <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button id="onePetButton" onclick="confirmRoom()" class="bButton">Book</button></div>
+            <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($roomInfo[1]['pricePerNight']);?></p></div>
+            <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button id="onePetButton" onclick="confirmRoom(1)" class="bButton">Book</button></div>
         </div>
     </section>
 
@@ -229,8 +233,8 @@ $memInfo = array();
                                                                      alt="Gaming room picture"></div>
             <div style="float: left;text-align: center;padding-left: 100px;"><h2>Gaming Room</h2><p>Gaming hotel room with <br>PS4, Xbox1, Nintendo Switch and PC.<br>
                 Includes many games. <br>Has a 4K TV with cable.</p></div>
-            <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($memInfo[3]['pricePerNight']);?></p></div>
-            <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button id="gamingButton" onclick="confirmRoom()" class="bButton">Book</button></div>
+            <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($roomInfo[3]['pricePerNight']);?></p></div>
+            <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button id="gamingButton" onclick="confirmRoom(3)" class="bButton">Book</button></div>
         </div>
     </section>
 
@@ -253,8 +257,8 @@ $memInfo = array();
                                                                      alt="Chef room picture"></div>
             <div style="float: left;text-align: center;padding-left: 100px;"><h2>Chef Room</h2><p>Hotel room with a chef kitchen. <br>Includes microwave, oven, <br>refridgerator, utinsels and cutting boards.<br>
                 Comes with fruits and vegetables. <br>Includes meats such as<br> chicken, steak, and pork.</p></div>
-            <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($memInfo[1]['pricePerNight']);?></p></div>
-            <div style="float: left;text-align: center;padding-left: 60px;"><br><br><br><br><button id="chefButton" onclick="confirmRoom()" class="bButton">Book</button></div>
+            <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($roomInfo[1]['pricePerNight']);?></p></div>
+            <div style="float: left;text-align: center;padding-left: 60px;"><br><br><br><br><button id="chefButton" onclick="confirmRoom(1)" class="bButton">Book</button></div>
         </div>
     </section>
     </form>
@@ -407,11 +411,12 @@ $memInfo = array();
         }
     }
 
-    function confirmRoom(){
+    // Find out what room the user wants and selects that as their desired room.
+    function confirmRoom(roomTypeID){
         var popup = confirm("Are you sure you want to book this room?");
         if(popup == true){
-            <?php header('Location: billing.php');
-            ?>
+            window.location = "http://localhost:8081/billingPage.php?roomTypeID=1";
+        // If user clicks "Cancel" then don't do anything (except close the prompt).
         }else{
 
         }

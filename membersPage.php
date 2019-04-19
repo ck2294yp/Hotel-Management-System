@@ -71,7 +71,7 @@ try {
 
 <nav>
     <ul>
-        <li><a href="index.html">Home</a></li>
+        <li><a href="index.php">Home</a></li>
         <li><a href="aboutUs.html">About</a></li>
         <li><a href="whyTci.html">Why TCI?</a></li>
         <li><a href="bin/signOut.php">Sign Out</a></li>
@@ -96,7 +96,7 @@ try {
             <p>Member ID: <?php echo($memInfo['memID']); ?>  </p>
             <p>Email: <?php echo($memInfo['memEmail']); ?>  </p>
             <p>Member Since: <?php echo(date('M Y', strtotime($memInfo['createdAt']))); ?>  </p>
-            <button class="editProfile">Edit Profile</button>
+            <button class="editProfile" onclick="window.location.href = 'profilePage.php';">Edit Profile</button>
             <br/><br/>
             <br>
         </div>
@@ -111,7 +111,7 @@ try {
             <h2 style="font-style: italic">Make Reservation</h2>
             <p>Rooms can be booked from our website or in person.</p>
             <p>You can use reward points, cash, or credit when booking a room.</p>
-            <button class="bookNow">Book Now</button><br/><br/>
+            <button class="bookNow"onclick="window.location.href = 'searchRooms.php';">Book Now</button><br/><br/>
         </div>
     </div>
 
