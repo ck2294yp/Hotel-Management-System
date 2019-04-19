@@ -6,7 +6,7 @@ require_once "settings/settings.php";
 require_once "bin/inputSanitization.php";
 
 // Stops if no session exists.
-if (in_array('username', $_SESSION) === false || in_array('loggedIn', $_SESSION) === false) {
+if (array_key_exists('loggedIn', $_SESSION) === false) {
     echo "<script> alert(\"Your session has timed out, please sign in again.\"); </script>";
     header('Location: signIn.php');
     exit;
@@ -15,6 +15,45 @@ if (in_array('username', $_SESSION) === false || in_array('loggedIn', $_SESSION)
 $_SESSION['username'] = @sanitizeEmail($_SESSION['username']);
 $_SESSION['loggedIn'] = @sanitizeNumString($_SESSION['loggedIn']);
 $_SESSION['rateID'] = @sanitizeNumString($_SESSION['rateID']);
+
+
+# Connects to the SQL database.
+try {
+    $conn = new PDO("mysql:host=$dbAddress;dbname=$dbLocation", $dbUsername, $dbPassword);
+    # Set the PDO error mode to exception
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    # Queries the database to get all of the needed user information.
+    $userInfoStmt = $conn->prepare('select memID, memEmail, memFname, memLname, memRewardPoints from `Member` where `memEmail`=:email');
+    $userInfoStmt->bindParam(':email', $memInfo['username'], PDO::PARAM_STR, 254);
+    # Queries the database to get all of needed room information.
+    $userInfoStmt = $conn->prepare('select memID, memEmail, memFname, memLname, memRewardPoints from `Member` where `memEmail`=:email');
+    $userInfoStmt->bindParam(':email', $memInfo['username'], PDO::PARAM_STR, 254);
+
+
+
+    # Begins a transaction, if there are any changes (which there shouldn't be) rollback the changes.
+    $conn->beginTransaction();
+    $userInfoStmt->execute();
+    $conn->rollBack();
+
+    # Closes the database connection.
+    $conn = null;
+
+
+    # Gets the member's account details from out of the database query.
+    $userInfoStmt->setFetchMode(PDO::FETCH_ASSOC);
+    $memInfo = $userInfoStmt->fetch(PDO::FETCH_ASSOC);
+
+} catch (PDOException $e) {
+    # Rollback any changes to the database (if possible).
+    $conn->rollBack();
+
+    # Sends a JavaScript alert message back to the user notifying them that there was an error processing their request.
+    echo "<script> alert(\"We are sorry, there seems to be a problem with our systems. Please try again. If problems still persist, please notify TCI at 651-000-0000.\"); </script>";
+    header('Location: searchRooms.php');
+}
+
 ?>
 
 
@@ -216,7 +255,7 @@ $_SESSION['rateID'] = @sanitizeNumString($_SESSION['rateID']);
     .alignLeft{
         text-align: left;
     }
-    #myDIV {
+    #newCardEntry {
         padding: 50px 0;
         text-align: center;
         margin-bottom: 20px;
@@ -232,13 +271,21 @@ $_SESSION['rateID'] = @sanitizeNumString($_SESSION['rateID']);
         <li><a href="bin/signOut.php">Sign Out</a> </li>
     </ul>
 </nav>
+<nav style="top: 50px;">
+    <ul>
+        <li><a href="membersPage.php">Member's Page</a></li>
+        <li><a href="profilePage.php">Profile</a></li>
+        <li><a href="reservations.php">Reservations</a></li>
+    </ul>
+</nav>
 
    <center> <h2> Billing Information</h2></center>
     <div class="row">
         <div class="column left" >
             <h2>Checkout Details</h2>
-            <p>Room Type:</p>
-            <h4>Points available: </h4>
+            <h4><p>
+                    Room Type: <?php echo($_SESSION['rateID'])?>
+                    Points available: </h4>
             <label>Total Amount Due: </label><br>
             <select id = "myList">
                 <option value = ""> Select Payment Option</option>
@@ -246,7 +293,7 @@ $_SESSION['rateID'] = @sanitizeNumString($_SESSION['rateID']);
             <button class = "button"onclick="hideShowAddCardForm()" >Add New Card</button>
             <button class = "button" onclick = "bookRoom()" class = "process-btn">Pay Now</button>
                     </div>
-                    <div class="column right" id = "myDIV">
+                    <div class="column right" id = "newCardEntry">
                         <form class="credit-card form">
                             <div class="form-header">
                                 <h4 class="title">Add New Payment</h4>
@@ -314,7 +361,7 @@ $_SESSION['rateID'] = @sanitizeNumString($_SESSION['rateID']);
     }
     function hideShowAddCardForm() {
 
-        var addCardForm = document.getElementById("myDIV");
+        var addCardForm = document.getElementById("newCardEntry");
 
         if (addCardForm.style.display === "block") {
             addCardForm.style.display = "none";

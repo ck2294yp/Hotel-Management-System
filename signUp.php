@@ -10,9 +10,10 @@ require_once "bin/sendEmail.php";
 require_once "vendor/autoload.php";
 
 # If member is already logged in, send them to the member's page.
-if (key_exists('loggedIn', $_SESSION)) {
+if (array_key_exists('loggedIn', $_SESSION)) {
     echo "<script> alert(\"You are already logged in! Redirecting you to the membership page...\"); </script>";
     header('Location: membersPage.php');
+    exit;
 }
 
 if (sizeof($_REQUEST) > 0) {
