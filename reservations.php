@@ -87,28 +87,23 @@ if ($_SESSION['loggedIn'] === 0){
 
 <section class="sec2">
 
-    <h2>Your Reservations History</h2><br/>
+    <h2>Reservations History</h2><br/>
 
         <table>
-        <tr> <th>Invoice ID</th> <th>Card Number</th> <th style='display: none'>Member ID</th> <th>From</th> <th>To</th> <th>Room Number</th> <th>Paid in full</th> <th>Cancel Reservation</th> </tr>";
+        <tr> <th>Invoice ID</th> <th>Card Number</th> <th style='display: none'>Member ID</th> <th>From</th> <th>To</th> <th>Cancel Reservation</th> </tr>
             <?php
             while ($invoice = $getInvoiceStmt->fetch( PDO::FETCH_ASSOC )):
                 ?>
                 <tr>
                     <td><?php echo $invoice['invoiceID']; ?></td>
-                    <td><?php echo $invoice['cardNum']; ?></td>
+                    <td><?php $ccNum = $invoice['cardNum'];
+                        echo $last4Digits = preg_replace( "#(.*?)(\d{4})$#", "$2", $ccNum); ?>
+                    </td>
                     <td style='display: none;'><?php echo $invoice['memID']; ?></td>
                     <td><?php $timestamp1 = strtotime($invoice['invoiceStartDate']);
                         echo date('m-d-Y',$timestamp1); ?></td>
                     <td><?php $timestamp2 = strtotime($invoice['invoiceEndDate']);
                         echo date('m-d-Y',$timestamp2);?></td>
-                    <td><?php echo $invoice['roomNum']; ?></td>
-                    <td><?php if ($invoice['paidInFull'] == 0) {
-                        echo 'No';
-                    }
-                    else {
-                        echo 'Yes';
-                    } ?></td>
                     <?php $date = time();
                     if ($date < $timestamp1): ?>
                     <td><input class="cancel" type="button" id="btn-show-dialog" value="Cancel Reservation" /></td>
@@ -132,7 +127,7 @@ if ($_SESSION['loggedIn'] === 0){
         <div class="popup">
             <p>Reservation is cancel, a confirmation will be send to your email.</p>
             <div class="text-right">
-                <button class="dialog-btn btn-exit" id="stop">Exit</button>
+                <button class="dialog-btn btn-exit" id="stop">Ok</button>
             </div>
         </div>
     </div>
@@ -140,7 +135,9 @@ if ($_SESSION['loggedIn'] === 0){
     <script
             src="https://code.jquery.com/jquery-3.4.0.min.js"
             integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="
-            crossorigin="anonymous"></script>
+            crossorigin="anonymous">
+
+    </script>
 
     <script>
         $(document).ready(function () {
@@ -156,6 +153,7 @@ if ($_SESSION['loggedIn'] === 0){
             });
             $('#stop').on('click', function () {
                 $('#dialog-container1').hide();
+                $('#btn-show-dialog').hide();
             });
 
         });
