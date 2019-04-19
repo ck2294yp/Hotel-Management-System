@@ -120,7 +120,7 @@ $memInfo = array();
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     # Queries the database to get the username and the password of the user.
-        $userInfoStmt = $conn->prepare('SELECT * FROM `Rate` INNER JOIN `RoomType` USING(rateID) INNER JOIN `Room` using(roomTypeID)');
+        $userInfoStmt = $conn->prepare('SELECT * FROM `RoomType`');
     # Begins a transaction, if there are any changes (which there shouldn't be) rollback the changes.
     $conn->beginTransaction();
     $userInfoStmt->execute();
@@ -136,7 +136,7 @@ $memInfo = array();
 
 } catch (PDOException $e) {
     # Rollback any changes to the database (if possible).
-    $conn->rollBack();
+    @$conn->rollBack();
 
     # Sends a JavaScript alert message back to the user notifying them that there was an error processing their request.
         echo "<script> alert(\"We are sorry, there seems to be a problem with our systems. Please try again. If problems still persist, please notify TCI at 651-000-0000.\"); </script>";
@@ -181,7 +181,7 @@ $memInfo = array();
                                                                  alt="Two bed hotel picture"></div>
         <div style="float: left;text-align: center;padding-left: 100px;"><h2>Two Bed Room</h2><p>Two bed room hotel room with <br>comfortable beds and clean bathroom.<br>
             Has a desk to do work on. <br>Also has a 40 inch TV with cable.</p></div>
-        <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($memInfo[0]['centsPerNight']);?></p></div>
+        <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($memInfo[0]['pricePerNight']);?></p></div>
         <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button id="twoBedButton"  class="bButton">Book</button></div>
     </div>
 </section>
@@ -193,7 +193,7 @@ $memInfo = array();
                                                                      alt="Two bed hotel picture"></div>
             <div style="float: left;text-align: center;padding-left: 100px;"><h2>Two Bed Pet Room</h2><p>Two bed room hotel room with <br>comfortable beds and clean bathroom.<br>
                 Has a desk to do work on. <br>Also has a 40 inch TV with cable.</p></div>
-            <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($memInfo[1]['centsPerNight']);?></p></div>
+            <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($memInfo[1]['pricePerNight']);?></p></div>
             <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button id="twoPetButton" onclick="confirmRoom()" class="bButton">Book</button></div>
         </div>
     </section>
@@ -205,7 +205,7 @@ $memInfo = array();
                                                                      alt="One bed hotel picture"></div>
             <div style="float: left;text-align: center;padding-left: 100px;"><h2>One Bed Room</h2><p>One bed Hotel room with <br>comfortable beds and clean bathroom.<br>
                 Has a desk to do work on. <br>Also has a 40 inch TV with cable.</p></div>
-            <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($memInfo[1]['centsPerNight']);?></p></div>
+            <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($memInfo[1]['pricePerNight']);?></p></div>
             <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button id="oneBedButton" onclick="confirmRoom()" class="bButton">Book</button></div>
         </div>
     </section>
@@ -217,7 +217,7 @@ $memInfo = array();
                                                                      alt="One bed hotel picture"></div>
             <div style="float: left;text-align: center;padding-left: 100px;"><h2>One Bed Pet Room</h2><p>One bed pet room with <br>comfortable beds and clean bathroom.<br>
                 Has a desk to do work on. <br>Also has a 40 inch TV with cable.</p></div>
-            <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($memInfo[1]['centsPerNight']);?></p></div>
+            <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($memInfo[1]['pricePerNight']);?></p></div>
             <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button id="onePetButton" onclick="confirmRoom()" class="bButton">Book</button></div>
         </div>
     </section>
@@ -229,7 +229,7 @@ $memInfo = array();
                                                                      alt="Gaming room picture"></div>
             <div style="float: left;text-align: center;padding-left: 100px;"><h2>Gaming Room</h2><p>Gaming hotel room with <br>PS4, Xbox1, Nintendo Switch and PC.<br>
                 Includes many games. <br>Has a 4K TV with cable.</p></div>
-            <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($memInfo[3]['centsPerNight']);?></p></div>
+            <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($memInfo[3]['pricePerNight']);?></p></div>
             <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button id="gamingButton" onclick="confirmRoom()" class="bButton">Book</button></div>
         </div>
     </section>
@@ -253,7 +253,7 @@ $memInfo = array();
                                                                      alt="Chef room picture"></div>
             <div style="float: left;text-align: center;padding-left: 100px;"><h2>Chef Room</h2><p>Hotel room with a chef kitchen. <br>Includes microwave, oven, <br>refridgerator, utinsels and cutting boards.<br>
                 Comes with fruits and vegetables. <br>Includes meats such as<br> chicken, steak, and pork.</p></div>
-            <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($memInfo[19]['centsPerNight']);?></p></div>
+            <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($memInfo[1]['pricePerNight']);?></p></div>
             <div style="float: left;text-align: center;padding-left: 60px;"><br><br><br><br><button id="chefButton" onclick="confirmRoom()" class="bButton">Book</button></div>
         </div>
     </section>
