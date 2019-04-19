@@ -90,7 +90,7 @@ if ($_SESSION['loggedIn'] === 0){
     <h2>Reservations History</h2><br/>
 
         <table>
-        <tr> <th>Invoice ID</th> <th>Card Number</th> <th style='display: none'>Member ID</th> <th>From</th> <th>To</th> <th>Room Number</th> <th>Paid in full</th> <th>Cancel Reservation</th> </tr>";
+        <tr> <th>Invoice ID</th> <th>Card Number</th> <th style='display: none'>Member ID</th> <th>From</th> <th>To</th> <th>Cancel Reservation</th> </tr>
             <?php
             while ($invoice = $getInvoiceStmt->fetch( PDO::FETCH_ASSOC )):
                 ?>
@@ -102,13 +102,6 @@ if ($_SESSION['loggedIn'] === 0){
                         echo date('m-d-Y',$timestamp1); ?></td>
                     <td><?php $timestamp2 = strtotime($invoice['invoiceEndDate']);
                         echo date('m-d-Y',$timestamp2);?></td>
-                    <td><?php echo $invoice['roomNum']; ?></td>
-                    <td><?php if ($invoice['paidInFull'] == 0) {
-                        echo 'No';
-                    }
-                    else {
-                        echo 'Yes';
-                    } ?></td>
                     <?php $date = time();
                     if ($date < $timestamp1): ?>
                     <td><input class="cancel" type="button" id="btn-show-dialog" value="Cancel Reservation" /></td>
