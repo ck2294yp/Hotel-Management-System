@@ -16,7 +16,6 @@ function sanitizeEmail($input) {
 # Sanitizes passwords and checks to make sure they are the same and are protected properly (salted & hashed).
 function sanitizePassword($password, $passwordConfirm, $passwdHashAlgo, $beginingSalt, $endingSalt) {
     if ($password !== $passwordConfirm){
-        echo "<script> alert(\"Passwords do not match, please try again.\"); </script>";
         return false;
     } elseif ($password !== "" && filter_var($password, FILTER_SANITIZE_STRING)) {
         $password = hash($passwdHashAlgo,$beginingSalt.$password.$endingSalt);
@@ -49,7 +48,6 @@ function sanitizeNumString($input) {
         $input = trim($input);
         return $input;
     } else {
-        echo "<script> alert(\"Invalid numerical value \".$input.\"specified, please try again.\"); </script>";
         return false;
     }
 }

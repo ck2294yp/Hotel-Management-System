@@ -1,3 +1,24 @@
+<?php
+// Checks to make sure user is actually logged in.
+session_start();
+
+require_once "settings/settings.php";
+require_once "bin/inputSanitization.php";
+
+// Stops if no session exists.
+if (in_array('username', $_SESSION) === false || in_array('loggedIn', $_SESSION) === false) {
+    echo "<script> alert(\"Your session has timed out, please sign in again.\"); </script>";
+    header('Location: signIn.php');
+    exit;
+}
+
+$_SESSION['username'] = @sanitizeEmail($_SESSION['username']);
+$_SESSION['loggedIn'] = @sanitizeNumString($_SESSION['loggedIn']);
+$_SESSION['rateID'] = @sanitizeNumString($_SESSION['rateID']);
+?>
+
+
+
 
 
 <html lang="en">
@@ -240,25 +261,22 @@
                                 <div class="date-field">
                                     <div class="month">
                                         <select name="Month">
-                                            <option value="january">January</option>
-                                            <option value="february">February</option>
-                                            <option value="march">March</option>
-                                            <option value="april">April</option>
-                                            <option value="may">May</option>
-                                            <option value="june">June</option>
-                                            <option value="july">July</option>
-                                            <option value="august">August</option>
-                                            <option value="september">September</option>
-                                            <option value="october">October</option>
-                                            <option value="november">November</option>
-                                            <option value="december">December</option>
+                                            <option value="January">January</option>
+                                            <option value="February">February</option>
+                                            <option value="March">March</option>
+                                            <option value="April">April</option>
+                                            <option value="May">May</option>
+                                            <option value="June">June</option>
+                                            <option value="July">July</option>
+                                            <option value="August">August</option>
+                                            <option value="September">September</option>
+                                            <option value="October">October</option>
+                                            <option value="November">November</option>
+                                            <option value="December">December</option>
                                         </select>
                                     </div>
                                     <div class="year">
                                         <select name="Year">
-                                            <option value="2016">2016</option>
-                                            <option value="2017">2017</option>
-                                            <option value="2018">2018</option>
                                             <option value="2019">2019</option>
                                             <option value="2020">2020</option>
                                             <option value="2021">2021</option>
@@ -280,7 +298,7 @@
                                 </div>
 
                                 <!-- Buttons -->
-                                <button type="submit" class="proceed-btn"><a href="#">Add Card</a></button
+                                <button type="submit" class="proceed-btn"><a href="billingPage.php">Add Card</a></button
                             </div>
                         </form>
         </div>

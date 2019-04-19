@@ -92,6 +92,63 @@
 
     </style>
 </head>
+
+<?php
+session_start();
+require_once "settings/settings.php";
+require_once "bin/inputSanitization.php";
+// Stops if no session exists.
+if (in_array('username', $_SESSION) === false || in_array('loggedIn', $_SESSION) === false) {
+    echo "<script> alert(\"Your session has timed out, please sign in again.\"); </script>";
+header('Location: signIn.php');
+
+}
+
+$memInfo['username'] = @sanitizeEmail($_SESSION['username']);
+$memInfo['loggedIn'] = @sanitizeNumString($_SESSION['username']);
+
+# Create array to hold the client's information.
+$memInfo = array();
+# Sanitize session data.
+    @$memInfo['username'] = sanitizeEmail($_SESSION['username']);
+
+
+# Connects to the SQL database.
+    try {
+    $conn = new PDO("mysql:host=$dbAddress;dbname=$dbLocation", $dbUsername, $dbPassword);
+    # Set the PDO error mode to exception
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    # Queries the database to get the username and the password of the user.
+        $userInfoStmt = $conn->prepare('SELECT * FROM `RoomType`');
+    # Begins a transaction, if there are any changes (which there shouldn't be) rollback the changes.
+    $conn->beginTransaction();
+    $userInfoStmt->execute();
+    $conn->rollBack();
+
+    # Closes the database connection.
+        $conn = null;
+
+
+    # Gets the member's account details from out of the database query.
+    $userInfoStmt->setFetchMode(PDO::FETCH_ASSOC);
+    $memInfo = $userInfoStmt->fetchAll(PDO::FETCH_ASSOC);
+
+} catch (PDOException $e) {
+    # Rollback any changes to the database (if possible).
+    @$conn->rollBack();
+
+    # Sends a JavaScript alert message back to the user notifying them that there was an error processing their request.
+        echo "<script> alert(\"We are sorry, there seems to be a problem with our systems. Please try again. If problems still persist, please notify TCI at 651-000-0000.\"); </script>";
+        header('Location: membersPage.php');
+}
+
+
+
+
+?>
+
+
 <body>
 <header>
     <img src="https://tbncdn.freelogodesign.org/4fc3ec1c-1e7a-4304-b812-4b6b0bdb6b68.png?1553471553913">
@@ -124,8 +181,8 @@
                                                                  alt="Two bed hotel picture"></div>
         <div style="float: left;text-align: center;padding-left: 100px;"><h2>Two Bed Room</h2><p>Two bed room hotel room with <br>comfortable beds and clean bathroom.<br>
             Has a desk to do work on. <br>Also has a 40 inch TV with cable.</p></div>
-        <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$200</p></div>
-        <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button class="bButton">Book</button></div>
+        <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($memInfo[0]['pricePerNight']);?></p></div>
+        <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button id="twoBedButton"  class="bButton">Book</button></div>
     </div>
 </section>
 
@@ -136,8 +193,8 @@
                                                                      alt="Two bed hotel picture"></div>
             <div style="float: left;text-align: center;padding-left: 100px;"><h2>Two Bed Pet Room</h2><p>Two bed room hotel room with <br>comfortable beds and clean bathroom.<br>
                 Has a desk to do work on. <br>Also has a 40 inch TV with cable.</p></div>
-            <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$200</p></div>
-            <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button class="bButton">Book</button></div>
+            <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($memInfo[1]['pricePerNight']);?></p></div>
+            <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button id="twoPetButton" onclick="confirmRoom()" class="bButton">Book</button></div>
         </div>
     </section>
 
@@ -148,8 +205,8 @@
                                                                      alt="One bed hotel picture"></div>
             <div style="float: left;text-align: center;padding-left: 100px;"><h2>One Bed Room</h2><p>One bed Hotel room with <br>comfortable beds and clean bathroom.<br>
                 Has a desk to do work on. <br>Also has a 40 inch TV with cable.</p></div>
-            <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$150</p></div>
-            <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button class="bButton">Book</button></div>
+            <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($memInfo[1]['pricePerNight']);?></p></div>
+            <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button id="oneBedButton" onclick="confirmRoom()" class="bButton">Book</button></div>
         </div>
     </section>
 
@@ -160,8 +217,8 @@
                                                                      alt="One bed hotel picture"></div>
             <div style="float: left;text-align: center;padding-left: 100px;"><h2>One Bed Pet Room</h2><p>One bed pet room with <br>comfortable beds and clean bathroom.<br>
                 Has a desk to do work on. <br>Also has a 40 inch TV with cable.</p></div>
-            <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$150</p></div>
-            <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button class="bButton">Book</button></div>
+            <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($memInfo[1]['pricePerNight']);?></p></div>
+            <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button id="onePetButton" onclick="confirmRoom()" class="bButton">Book</button></div>
         </div>
     </section>
 
@@ -172,8 +229,8 @@
                                                                      alt="Gaming room picture"></div>
             <div style="float: left;text-align: center;padding-left: 100px;"><h2>Gaming Room</h2><p>Gaming hotel room with <br>PS4, Xbox1, Nintendo Switch and PC.<br>
                 Includes many games. <br>Has a 4K TV with cable.</p></div>
-            <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$300</p></div>
-            <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button class="bButton">Book</button></div>
+            <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($memInfo[3]['pricePerNight']);?></p></div>
+            <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button id="gamingButton" onclick="confirmRoom()" class="bButton">Book</button></div>
         </div>
     </section>
 
@@ -188,7 +245,7 @@
             <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button class="bButton">Book</button></div>
         </div>
     </section>-->
-
+    <form action="billingPage.php">
     <section id="chefRoom" class="roomBox" style="display: inline-block;">
         <div style="border-top:solid 1px black;">
 
@@ -196,13 +253,64 @@
                                                                      alt="Chef room picture"></div>
             <div style="float: left;text-align: center;padding-left: 100px;"><h2>Chef Room</h2><p>Hotel room with a chef kitchen. <br>Includes microwave, oven, <br>refridgerator, utinsels and cutting boards.<br>
                 Comes with fruits and vegetables. <br>Includes meats such as<br> chicken, steak, and pork.</p></div>
-            <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$300</p></div>
-            <div style="float: left;text-align: center;padding-left: 60px;"><br><br><br><br><button class="bButton">Book</button></div>
+            <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($memInfo[1]['pricePerNight']);?></p></div>
+            <div style="float: left;text-align: center;padding-left: 60px;"><br><br><br><br><button id="chefButton" onclick="confirmRoom()" class="bButton">Book</button></div>
         </div>
     </section>
+    </form>
+</div>
+    <div class="overlay" id="dialog-container">
+        <div class="popup">
+            <p>Are you sure you want to book reservation?</p>
+            <div class="text-right">
+                <button class="dialog-btn btn-cancel" id="cancel">Cancel</button>
+                <button class="dialog-btn btn-primary" id="confirm">Yes</button>
+            </div>
+        </div>
+    </div>
 
 </div>
-</div>
+
+<script
+        src="https://code.jquery.com/jquery-3.4.0.min.js"
+        integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="
+        crossorigin="anonymous"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#twoBedButton').on('click', function () {
+            $('#dialog-container').show();
+        });
+        $('#twoPetButton').on('click', function () {
+            $('#dialog-container').show();
+        });
+        $('#oneBedButton').on('click', function () {
+            $('#dialog-container').show();
+        });
+        $('#onePetButton').on('click', function () {
+            $('#dialog-container').show();
+        });
+        $('#chefButton').on('click', function () {
+            $('#dialog-container').show();
+        });
+        $('#gamingButton').on('click', function () {
+            $('#dialog-container').show();
+        });
+        $('#cancel').on('click', function () {
+            $('#dialog-container').hide();
+        });
+        $('#confirm').on('click', function () {
+            $('#dialog-container1').show();
+            $('#dialog-container').hide();
+        });
+        $('#stop').on('click', function () {
+            $('#dialog-container1').hide();
+        });
+
+    });
+//
+</script>
+
 <!--search rooms section end-->
 <!--<section class="sec3" style="overflow: hidden;"></section>-->
 <!--<footer class="foot">
@@ -230,19 +338,16 @@
 
         if (a.style.display == "inline-block" && onePet.style.display == "inline-block") {
             a.style.display = "inline-block";
-            onePet.style.display == "inline-block"
+            onePet.style.display = "inline-block";
             b.style.display = "none";
             c.style.display = "none";
             d.style.display = "none";
            twoPet.style.display = "none";
-        }else {
-            a.style.display = "none";
-            onePet.style.display = "none";
         }
 
         if (a.style.display == "none" && onePet.style.display == "none") {
             a.style.display = "inline-block";
-            onePet.style.display == "inline-block";
+            onePet.style.display = "inline-block";
             b.style.display = "none";
             c.style.display = "none";
             d.style.display = "none";
@@ -259,14 +364,11 @@
             c.style.display = "none";
             d.style.display = "none";
            onePet.style.display = "none";
-        }else {
-            b.style.display = "none";
-            twoPet.style.display = "none";
         }
 
         if (b.style.display == "none" && twoPet.style.display == "none") {
             b.style.display = "inline-block";
-            twoPet.style.display == "inline-block"
+            twoPet.style.display = "inline-block"
             a.style.display = "none";
             c.style.display = "none";
             d.style.display = "none";
@@ -282,10 +384,6 @@
            // e.style.display = "inline-block";
             a.style.display = "none";
             b.style.display = "none";
-        }else {
-            c.style.display = "none";
-            d.style.display = "none";
-            //e.style.display = "none";
         }
 
         if (c.style.display == "none" && d.style.display == "none") {
@@ -305,15 +403,19 @@
             //e.style.display = "inline-block";
             a.style.display = "inline-block";
             b.style.display = "inline-block";
-        }else{
-            c.style.display = "none";
-            d.style.display = "none";
-            //e.style.display = "none";
-            a.style.display = "none";
-            b.style.display = "none";
+            onePet.style.display = "inline-block";
         }
     }
 
+    function confirmRoom(){
+        var popup = confirm("Are you sure you want to book this room?");
+        if(popup == true){
+            <?php header('Location: billing.php');
+            ?>
+        }else{
+
+        }
+    }
 
 
 </script>
