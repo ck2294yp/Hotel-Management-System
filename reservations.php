@@ -96,7 +96,9 @@ if ($_SESSION['loggedIn'] === 0){
                 ?>
                 <tr>
                     <td><?php echo $invoice['invoiceID']; ?></td>
-                    <td><?php echo $invoice['cardNum']; ?></td>
+                    <td><?php $ccNum = $invoice['cardNum'];
+                        echo $last4Digits = preg_replace( "#(.*?)(\d{4})$#", "$2", $ccNum); ?>
+                    </td>
                     <td style='display: none;'><?php echo $invoice['memID']; ?></td>
                     <td><?php $timestamp1 = strtotime($invoice['invoiceStartDate']);
                         echo date('m-d-Y',$timestamp1); ?></td>
@@ -133,7 +135,9 @@ if ($_SESSION['loggedIn'] === 0){
     <script
             src="https://code.jquery.com/jquery-3.4.0.min.js"
             integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="
-            crossorigin="anonymous"></script>
+            crossorigin="anonymous">
+
+    </script>
 
     <script>
         $(document).ready(function () {
