@@ -10,6 +10,7 @@ require_once "bin/inputSanitization.php";
 if (key_exists('loggedIn', $_SESSION)) {
     echo"<script> alert(\"You are already logged in! Redirecting you to the membership page...\"); </script>";
     header('Location: membersPage.php');
+    exit;
 }
 
 
