@@ -26,7 +26,7 @@ try {
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     # Queries the database to get the username and the password of the user.
-    $roomInfoStmt = $conn->prepare('SELECT * FROM `RoomType`');
+    $roomInfoStmt = $conn->prepare('SELECT * FROM `RoomType` ORDER BY `roomTypeID`');
     # Begins a transaction, if there are any changes (which there shouldn't be) rollback the changes.
     $conn->beginTransaction();
     $roomInfoStmt->execute();
@@ -164,7 +164,7 @@ try {
     <ul>
         <li><a href="membersPage.php">Member's Page</a></li>
         <li><a href="profilePage.php">Profile</a></li>
-        <li><a href="reservations.php" class="active">Reservations</a></li>
+        <li><a href="bookingHistory.php" class="active">Booking History</a></li>
     </ul>
 </nav>
 <!--search rooms section start-->
@@ -185,8 +185,8 @@ try {
                                                                  alt="Two bed hotel picture"></div>
         <div style="float: left;text-align: center;padding-left: 100px;"><h2>Two Bed Room</h2><p>Two bed room hotel room with <br>comfortable beds and clean bathroom.<br>
             Has a desk to do work on. <br>Also has a 40 inch TV with cable.</p></div>
-        <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($roomInfo[0]['pricePerNight']);?></p></div>
-        <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button id="twoBedButton"  class="bButton">Book</button></div>
+        <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($roomInfo[1]['pricePerNight']);?></p></div>
+        <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button id="twoBedButton" onclick="confirmRoomType(1)" class="bButton">Book</button></div>
     </div>
 </section>
 
@@ -197,8 +197,8 @@ try {
                                                                      alt="Two bed hotel picture"></div>
             <div style="float: left;text-align: center;padding-left: 100px;"><h2>Two Bed Pet Room</h2><p>Two bed room hotel room with <br>comfortable beds and clean bathroom.<br>
                 Has a desk to do work on. <br>Also has a 40 inch TV with cable.</p></div>
-            <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($roomInfo[1]['pricePerNight']);?></p></div>
-            <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button id="twoPetButton" onclick="confirmRoom(1)" class="bButton">Book</button></div>
+            <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($roomInfo[3]['pricePerNight']);?></p></div>
+            <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button id="twoPetButton" onclick="confirmRoomType(3)" class="bButton">Book</button></div>
         </div>
     </section>
 
@@ -209,8 +209,8 @@ try {
                                                                      alt="One bed hotel picture"></div>
             <div style="float: left;text-align: center;padding-left: 100px;"><h2>One Bed Room</h2><p>One bed Hotel room with <br>comfortable beds and clean bathroom.<br>
                 Has a desk to do work on. <br>Also has a 40 inch TV with cable.</p></div>
-            <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($roomInfo[1]['pricePerNight']);?></p></div>
-            <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button id="oneBedButton" onclick="confirmRoom(1)" class="bButton">Book</button></div>
+            <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($roomInfo[0]['pricePerNight']);?></p></div>
+            <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button id="oneBedButton" onclick="confirmRoomType(0)" class="bButton">Book</button></div>
         </div>
     </section>
 
@@ -221,8 +221,8 @@ try {
                                                                      alt="One bed hotel picture"></div>
             <div style="float: left;text-align: center;padding-left: 100px;"><h2>One Bed Pet Room</h2><p>One bed pet room with <br>comfortable beds and clean bathroom.<br>
                 Has a desk to do work on. <br>Also has a 40 inch TV with cable.</p></div>
-            <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($roomInfo[1]['pricePerNight']);?></p></div>
-            <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button id="onePetButton" onclick="confirmRoom(1)" class="bButton">Book</button></div>
+            <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($roomInfo[3]['pricePerNight']);?></p></div>
+            <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button id="onePetButton" onclick="confirmRoomType(3)" class="bButton">Book</button></div>
         </div>
     </section>
 
@@ -233,8 +233,8 @@ try {
                                                                      alt="Gaming room picture"></div>
             <div style="float: left;text-align: center;padding-left: 100px;"><h2>Gaming Room</h2><p>Gaming hotel room with <br>PS4, Xbox1, Nintendo Switch and PC.<br>
                 Includes many games. <br>Has a 4K TV with cable.</p></div>
-            <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($roomInfo[3]['pricePerNight']);?></p></div>
-            <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button id="gamingButton" onclick="confirmRoom(3)" class="bButton">Book</button></div>
+            <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($roomInfo[5]['pricePerNight']);?></p></div>
+            <div style="float: left;text-align: center;padding-left: 70px;"><br><br><br><br><button id="gamingButton" onclick="confirmRoomType(5)" class="bButton">Book</button></div>
         </div>
     </section>
 
@@ -257,8 +257,8 @@ try {
                                                                      alt="Chef room picture"></div>
             <div style="float: left;text-align: center;padding-left: 100px;"><h2>Chef Room</h2><p>Hotel room with a chef kitchen. <br>Includes microwave, oven, <br>refridgerator, utinsels and cutting boards.<br>
                 Comes with fruits and vegetables. <br>Includes meats such as<br> chicken, steak, and pork.</p></div>
-            <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($roomInfo[1]['pricePerNight']);?></p></div>
-            <div style="float: left;text-align: center;padding-left: 60px;"><br><br><br><br><button id="chefButton" onclick="confirmRoom(1)" class="bButton">Book</button></div>
+            <div style="float: left;text-align: center;padding-left: 100px;"><h2>Price</h2><p>$<?php  echo($roomInfo[11]['pricePerNight']);?></p></div>
+            <div style="float: left;text-align: center;padding-left: 60px;"><br><br><br><br><button id="chefButton" onclick="confirmRoomType(11)" class="bButton">Book</button></div>
         </div>
     </section>
     </form>
@@ -412,10 +412,10 @@ try {
     }
 
     // Find out what room the user wants and selects that as their desired room.
-    function confirmRoom(roomTypeID){
+    function confirmRoomType(roomTypeID){
         var popup = confirm("Are you sure you want to book this room?");
         if(popup == true){
-            window.location = "http://localhost:8081/billingPage.php?roomTypeID=1";
+            window.location = "http://localhost:8081/billingPage.php?roomTypeID=" + roomTypeID;
         // If user clicks "Cancel" then don't do anything (except close the prompt).
         }else{
 

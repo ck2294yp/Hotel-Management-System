@@ -81,7 +81,7 @@ try {
     <ul>
         <li><a href="membersPage.php" class="active">Member's Page</a></li>
         <li><a href="profilePage.php">Profile</a></li>
-        <li><a href="reservations.php">Reservations</a></li>
+        <li><a href="bookingHistory.php">Booking History</a></li>
     </ul>
 </nav>
 <section class="sec1Member">

@@ -34,7 +34,7 @@ if ($_SESSION['loggedIn'] === 0){
         $memInfo = $userInfoStmt->fetch(PDO::FETCH_ASSOC);
 
 
-        # Queries the database the reservations of the user.
+        # Queries the database the Booking History of the user.
         $getInvoiceStmt = $conn->prepare('select * from InvoiceReservation where `memId`=:memId order by invoiceStartDate DESC');
         $getInvoiceStmt->bindParam(':memId', $memInfo['memId'], PDO::PARAM_STR, 254);
         $getInvoiceStmt->execute();
@@ -57,7 +57,7 @@ if ($_SESSION['loggedIn'] === 0){
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Reservations</title>
+    <title>Booking History</title>
     <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
 <body>
@@ -78,7 +78,7 @@ if ($_SESSION['loggedIn'] === 0){
     <ul>
         <li><a href="membersPage.php">Member's Page</a></li>
         <li><a href="profilePage.php">Profile</a></li>
-        <li><a href="reservations.php" class="active">Reservations</a></li>
+        <li><a href="bookingHistory.php" class="active">Booking History</a></li>
     </ul>
 </nav>
 <section class="reservation">
@@ -87,7 +87,7 @@ if ($_SESSION['loggedIn'] === 0){
 
 <section class="sec2">
 
-    <h2>Reservations History</h2><br/>
+    <h2>Booking History</h2><br/>
 
         <table>
         <tr> <th>Invoice ID</th> <th>Card Number</th> <th style='display: none'>Member ID</th> <th>From</th> <th>To</th> <th>Cancel Reservation</th> </tr>

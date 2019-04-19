@@ -107,7 +107,7 @@ require_once "bin/inputSanitization.php";
 <h2>Welcome To Twin Cities Inn Booking Page</h2><hr>
 <div class="details">
 
-    <form action="searchRoom.html" METHOD="post">
+    <form action="searchRooms.html" METHOD="post">
 
         <table>
             <tr>

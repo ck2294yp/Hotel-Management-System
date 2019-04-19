@@ -14,20 +14,17 @@ require_once "bin/inputSanitization.php";
 //    exit;
 //}
 
-// Stops if no session exists.
+// Stops if user is not logged in.
 if (array_key_exists('loggedIn', $_SESSION) === false ) {
     echo "<script> alert(\"Your session has timed out, please sign in again.\"); </script>";
     header('Location: signIn.php');
     exit;
 }
 
-// TODO: Debug
-echo $_REQUEST['roomTypeID'];
-
-
 $_SESSION['username'] = @sanitizeEmail($_SESSION['username']);
 $_SESSION['loggedIn'] = @sanitizeNumString($_SESSION['loggedIn']);
-$_SESSION['roomTypeID'] = @sanitizeNumString($_REQUEST['roomTypeID']);
+# Also sets the value of the roomTypeID to be one more then what is specified (because that is how the array from the SLQ statement will parse it).
+$_SESSION['roomTypeID'] = @sanitizeNumString($_REQUEST['roomTypeID']+1);
 
 # Create array to hold the client's information.
 $memInfo = array();
@@ -45,7 +42,7 @@ try {
     $userInfoStmt = $conn->prepare('select memID, memEmail, memFname, memLname, memRewardPoints from `Member` where `memEmail`=:email');
     $userInfoStmt->bindParam(':email', $memInfo['username'], PDO::PARAM_STR, 254);
     # Queries the database to get all of needed room information.
-    $roomInfoStmt = $conn->prepare('select roomTypeID, pricePerNight, roomCatagory, roomNumBeds, roomAllowsPets from `RoomType` where `roomTypeID`=:roomTypeID');
+    $roomInfoStmt = $conn->prepare('select roomTypeID, pricePerNight, roomCatagory, roomNumBeds, roomAllowsPets from `RoomType` where `roomTypeID`=:roomTypeID ORDER BY `roomTypeID`');
     $roomInfoStmt->bindParam(':roomTypeID', $_SESSION['roomTypeID'], PDO::PARAM_STR, 254);
 
 
@@ -299,7 +296,7 @@ try {
     <ul>
         <li><a href="membersPage.php">Member's Page</a></li>
         <li><a href="profilePage.php">Profile</a></li>
-        <li><a href="reservations.php" class="active">Reservations</a></li>
+        <li><a href="bookingHistory.php" class="active">Booking History</a></li>
     </ul>
 </nav>
 
