@@ -87,7 +87,7 @@ if ($_SESSION['loggedIn'] === 0){
 
 <section class="sec2">
 
-    <h2>Your Reservations History</h2><br/>
+    <h2>Reservations History</h2><br/>
 
         <table>
         <tr> <th>Invoice ID</th> <th>Card Number</th> <th style='display: none'>Member ID</th> <th>From</th> <th>To</th> <th>Room Number</th> <th>Paid in full</th> <th>Cancel Reservation</th> </tr>";
@@ -132,7 +132,7 @@ if ($_SESSION['loggedIn'] === 0){
         <div class="popup">
             <p>Reservation is cancel, a confirmation will be send to your email.</p>
             <div class="text-right">
-                <button class="dialog-btn btn-exit" id="stop">Exit</button>
+                <button class="dialog-btn btn-exit" id="stop">Ok</button>
             </div>
         </div>
     </div>
@@ -156,6 +156,7 @@ if ($_SESSION['loggedIn'] === 0){
             });
             $('#stop').on('click', function () {
                 $('#dialog-container1').hide();
+                $('#btn-show-dialog').hide();
             });
 
         });
