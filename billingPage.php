@@ -199,7 +199,7 @@
         padding: 50px 0;
         text-align: center;
         margin-bottom: 20px;
-
+        display:none;
     }
 </style>
 <body>
@@ -222,17 +222,18 @@
             <select id = "myList">
                 <option value = ""> Select Payment Option</option>
             </select><br>
-            <button class = "button"onclick="myFunction()" >Add New Card</button>
+            <button class = "button"onclick="hideShowAddCardForm()" >Add New Card</button>
             <button class = "button" onclick = "bookRoom()" class = "process-btn">Pay Now</button>
                     </div>
                     <div class="column right" id = "myDIV">
                         <form class="credit-card form">
                             <div class="form-header">
-                                <h4 class="title">Credit card detail</h4>
+                                <h4 class="title">Add New Payment</h4>
                             </div>
 
                             <div class="form-body">
                                 <!-- Card Number -->
+                                <input type="text" class="card-number" placeholder="Name">
                                 <input type="text" class="card-number" placeholder="Card Number">
 
                                 <!-- Date Field -->
@@ -284,20 +285,27 @@
                         </form>
         </div>
     </div>
-
+<script
+        src="https://code.jquery.com/jquery-3.4.0.min.js"
+        integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="
+        crossorigin="anonymous"></script>
 <script>
     function bookRoom() {
         alert("Thank you for booking with TCI, We look forward to seeing you soon!");
 
     }
-    function myFunction() {
-        var x = document.getElementById("myDIV");
-        if (x.style.display === "none") {
-            x.style.display = "block";
+    function hideShowAddCardForm() {
+
+        var addCardForm = document.getElementById("myDIV");
+
+        if (addCardForm.style.display === "block") {
+            addCardForm.style.display = "none";
+
         } else {
-            x.style.display = "none";
+            addCardForm.style.display = "block";
         }
     }
+
 </script>
 <footer class = "footer" style = padding-bottom: 20px "text-align: center">
     <nav>
