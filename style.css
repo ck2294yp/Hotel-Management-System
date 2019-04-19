@@ -209,21 +209,13 @@ th {
     width: 150px;
     text-align: center;
     padding: 5px;
+    border-style: solid;
+    border-width: 5px;
+    border-color: gray;
 }
 td {
-    padding: 5px;
-}
-
-button {
-    background-color: gray;
-    border: none;
-    color: white;
-    font-size: 1em;
-    padding: 5px 80px;
     text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    cursor: pointer;
+    padding: 5px;
 }
 
 /* End Reservation Page*/
@@ -268,4 +260,80 @@ nav ul li a {
 nav ul li a:hover,
 nav ul li a.active {
     background: #ff0000;
+}
+
+
+.popup {
+    width: 80%;
+    padding: 15px;
+    left: 0;
+    margin-left: 5%;
+    border: 1px solid rgb(1,82,73);
+    border-radius: 10px;
+    color: gray;
+    background: white;
+    position: absolute;
+    top: 45%;
+    box-shadow: 5px 5px 5px #000;
+    z-index: 10001;
+    font-weight: 700;
+    text-align: center;
+}
+
+.overlay {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,.8);
+    z-index: 10000;
+    display :none;
+}
+
+@media (min-width: 768px) {
+    .popup {
+        width: 66.66666666%;
+        margin-left: 16.666666%;
+    }
+}
+@media (min-width: 992px) {
+    .popup {
+        width: 80%;
+        margin-left: 25%;
+    }
+}
+@media (min-width: 1200px) {
+    .popup {
+        width: 33.33333%;
+        margin-left: 33.33333%;
+    }
+}
+
+.dialog-btn {
+    background-color: gray;
+    color: white;
+    font-weight: 700;
+    border-radius: 10px;
+    height: 30px;
+    width: 30%;
+    cursor: pointer;
+
+}
+.dialog-btn:hover {
+    background-color:darkgray;
+    cursor: pointer;
+}
+
+input.cancel {
+    background-color: gray;
+    border-radius: 10px;
+    color: white;
+    font-size: 1em;
+    padding: 5px 80px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
 }

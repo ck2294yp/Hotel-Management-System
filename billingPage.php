@@ -1,7 +1,4 @@
-<?php
 
-
-?>
 
 <html lang="en">
 <head>
@@ -18,21 +15,9 @@
         box-sizing: border-box;
     }
     .button {
-        background-color: #4CAF50;
-        border: none;
-        color: white;
-        padding: 20px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        margin: 4px 2px;
+        margin-bottom: 250px;
     }
-    .button2 {border-radius: 4px;}
-    .column {
-        float: left;
-        width: 50%;
-    }
+
 
     /* Clear floats after the columns */
     .row:after {
@@ -59,11 +44,11 @@
     }
 
     .left {
-        width: 60%;
+        width: 70%;
     }
 
     .right {
-        width: 40%;
+        width: 30%;
     }
 
     /* Clear floats after the columns */
@@ -73,9 +58,6 @@
         clear: both;
         padding: 0px;
     }
-    .addNewButtonPaddingTop{
-        padding-top: -50px;
-         }
     body,
     html {
         height: 100%;
@@ -91,7 +73,7 @@
     .credit-card {
         width: 360px;
         height: 400px;
-        margin: 60px auto 0;
+        margin: -50px auto 0;
         border: 1px solid #ddd;
         border-radius: 6px;
         background-color: #fff;
@@ -213,7 +195,12 @@
     .alignLeft{
         text-align: left;
     }
-
+    #myDIV {
+        padding: 50px 0;
+        text-align: center;
+        margin-bottom: 20px;
+        display:none;
+    }
 </style>
 <body>
 <nav>
@@ -225,7 +212,7 @@
     </ul>
 </nav>
 
-    <h2> Billing Information</h2>
+   <center> <h2> Billing Information</h2></center>
     <div class="row">
         <div class="column left" >
             <h2>Checkout Details</h2>
@@ -235,16 +222,18 @@
             <select id = "myList">
                 <option value = ""> Select Payment Option</option>
             </select><br>
-            <button type = "submit" >Add New Card</button>
+            <button class = "button"onclick="hideShowAddCardForm()" >Add New Card</button>
+            <button class = "button" onclick = "bookRoom()" class = "process-btn">Pay Now</button>
                     </div>
-                    <div class="column right" >
+                    <div class="column right" id = "myDIV">
                         <form class="credit-card form">
                             <div class="form-header">
-                                <h4 class="title">Credit card detail</h4>
+                                <h4 class="title">Add New Payment</h4>
                             </div>
 
                             <div class="form-body">
                                 <!-- Card Number -->
+                                <input type="text" class="card-number" placeholder="Name">
                                 <input type="text" class="card-number" placeholder="Card Number">
 
                                 <!-- Date Field -->
@@ -296,12 +285,27 @@
                         </form>
         </div>
     </div>
-    <button onclick = "bookRoom()" class = "process-btn">Pay Now</button>
+<script
+        src="https://code.jquery.com/jquery-3.4.0.min.js"
+        integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="
+        crossorigin="anonymous"></script>
 <script>
     function bookRoom() {
         alert("Thank you for booking with TCI, We look forward to seeing you soon!");
 
     }
+    function hideShowAddCardForm() {
+
+        var addCardForm = document.getElementById("myDIV");
+
+        if (addCardForm.style.display === "block") {
+            addCardForm.style.display = "none";
+
+        } else {
+            addCardForm.style.display = "block";
+        }
+    }
+
 </script>
 <footer class = "footer" style = padding-bottom: 20px "text-align: center">
     <nav>
