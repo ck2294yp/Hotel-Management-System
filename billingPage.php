@@ -359,7 +359,7 @@ try {
     <div class="column right" id="newCardEntry">
         <form class="credit-card form>
             <div class="form-header"
-            <h4 class="title">Add New Form of Payment</h4>>
+            <h4 class="title">Add New Form of Payment</h4>
 
             <div class="form-body">
                 <!-- Card Number -->

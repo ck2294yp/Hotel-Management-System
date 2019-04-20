@@ -110,7 +110,7 @@ try {
         <div class="bookNow">
             <h2 style="font-style: italic">Make Reservation</h2>
             <p>Rooms can be booked from our website or in person.</p>
-            <p>You can use reward points, cash, or credit when booking a room.</p>
+            <p>You can use reward points or credit when booking a room.</p>
             <button class="bookNow"onclick="window.location.href = 'searchRooms.php';">Book Now</button><br/><br/>
         </div>
     </div>
