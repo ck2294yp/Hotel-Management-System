@@ -323,7 +323,7 @@ try {
 <div class="row">
     <div class="column left">
         <h2>Checkout Details</h2>
-        <h4>
+        <div>
             <p>
                 <br> Room Type: <?php echo(ucfirst($roomInfo['roomCatagory'])); ?>
                 <br> Number of Beds: <?php echo($roomInfo['roomNumBeds']); ?>
@@ -354,12 +354,12 @@ try {
             <br>
             <button class="button" onclick="hideShowAddCardForm()">Add New Card</button>
             <button class="button" onclick="bookRoom()" class="process-btn">Pay Now</button>
+        </div>
     </div>
     <div class="column right" id="newCardEntry">
-        <form class="credit-card-form>
-            <div class="form-header">
-                <h4 class="title">Add New Form of Payment</h4>
-            </div>
+        <form class="credit-card form>
+            <div class="form-header"
+            <h4 class="title">Add New Form of Payment</h4>>
 
             <div class="form-body">
                 <!-- Card Number -->
@@ -411,7 +411,7 @@ try {
                 </div>
 
                 <!-- Buttons -->
-                <button type="submit" class="proceed-btn"><a href="billingPage.php">Add Card</a></button
+                <button type="submit" class="proceed-btn"><a href="billingPage.php">Add Card</a></button>
             </div>
         </form>
     </div>
@@ -429,7 +429,6 @@ try {
     function hideShowAddCardForm() {
 
         var newCardEntry = document.getElementById("newCardEntry");
-        var inputFeilds = document.getElementById("newCardEntry");
 
         if (newCardEntry.style.display === "block") {
             newCardEntry.style.display = "none";
