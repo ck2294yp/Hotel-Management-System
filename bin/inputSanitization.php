@@ -53,12 +53,12 @@ function sanitizeNumString($input) {
 }
 
 # Sanitizes date values.
-function sanitizeDateString($input) {
-    if (isset($input) && preg_match('/[0-9\-]/', $input)) {
-        $input = stripslashes($input);
-        $input = htmlspecialchars($input);
-        $input = trim($input);
-        return $input;
+function sanitizeDateString($dateString) {
+    if (isset($dateString) && preg_match('/[0-9\-]/', $dateString)) {
+        $dateString = stripslashes($dateString);
+        $dateString = htmlspecialchars($dateString);
+        $dateString = trim($dateString);
+        return $dateString;
     } else {
         return false;
     }

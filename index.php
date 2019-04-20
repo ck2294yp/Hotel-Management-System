@@ -9,7 +9,6 @@ $maxStartDate = date_format(date_add($todayDate, date_interval_create_from_date_
 $minEndDate = date_format(date_add($todayDate, date_interval_create_from_date_string('+2 days')), 'Y-m-d');
 $maxEndDate = $maxStartDate = date_format(date_add($todayDate, date_interval_create_from_date_string('+5 years +1 day')), 'Y-m-d');
 
-
 // If the user chooses a variable in the calenders. Sanitize and do a "Sanity check" on it. If all is well, store dates as a $_SESSION variable.
 if (sizeof($_REQUEST) > 0) {
     # Imports a required library.
@@ -31,12 +30,20 @@ if (sizeof($_REQUEST) > 0) {
         $_REQUEST = "";
         $checkInDate = "";
         $checkOutDate = "";
-        // If There are no problems. Then set the session to hold the values. Send the user to the "Searching rooms" page. (which will redirect
-        // them to the sign in page if user is not already logged in).
+
+    // If There are no problems. Then set the session to hold the values. Send the user to the "Searching rooms" page. (which will redirect
+      // them to the sign in page if user is not already logged in).
     } else {
-        $_SESSION['checkInDate'] = $_REQUEST['checkInDate'];
-        $_SESSION['checkInDate'] = $_REQUEST['checkOutDate'];
-        $_SESSION['stayDuration'] = $_REQUEST['checkInDate'] - $_REQUEST['checkInDate'];
+        $_SESSION['checkInDate'] = $checkInDate;
+        $_SESSION['checkOutDate'] = $checkOutDate;
+
+        // Convert Date string back into date variables.
+        $checkInDate  = DateTime::createFromFormat('Y-m-d', $checkInDate);
+        $checkOutDate = DateTime::createFromFormat('Y-m-d', $checkOutDate);
+
+
+        // Get the stay duration.
+        $_SESSION['stayDuration'] = (date_diff($checkInDate,$checkOutDate))->format("%a");
         header('Location: searchRooms.php');
         exit;
     }
