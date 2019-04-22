@@ -28,7 +28,7 @@ try {
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     # Queries the database to get the username and the password of the user.
-    $userInfoStmt = $conn->prepare('select memID, memEmail, memFname, memLname, createdAt, updatedAt, memRewardPoints from `Member` where `memEmail`=:email');
+    $userInfoStmt = $conn->prepare('SELECT * FROM `Member` INNER JOIN `Address` USING(memID) WHERE `memEmail`=:email');
     $userInfoStmt->bindParam(':email', $memInfo['username'], PDO::PARAM_STR, 254);
 
     # Begins a transaction, if there are any changes (which there shouldn't be) rollback the changes.
@@ -42,7 +42,7 @@ try {
 
     # Gets the member's account details from out of the database query.
     $userInfoStmt->setFetchMode(PDO::FETCH_ASSOC);
-    $memInfo = $userInfoStmt->fetch(PDO::FETCH_ASSOC);
+    $memInfo = $userInfoStmt->fetchAll(PDO::FETCH_ASSOC);
 
 } catch (PDOException $e) {
     # Rollback any changes to the database (if possible).
@@ -94,7 +94,7 @@ try {
     </ul>
 </nav>
 <section class="sec1Member">
-    <h3><?php echo($memInfo['memFname']); ?>'s Account Information </h3>
+    <h3><?php echo($memInfo[0]['memFname']); ?>'s Account Information </h3>
 </section>
 
 
@@ -103,13 +103,27 @@ try {
         <div class="profileName">
             <h2 style="font-style: italic">Current Account Information</h2>
 
-            Username/Email Address: <?php echo($memInfo['memEmail']); ?> <br>
+            <u>Username/Email Address:</u> <?php echo($memInfo[0]['memEmail']); ?> <br>
 
-            <p>Name: <?php echo($memInfo['memFname'] . " " . $memInfo['memLname'] . "!"); ?>  </p>
-            <p>Member ID: <?php echo($memInfo['memID']); ?>  </p>
-            <p>Mailing Address: <?php ?> </p>
-            <p>Billing Address: <?php ?> </p>
-            <p>Member Since: <?php echo(date('M Y', strtotime($memInfo['createdAt']))); ?>  </p>
+            <p><u>Name:</u> <?php echo($memInfo[0]['memFname'] . " " . $memInfo[0]['memLname'] . "!"); ?>  </p>
+            <p><u>Member ID:</u> <?php echo($memInfo[0]['memID']); ?>  </p>
+            <p><u>Mailing Address:</u>
+                <?php
+                echo('<br>'.$memInfo[0]['addressBuildNum'].' '.$memInfo[0]['addressStreetName']);
+                echo('<br>'.$memInfo[0]['addressCity'].', '.$memInfo[0]['addressProvence'].' '.$memInfo[0]['addressZip']);
+                if ($memInfo[0]['addressAptNum'] != null){
+                    echo('<br> Apartment Number: '. $memInfo[0]['addressAptNum']);
+                }
+                ?> </p>
+            <p><u>Billing Address:</u>
+                <?php
+                echo('<br>'.$memInfo[1]['addressBuildNum'].' '.$memInfo[1]['addressStreetName']);
+                echo('<br>'.$memInfo[1]['addressCity'].', '.$memInfo[1]['addressProvence'].' '.$memInfo[1]['addressZip']);
+                if ($memInfo[1]['addressAptNum'] != null){
+                    echo('<br> Apartment Number: '. $memInfo[1]['addressAptNum']);
+                }
+                ?> </p>
+            <p><u>Member Since:</u> <?php echo(date('M Y', strtotime($memInfo[0]['createdAt']))); ?>  </p>
             <br/><br/>
             <br>
         </div>
@@ -117,7 +131,7 @@ try {
         <div class="navButton">
             <button onclick="showChangeUser()">Change Username/Email</button><br/>
             <button onclick="showChangePassword()">Change Password</button><br/>
-            <button onclick="showChargeCard()">View Charge Card</button><br/><br/><br/>
+            <button onclick="showChargeCard()">Change Charge Card</button><br/><br/><br/>
             <button id="showDeleteAccount" style="background-color: red">Delete Account</button><br/>
         </div>
         <div class="changeSide">
