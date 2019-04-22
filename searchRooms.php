@@ -122,7 +122,7 @@ try {
             font-weight: bold;
         }
         body {
-            background-color: #DBDBDB;
+            background-color: white;
 
         }
 
@@ -164,17 +164,17 @@ try {
     <ul>
         <li><a href="membersPage.php">Member's Page</a></li>
         <li><a href="accountInformationPage.php">Account Information</a></li>
-        <li><a href="bookingHistory.php" class="active">Booking History</a></li>
+        <li><a href="bookingHistory.php">Booking History</a></li>
     </ul>
 </nav>
 <!--search rooms section start-->
 <div style="width: 100%;padding-left: 4px;">
 <div style="float: left; height: auto; width: 20%;">
     <h2 style="text-align: left">Filter by:</h2>
-    <button onclick="oneBedRoom()">One Bed</button><br><br>
-    <button onclick="twoBedRoom()" >Two Bed</button><br><br>
-    <button onclick="specialtyRoom()">Specialty Room</button><br><br>
-    <button onclick="allRooms()">All</button>
+    <button onclick="oneBedRoom()" style="width: 60%">One Bed</button><br><br>
+    <button onclick="twoBedRoom()" style="width: 60%">Two Bed</button><br><br>
+    <button onclick="specialtyRoom()" style="width: 60%">Specialty Room</button><br><br>
+    <button onclick="allRooms()" style="width: 60%">Show All</button>
 </div>
 <div style="float: right; height: 700px ;width:80%;">
     <h2 style="text-align: left;">Available Rooms</h2>
@@ -424,6 +424,7 @@ try {
 
 
 </script>
+
 
 </body>
 </html>
