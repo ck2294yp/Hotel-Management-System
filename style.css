@@ -169,7 +169,6 @@ section.sec2Member {
     text-align: center;
 }
 
-
 .gridMember > div button {
     background-color: orange;
     border: none;
@@ -182,6 +181,27 @@ section.sec2Member {
     margin: 4px 2px;
     cursor: pointer;
 }
+
+/* Start Profile Page */
+.gridMember > div.profileName {
+    text-align: center;
+}
+
+.gridMember > div.navButton {
+    text-align: center;
+    padding-top: 70px;
+}
+
+.gridMember > div.changeSide {
+    text-align: left;
+}
+
+
+
+
+/* End Profile page */
+
+
 /*  Style for Member page - End */
 
 
@@ -262,7 +282,7 @@ nav ul li a.active {
     background: #ff0000;
 }
 
-
+/* For Reservation popup */
 .popup {
     width: 80%;
     padding: 15px;
@@ -317,7 +337,7 @@ nav ul li a.active {
     font-weight: 700;
     border-radius: 10px;
     height: 30px;
-    width: 30%;
+    width: 40%;
     cursor: pointer;
 
 }
@@ -335,5 +355,24 @@ input.cancel {
     text-align: center;
     text-decoration: none;
     display: inline-block;
+    cursor: pointer;
+}
+
+/* End reservation popup */
+
+div.navButton button {
+    width: 80%;
+}
+
+.dialog-btn2 {
+    background-color: gray;
+    color: white;
+    border-radius: 10px;
+    width: 40%;
+    cursor: pointer;
+
+}
+.dialog-btn2:hover {
+    background-color:black;
     cursor: pointer;
 }
