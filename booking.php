@@ -13,6 +13,18 @@ require_once "bin/inputSanitization.php";
     <meta charset="UTF-8">
     <title>Booking page</title>
     <link rel="stylesheet" href="style.css" type="text/css" />
+
+    <script>
+        function compareDates(){
+            let date1 = $("#checkInDate").val();
+            let date2 = $("#checkOutDate").val();
+
+            if(new Date(date1) < new Date(date2)){
+                alert("Date Error");
+            }
+
+        }
+    </script>
 </head>
 
 <style>
@@ -101,7 +113,7 @@ require_once "bin/inputSanitization.php";
 <h2>Welcome To Twin Cities Inn Booking Page</h2><hr>
 <div class="details">
 
-    <form action="searchRooms.html" METHOD="post">
+    <form action="searchRooms.php" METHOD="post">
 
         <table>
             <tr>
@@ -109,11 +121,11 @@ require_once "bin/inputSanitization.php";
                 <th>*Checkout Date</th>
             </tr>
             <tr>
-                <th>
-                    <input type="date" id="checkInDate" name="checkInDate" min="2019-03-24" required>
+                <th><?php $minDate = time()?>
+                    <input type="date" id="checkInDate" name="checkInDate" min="<?php echo date('Y-m-d', $minDate)?>" required>
                 </th>
                 <th>
-                    <input type="date" id="checkOutDate" name="checkOutDate" max="2021-03-24" required>
+                    <input type="date" id="checkOutDate" name="checkOutDate" max="2021-12-31" required>
                 </th>
             </tr>
         </table>
@@ -121,7 +133,7 @@ require_once "bin/inputSanitization.php";
 
 
 
-
+        <!--
         <select name="roomType" required>
 
 
@@ -145,9 +157,10 @@ require_once "bin/inputSanitization.php";
         <br><br>
         <input id="numberOfPets" type="number" name="numberOfPets" min="0" max="2" placeholder="     Select Number of Pets (optional)">
         <br><br>
+        -->
 
 
-        <input type="submit" value="Search">
+        <input type="submit" value="Search" onclick="compareDates()">
 
 
 
