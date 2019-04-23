@@ -56,12 +56,10 @@
                 <li><a href="/index.php">Home</a></li>
                 <li><a href="/aboutUs.php">About</a></li>
                 <li><a href="/whyTci.php">Why TCI?</a></li>
-                <li><a href="/bin/signOut.php">Sign Out</a></li>
-                <br>
-                <br>
                 <li><a href="/membersPage.php">Member's Page</a></li>
                 <li><a href="/accountInformationPage.php">Account Information</a></li>
                 <li><a href="/bookingHistory.php">Booking History</a></li>
+                <li><a href="/bin/signOut.php">Sign Out</a></li>
             </ul>
         </div>
         <?php
