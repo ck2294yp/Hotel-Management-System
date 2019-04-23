@@ -62,7 +62,6 @@ try {
     <meta charset="UTF-8">
     <title>Account Information Page</title>
     <link rel="stylesheet" href="style.css" type="text/css"/>
-
     <style>
         label:hover {
             background: #f2f5ff;
@@ -78,21 +77,9 @@ try {
     <h1> Twin Cities Inn</h1>
 </header>
 
-<nav>
-    <ul>
-        <li><a href="index.php">Home</a></li>
-        <li><a href="aboutUs.html">About</a></li>
-        <li><a href="whyTci.html">Why TCI?</a></li>
-        <li><a href="bin/signOut.php">Sign Out</a></li>
-    </ul>
-</nav>
-<nav style="top: 50px;">
-    <ul>
-        <li><a href="membersPage.php">Member's Page</a></li>
-        <li><a href="accountInformationPage.php" class="active">Account Information</a></li>
-        <li><a href="bookingHistory.php">Booking History</a></li>
-    </ul>
-</nav>
+<?php include 'bin/nav.php'; ?>
+
+
 <section class="sec1Member">
     <h3><?php echo($memInfo[0]['memFname']); ?>'s Account Information </h3>
 </section>
