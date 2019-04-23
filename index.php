@@ -201,14 +201,10 @@ if (sizeof($_REQUEST) > 0) {
     <img src="https://tbncdn.freelogodesign.org/4fc3ec1c-1e7a-4304-b812-4b6b0bdb6b68.png?1553471553913">
     <h1 class="headOne"> Twin Cities Inn</h1>
 </header>
-<nav>
-    <ul>
-        <li><a href="index.php" class="active">Home</a></li>
-        <li><a href="aboutUs.html">About</a></li>
-        <li><a href="whyTci.html">Why TCI?</a></li>
-        <li><a href="signIn.php">Sign In</a></li>
-    </ul>
-</nav>
+
+
+<!--Navigation Bar-->
+<?php include 'bin/nav.php'; ?>
 
 <!-- testing check out date -->
 

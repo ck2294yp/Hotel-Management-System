@@ -152,21 +152,10 @@ try {
     <img src="https://tbncdn.freelogodesign.org/4fc3ec1c-1e7a-4304-b812-4b6b0bdb6b68.png?1553471553913">
     <h1 class="headOne"> Twin Cities Inn</h1>
 </header>
-<nav>
-    <ul>
-        <li><a href="index.php">Home</a> </li>
-        <li><a href="aboutUs.html">About</a> </li>
-        <li><a href="whyTci.html">Why TCI?</a> </li>
-        <li><a href="bin/signOut.php">Sign Out</a> </li>
-    </ul>
-</nav>
-<nav style="top: 50px;">
-    <ul>
-        <li><a href="membersPage.php">Member's Page</a></li>
-        <li><a href="accountInformationPage.php">Account Information</a></li>
-        <li><a href="bookingHistory.php">Booking History</a></li>
-    </ul>
-</nav>
+
+<!--Navigation Bar-->
+<?php include 'bin/nav.php'; ?>
+
 <!--search rooms section start-->
 <div style="width: 100%;padding-left: 4px;">
 <div style="float: left; height: auto; width: 20%;">

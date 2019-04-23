@@ -303,21 +303,9 @@ try {
     }
 </style>
 <body>
-<nav>
-    <ul>
-        <li><a href="index.php">Home</a></li>
-        <li><a href="aboutUs.html">About</a></li>
-        <li><a href="whyTci.html">Why TCI?</a></li>
-        <li><a href="bin/signOut.php">Sign Out</a></li>
-    </ul>
-</nav>
-<nav style="top: 50px;">
-    <ul>
-        <li><a href="membersPage.php">Member's Page</a></li>
-        <li><a href="accountInformationPage.php">Profile</a></li>
-        <li><a href="bookingHistory.php" class="active">Booking History</a></li>
-    </ul>
-</nav>
+
+<!--Navigation Bar-->
+<?php include 'bin/nav.php'; ?>
 
 <center><h2> Billing Information</h2></center>
 <div class="row">

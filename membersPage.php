@@ -69,21 +69,10 @@ try {
     <h1> Twin Cities Inn</h1>
 </header>
 
-<nav>
-    <ul>
-        <li><a href="index.php">Home</a></li>
-        <li><a href="aboutUs.html">About</a></li>
-        <li><a href="whyTci.html">Why TCI?</a></li>
-        <li><a href="bin/signOut.php">Sign Out</a></li>
-    </ul>
-</nav>
-<nav style="top: 50px;">
-    <ul>
-        <li><a href="membersPage.php" class="active">Member's Page</a></li>
-        <li><a href="accountInformationPage.php">Account Information</a></li>
-        <li><a href="bookingHistory.php">Booking History</a></li>
-    </ul>
-</nav>
+<!--Navigation Bar-->
+<?php include 'bin/nav.php'; ?>
+
+
 <section class="sec1Member">
     <h3> Welcome back, <?php echo($memInfo['memFname']); ?>! </h3>
 </section>

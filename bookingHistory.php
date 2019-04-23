@@ -46,7 +46,7 @@ if ($_SESSION['loggedIn'] === 0){
     } catch (PDOException $e) {
         # Sends a JavaScript alert message back to the user notifying them that there was an error processing their request.
         echo "<script> alert(\"We are sorry, there seems to be a problem with our systems. Please try again. If problems still persist, please notify TCI at 651-000-0000.\"); </script>";
-        #header('Location: membersPage.php');
+        header('Location: membersPage.php');
     }
 
 }
@@ -66,21 +66,9 @@ if ($_SESSION['loggedIn'] === 0){
     <h1> Twin Cities Inn</h1>
 </header>
 
-<nav>
-    <ul>
-        <li><a href="index.php">Home</a> </li>
-        <li><a href="aboutUs.html">About</a> </li>
-        <li><a href="whyTci.html">Why TCI?</a> </li>
-        <li><a href="bin/signOut.php">Sign Out</a> </li>
-    </ul>
-</nav>
-<nav style="top: 50px;">
-    <ul>
-        <li><a href="membersPage.php">Member's Page</a></li>
-        <li><a href="accountInformationPage.php">Account Information</a></li>
-        <li><a href="bookingHistory.php" class="active">Booking History</a></li>
-    </ul>
-</nav>
+<!--Navigation Bar-->
+<?php include 'bin/nav.php'; ?>
+
 <section class="reservation">
 
 </section>

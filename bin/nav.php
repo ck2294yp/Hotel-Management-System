@@ -44,14 +44,18 @@
 
 
     <?php
+
+    @session_start();
+
+
     // If user IS logged in.
     if (array_key_exists('loggedIn', $_SESSION) === true) {
         ?>
         <div class="topnav">
             <ul>
                 <li><a href="/index.php">Home</a></li>
-                <li><a href="/aboutUs.html">About</a></li>
-                <li><a href="/whyTci.html">Why TCI?</a></li>
+                <li><a href="/aboutUs.php">About</a></li>
+                <li><a href="/whyTci.php">Why TCI?</a></li>
                 <li><a href="/bin/signOut.php">Sign Out</a></li>
                 <br>
                 <br>
@@ -66,9 +70,9 @@
         <div class="topnav">
             <ul>
                 <li><a href="/index.php">Home</a></li>
-                <li><a href="/aboutUs.html">About</a></li>
-                <li><a href="/whyTci.html">Why TCI?</a></li>
-                <li><a href="/signUp.php">Sign In/Sign Up</a></li>
+                <li><a href="/aboutUs.php">About</a></li>
+                <li><a href="/whyTci.php">Why TCI?</a></li>
+                <li><a href="/signIn.php">Sign In/Sign Up</a></li>
             </ul>
         </div>
         <?php

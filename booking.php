@@ -94,16 +94,10 @@ require_once "bin/inputSanitization.php";
     <img src="https://tbncdn.freelogodesign.org/4fc3ec1c-1e7a-4304-b812-4b6b0bdb6b68.png?1553471553913">
     <h1> Twin Cities Inn</h1>
 </header>
-<nav>
-    <ul>
-        <li><a href="#">Home</a> </li>
-        <li><a href="#" class="active">About</a> </li>
-        <li><a href="#">Amenities</a> </li>
-        <li><a href="#">Specialty Rooms</a> </li>
-        <li><a href="#">Contact</a> </li>
-        <li><a href="#">Sign In</a> </li>
-    </ul>
-</nav>
+
+<!--Navigation Bar-->
+<?php include 'bin/nav.php'; ?>
+
 <h2>Welcome To Twin Cities Inn Booking Page</h2><hr>
 <div class="details">
 

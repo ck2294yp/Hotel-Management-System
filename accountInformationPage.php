@@ -6,7 +6,7 @@ require_once "settings/settings.php";
 require_once "bin/inputSanitization.php";
 
 // Stops if no session exists.
-if (array_key_exists('loggedIn', $_SESSION) === false ) {
+if (array_key_exists('loggedIn', $_SESSION) === false) {
     echo "<script> alert(\"Your session has timed out, please sign in again.\"); </script>";
     header('Location: signIn.php');
     exit;
@@ -65,8 +65,8 @@ try {
     <style>
         label:hover {
             background: #f2f5ff;
-            border-radius:5px;
-            padding:2px 4px;
+            border-radius: 5px;
+            padding: 2px 4px;
         }
     </style>
 
@@ -77,8 +77,8 @@ try {
     <h1> Twin Cities Inn</h1>
 </header>
 
+<!--Navigation Bar-->
 <?php include 'bin/nav.php'; ?>
-
 
 <section class="sec1Member">
     <h3><?php echo($memInfo[0]['memFname']); ?>'s Account Information </h3>
@@ -96,18 +96,18 @@ try {
             <p><u>Member ID:</u> <?php echo($memInfo[0]['memID']); ?>  </p>
             <p><u>Mailing Address:</u>
                 <?php
-                echo('<br>'.$memInfo[0]['addressBuildNum'].' '.$memInfo[0]['addressStreetName']);
-                echo('<br>'.$memInfo[0]['addressCity'].', '.$memInfo[0]['addressProvence'].' '.$memInfo[0]['addressZip']);
-                if ($memInfo[0]['addressAptNum'] != null){
-                    echo('<br> Apartment Number: '. $memInfo[0]['addressAptNum']);
+                echo('<br>' . $memInfo[0]['addressBuildNum'] . ' ' . $memInfo[0]['addressStreetName']);
+                echo('<br>' . $memInfo[0]['addressCity'] . ', ' . $memInfo[0]['addressProvence'] . ' ' . $memInfo[0]['addressZip']);
+                if ($memInfo[0]['addressAptNum'] != null) {
+                    echo('<br> Apartment Number: ' . $memInfo[0]['addressAptNum']);
                 }
                 ?> </p>
             <p><u>Billing Address:</u>
                 <?php
-                echo('<br>'.$memInfo[1]['addressBuildNum'].' '.$memInfo[1]['addressStreetName']);
-                echo('<br>'.$memInfo[1]['addressCity'].', '.$memInfo[1]['addressProvence'].' '.$memInfo[1]['addressZip']);
-                if ($memInfo[1]['addressAptNum'] != null){
-                    echo('<br> Apartment Number: '. $memInfo[1]['addressAptNum']);
+                echo('<br>' . $memInfo[1]['addressBuildNum'] . ' ' . $memInfo[1]['addressStreetName']);
+                echo('<br>' . $memInfo[1]['addressCity'] . ', ' . $memInfo[1]['addressProvence'] . ' ' . $memInfo[1]['addressZip']);
+                if ($memInfo[1]['addressAptNum'] != null) {
+                    echo('<br> Apartment Number: ' . $memInfo[1]['addressAptNum']);
                 }
                 ?> </p>
             <p><u>Member Since:</u> <?php echo(date('M Y', strtotime($memInfo[0]['createdAt']))); ?>  </p>
@@ -116,10 +116,14 @@ try {
         </div>
 
         <div class="navButton">
-            <button onclick="showChangeUser()">Change Username/Email</button><br/>
-            <button onclick="showChangePassword()">Change Password</button><br/>
-            <button onclick="showChargeCard()">Change Charge Card</button><br/><br/><br/>
-            <button id="showDeleteAccount" style="background-color: red">Delete Account</button><br/>
+            <button onclick="showChangeUser()">Change Username/Email</button>
+            <br/>
+            <button onclick="showChangePassword()">Change Password</button>
+            <br/>
+            <button onclick="showChargeCard()">Change Charge Card</button>
+            <br/><br/><br/>
+            <button id="showDeleteAccount" style="background-color: red">Delete Account</button>
+            <br/>
         </div>
         <div class="changeSide">
             <div id="changeUser" style="display: none">
@@ -157,59 +161,61 @@ try {
                        autocorrect="on"
                        title="Enter a email address."/><br/><br/>
 
-                <button class="makeChange" style="text-align: center;">Submit</button><br/><br/>
+                <button class="makeChange" style="text-align: center;">Submit</button>
+                <br/><br/>
 
             </div>
 
 
             <div id="changePassword" style="display: none">
-            <h2 style="font-style: italic">Change Password</h2><br/><br/>
-            <label class="pull-left">Current password: </label>
-            <input class="clickedit"
-                   type="text"
-                   name="memPasswd"
-                   id="memPasswd"
-                   minlength="8"
-                   maxlength="254"
-                   title="Passwords must be:
+                <h2 style="font-style: italic">Change Password</h2><br/><br/>
+                <label class="pull-left">Current password: </label>
+                <input class="clickedit"
+                       type="text"
+                       name="memPasswd"
+                       id="memPasswd"
+                       minlength="8"
+                       maxlength="254"
+                       title="Passwords must be:
                  - Between 8 at 254 characters long.
                  - Contain at least ONE capital letter.
                  - Contain at least ONE lowercase letter.
                  - Contain at least ONE number.
                  - Contain at least ONE special character."
-                   pattern="(?=.{8,256})(?=.*?[^\w\s])(?=.*?[0-9])(?=.*?[A-Z]).*?[a-z].*"/><br/><br/>
+                       pattern="(?=.{8,256})(?=.*?[^\w\s])(?=.*?[0-9])(?=.*?[A-Z]).*?[a-z].*"/><br/><br/>
 
-            <label class="pull-left">New Password: </label>
-            <input class="clickedit"
-                   type="text"
-                   name="memPasswd"
-                   id="memPasswd"
-                   minlength="8"
-                   maxlength="254"
-                   title="Passwords must be:
+                <label class="pull-left">New Password: </label>
+                <input class="clickedit"
+                       type="text"
+                       name="memPasswd"
+                       id="memPasswd"
+                       minlength="8"
+                       maxlength="254"
+                       title="Passwords must be:
                  - Between 8 at 254 characters long.
                  - Contain at least ONE capital letter.
                  - Contain at least ONE lowercase letter.
                  - Contain at least ONE number.
                  - Contain at least ONE special character."
-                   pattern="(?=.{8,256})(?=.*?[^\w\s])(?=.*?[0-9])(?=.*?[A-Z]).*?[a-z].*"/><br/><br/>
+                       pattern="(?=.{8,256})(?=.*?[^\w\s])(?=.*?[0-9])(?=.*?[A-Z]).*?[a-z].*"/><br/><br/>
 
-            <label class="pull-left">Confirm Password: </label>
-            <input class="clickedit"
-                   type="text"
-                   name="memPasswd"
-                   id="memPasswd"
-                   minlength="8"
-                   maxlength="254"
-                   title="Passwords must be:
+                <label class="pull-left">Confirm Password: </label>
+                <input class="clickedit"
+                       type="text"
+                       name="memPasswd"
+                       id="memPasswd"
+                       minlength="8"
+                       maxlength="254"
+                       title="Passwords must be:
                  - Between 8 at 254 characters long.
                  - Contain at least ONE capital letter.
                  - Contain at least ONE lowercase letter.
                  - Contain at least ONE number.
                  - Contain at least ONE special character."
-                   pattern="(?=.{8,256})(?=.*?[^\w\s])(?=.*?[0-9])(?=.*?[A-Z]).*?[a-z].*"/><br/><br/>
+                       pattern="(?=.{8,256})(?=.*?[^\w\s])(?=.*?[0-9])(?=.*?[A-Z]).*?[a-z].*"/><br/><br/>
 
-                <button class="makeChange" style="text-align: center;">Submit</button><br/><br/>
+                <button class="makeChange" style="text-align: center;">Submit</button>
+                <br/><br/>
 
             </div>
 
@@ -217,7 +223,10 @@ try {
                 <table>
                     <h2 style="font-style: italic">Your TCI Wallet</h2>
                     <p>An overview of your charge cards.</p>
-                    <tr> <th>Your charge card</th> <th>Expires</th> </tr>
+                    <tr>
+                        <th>Your charge card</th>
+                        <th>Expires</th>
+                    </tr>
                     <tr>
                         <td>Your card ending in <?php ?></td>
                         <td><?php ?></td>
@@ -250,7 +259,6 @@ try {
 
 
         function showChangeUser() {
-
             if (a.style.display === "none") {
                 a.style.display = "block";
                 b.style.display = "none";
@@ -259,7 +267,6 @@ try {
         }
 
         function showChangePassword() {
-
             if (b.style.display === "none") {
                 b.style.display = "block";
                 a.style.display = "none";
@@ -268,7 +275,6 @@ try {
         }
 
         function showChargeCard() {
-
             if (c.style.display === "none") {
                 c.style.display = "block";
                 a.style.display = "none";

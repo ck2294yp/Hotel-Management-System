@@ -114,14 +114,8 @@ if (isset($_REQUEST['username']) && isset($_REQUEST['password'])){
     <h1> Twin Cities Inn</h1>
 </header>
 
-<nav>
-    <ul>
-        <li><a href="index.php">Home</a> </li>
-        <li><a href="aboutUs.html" >About</a> </li>
-        <li><a href="whyTci.html">Why TCI?</a> </li>
-        <li><a href="signIn.php" class="active">Sign In</a></li>
-    </ul>
-</nav>
+<!--Navigation Bar-->
+<?php include 'bin/nav.php'; ?>
 
 <section class="sec2">
     <form action="signIn.php" method="post" style="padding-bottom: 200px">
