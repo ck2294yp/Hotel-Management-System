@@ -206,8 +206,6 @@ if (sizeof($_REQUEST) > 0) {
 <!--Navigation Bar-->
 <?php include 'bin/nav.php'; ?>
 
-<!-- testing check out date -->
-
 <div class="details">
     <form action="index.php" method="post">
 
@@ -218,12 +216,22 @@ if (sizeof($_REQUEST) > 0) {
             </tr>
             <tr>
                 <th>
-                    <input type="date" id="checkInDate" name="checkInDate"
-                           min=<?php echo($minStartDate); ?> max=<?php echo($maxStartDate); ?> required>
+                    <input type="date"
+                           id="checkInDate"
+                           name="checkInDate"
+                           required
+                           min=<?php echo($minStartDate); ?>
+                           max=<?php echo($maxStartDate); ?>
+                    >
                 </th>
                 <th>
-                    <input type="date" id="checkOutDate" name="checkOutDate"
-                           min=<?php echo($minStartDate); ?> max=<?php echo($maxEndDate); ?> required>
+                    <input type="date"
+                           id="checkOutDate"
+                           name="checkOutDate"
+                           required
+                           min=<?php echo($minStartDate); ?>
+                           max=<?php echo($maxEndDate); ?>
+                    >
                 </th>
             </tr>
         </table>
@@ -234,10 +242,7 @@ if (sizeof($_REQUEST) > 0) {
     </form>
 </div>
 
-<!-- end testing -->
-
 <!--homepage start -->
-
 <div class="image">
     <div style="padding-left:400px">
 
@@ -256,7 +261,7 @@ if (sizeof($_REQUEST) > 0) {
                 <li>Gaming</li>
             </ul>
             <ul>
-                <li style="list-style-type:none;padding-right:280px;"><h2>Amenties</h2></li>
+                <li style="list-style-type:none;padding-right:280px;"><h2>Amenities</h2></li>
                 <li>Valet</li>
                 <li>Gym</li>
                 <li>Bar</li>
@@ -331,17 +336,8 @@ if (sizeof($_REQUEST) > 0) {
 
 </script>
 
-<!--homepage end-->
-<!-- <section class="sec3"></section> -->
-<footer>
-    <nav>
-        <ul>
-            <li><a href="#">Facebook</a href="#"></li>
-            <li><a href="#">Twitter</a></li>
-            <li><a href="#">Google+</a></li>
-            <li><a href="#">© 2019 Twin Cities Inn</a></li>
-        </ul>
-    </nav>
-</footer>
+<!-- Footer for the webpage.-->
+<?php include_once 'bin/footer.php'; ?>
+
 </body>
 </html>
