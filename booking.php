@@ -121,11 +121,11 @@ require_once "bin/inputSanitization.php";
                 <th>*Checkout Date</th>
             </tr>
             <tr>
-                <th>
-                    <input type="date" id="checkInDate" name="checkInDate" min="2019-03-24" required>
+                <th><?php $minDate = time()?>
+                    <input type="date" id="checkInDate" name="checkInDate" min="<?php echo date('Y-m-d', $minDate)?>" required>
                 </th>
                 <th>
-                    <input type="date" id="checkOutDate" name="checkOutDate" max="2021-03-24" required>
+                    <input type="date" id="checkOutDate" name="checkOutDate" max="2021-12-31" required>
                 </th>
             </tr>
         </table>

@@ -120,7 +120,7 @@ try {
             <br/>
             <button onclick="showChangePassword()">Change Password</button>
             <br/>
-            <button onclick="showChargeCard()">Change Charge Card</button>
+            <button onclick="showChargeCard()">Manage Charge Card</button>
             <br/><br/><br/>
             <button id="showDeleteAccount" style="background-color: red">Delete Account</button>
             <br/>
