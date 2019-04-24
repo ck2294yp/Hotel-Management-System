@@ -60,6 +60,7 @@ if ($_SESSION['loggedIn'] === 0){
     <title>Booking History</title>
     <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
+
 <body>
 <header>
     <img src="https://tbncdn.freelogodesign.org/4fc3ec1c-1e7a-4304-b812-4b6b0bdb6b68.png?1553471553913">
@@ -77,7 +78,7 @@ if ($_SESSION['loggedIn'] === 0){
 
     <h2>Booking History</h2><br/>
 
-        <table>
+        <table class="bookingHistoryTable">
         <tr> <th>Invoice ID</th> <th>Card Number</th> <th style='display: none'>Member ID</th> <th>From</th> <th>To</th> <th>Cancel Reservation</th> </tr>
             <?php
             while ($invoice = $getInvoiceStmt->fetch( PDO::FETCH_ASSOC )):

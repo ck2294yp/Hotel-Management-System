@@ -6,8 +6,6 @@
         width: 100%;
         height:50px;
         background: rgba(0,0,0,.7);
-        border-top: 1px solid rgba(255,255,255,.2);
-        border-bottom: 1px solid rgba(255,255,255,.2);
         position: sticky;
         top: 0;
         z-index: 1;
@@ -17,7 +15,7 @@
         float: right;
         color: #f2f2f2;
         text-align: center;
-        padding: 14px 16px;
+        padding: 15px 16px;
         text-decoration: none;
         font-size: 17px;
     }
