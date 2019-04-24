@@ -69,6 +69,7 @@ CREATE TABLE RoomType (
     roomTypeID INT(4) UNIQUE NOT NULL AUTO_INCREMENT,
     pricePerNight DECIMAL(6 , 2 ) NOT NULL,
     roomCatagory SET('normal', 'pet', 'gaming', 'family', 'chef') NOT NULL DEFAULT 'normal',
+    numOfRooms INT(4) NOT NULL DEFAULT 1,
     roomNumBeds INT(1) NOT NULL DEFAULT 1,
     roomAllowsPets TINYINT(1) NOT NULL DEFAULT 0,
     createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,

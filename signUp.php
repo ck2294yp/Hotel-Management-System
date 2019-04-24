@@ -709,15 +709,9 @@ if (sizeof($_REQUEST) > 0) {
 </section>
 
 <section class="sec3"></section>
-<footer>
-    <nav>
-        <ul>
-            <li><a href="#">Facebook</a href="#"></li>
-            <li><a href="#">Twitter</a></li>
-            <li><a href="#">Google+</a></li>
-            <li><a href="#">© 2019 Twin Cities Inn</a></li>
-        </ul>
-    </nav>
-</footer>
+
+<!-- Footer for the web page.-->
+<?php include_once 'bin/footer.php'; ?>
+
 </body>
 </html>

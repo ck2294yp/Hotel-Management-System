@@ -6,8 +6,6 @@
             width: 100%;
             height:50px;
             background: rgba(0,0,0,.7);
-            border-top: 1px solid rgba(255,255,255,.2);
-            border-bottom: 1px solid rgba(255,255,255,.2);
             position: sticky;
             top: 0;
             z-index: 1;
@@ -17,7 +15,7 @@
             float: right;
             color: #f2f2f2;
             text-align: center;
-            padding: 14px 16px;
+            padding: 15px 16px;
             text-decoration: none;
             font-size: 17px;
         }
@@ -27,12 +25,8 @@
             color: white;
         }
 
-        .topnav a.active {
-            background: #ff0000;
-            color: white;
-        }
 
-        ul {
+        .topnav ul {
             list-style-type: none;
             margin: 0;
             padding: 0;
@@ -42,11 +36,9 @@
 
     </style>
 
-
     <?php
 
     @session_start();
-
 
     // If user IS logged in.
     if (array_key_exists('loggedIn', $_SESSION) === true) {

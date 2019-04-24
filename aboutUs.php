@@ -5,6 +5,7 @@
     <title>About Us</title>
     <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
+
 <body>
     <header>
         <img src="https://tbncdn.freelogodesign.org/4fc3ec1c-1e7a-4304-b812-4b6b0bdb6b68.png?1553471553913">
@@ -33,15 +34,9 @@
         stay with us.”</p>
     </section>
     <section class="sec3"></section>
-    <footer>
-        <nav>
-        <ul>
-            <li><a href="#">Facebook</a href="#"> </li>
-            <li><a href="#">Twitter</a> </li>
-            <li><a href="#">Google+</a> </li>
-            <li><a href="#">© 2019 Twin Cities Inn</a> </li>
-        </ul>
-        </nav>
-    </footer>
+
+    <!-- Footer for the web page.-->
+    <?php include_once 'bin/footer.php'; ?>
+
 </body>
 </html>

@@ -12,12 +12,12 @@ require_once "bin/inputSanitization.php";
 <head>
     <meta charset="UTF-8">
     <title>Booking page</title>
-    <link rel="stylesheet" href="style.css" type="text/css" />
+
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js" type="text/javascript"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"
             type="text/javascript"></script>
     <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css"
-          rel="Stylesheet"type="text/css"/>
+          rel="Stylesheet"type="text/css" href="style.css"/>
     <script type="text/javascript">
         $(function () {
             $("#checkInDate").datepicker({
@@ -137,11 +137,13 @@ require_once "bin/inputSanitization.php";
                 <th>*Checkout Date</th>
             </tr>
             <tr>
+
                 <th>
                     <input type="text" id="checkInDate" name="checkInDate" min="2019-03-24" required>
                 </th>
                 <th>
                     <input type="text" id="checkOutDate" name="checkOutDate" max="2021-03-24" required>
+
                 </th>
             </tr>
         </table>
@@ -149,31 +151,7 @@ require_once "bin/inputSanitization.php";
 
 
 
-        <!--
-        <select name="roomType" required>
 
-
-            <option value="">*Select Room Type </option>
-            <optgroup label="Standard rooms">
-                <option value="1-bed"> 1-bed</option>
-                <option value="2-beds"> 2-beds</option>
-                <option value="3-beds"> 3-beds</option>
-            </optgroup>
-            <optgroup label="Specialty rooms">
-                <option value="gaming"> Gaming room </option>
-                <option value="chef"> Chef room</option>
-                <option value="luxury"> Luxury room</option>
-
-            </optgroup>
-
-        </select>
-        <br><br>
-
-        <input id="numberOfAdults" type="number" name="numberOfAdults" min="1" max="6" required placeholder="     *Select Number of Guests">
-        <br><br>
-        <input id="numberOfPets" type="number" name="numberOfPets" min="0" max="2" placeholder="     Select Number of Pets (optional)">
-        <br><br>
-        -->
 
 
         <input type="submit" value="Search" onclick="compareDates()">
@@ -188,16 +166,8 @@ require_once "bin/inputSanitization.php";
     </form>
 </div>
 
-<footer>
-    <nav>
-        <ul>
-            <li><a href="#">Facebook</a> </li>
-            <li><a href="#">Twitter</a> </li>
-            <li><a href="#">Google+</a> </li>
-            <li><a href="#">© 2019 Twin Cities Inn</a> </li>
-        </ul>
-    </nav>
-</footer>
+<!-- Footer for the web page.-->
+<?php include_once 'bin/footer.php'; ?>
 
 </body>
 </html>
