@@ -13,18 +13,34 @@ require_once "bin/inputSanitization.php";
     <meta charset="UTF-8">
     <title>Booking page</title>
     <link rel="stylesheet" href="style.css" type="text/css" />
-
-    <script>
-        function compareDates(){
-            let date1 = $("#checkInDate").val();
-            let date2 = $("#checkOutDate").val();
-
-            if(new Date(date1) < new Date(date2)){
-                alert("Date Error");
-            }
-
-        }
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js" type="text/javascript"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"
+            type="text/javascript"></script>
+    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css"
+          rel="Stylesheet"type="text/css"/>
+    <script type="text/javascript">
+        $(function () {
+            $("#checkInDate").datepicker({
+                minDate: 0,
+                //numberOfMonths: 6,
+                onSelect: function (selected) {
+                    var dt = new Date(selected);
+                    dt.setDate(dt.getDate() + 1);
+                    $("#checkOutDate").datepicker("option", "minDate", dt);
+                }
+            });
+            $("#checkOutDate").datepicker({
+                //numberOfMonths: 6,
+                onSelect: function (selected) {
+                    var dt = new Date(selected);
+                    dt.setDate(dt.getDate() - 1);
+                    $("#checkInDate").datepicker("option", "maxDate", dt);
+                }
+            });
+        });
     </script>
+
+
 </head>
 
 <style>
@@ -115,17 +131,17 @@ require_once "bin/inputSanitization.php";
 
     <form action="searchRooms.php" METHOD="post">
 
-        <table>
+        <table border="0" cellpadding="0" cellspacing="0">
             <tr>
                 <th>*Checkin Date</th>
                 <th>*Checkout Date</th>
             </tr>
             <tr>
                 <th>
-                    <input type="date" id="checkInDate" name="checkInDate" min="2019-03-24" required>
+                    <input type="text" id="checkInDate" name="checkInDate" min="2019-03-24" required>
                 </th>
                 <th>
-                    <input type="date" id="checkOutDate" name="checkOutDate" max="2021-03-24" required>
+                    <input type="text" id="checkOutDate" name="checkOutDate" max="2021-03-24" required>
                 </th>
             </tr>
         </table>
