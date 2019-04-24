@@ -106,9 +106,6 @@ if (isset($_REQUEST['username']) && isset($_REQUEST['password'])){
     <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
 <body>
-
-
-
 <header>
     <img src="https://tbncdn.freelogodesign.org/4fc3ec1c-1e7a-4304-b812-4b6b0bdb6b68.png?1553471553913">
     <h1> Twin Cities Inn</h1>
@@ -120,44 +117,31 @@ if (isset($_REQUEST['username']) && isset($_REQUEST['password'])){
 <section class="sec2">
     <form action="signIn.php" method="post" style="padding-bottom: 200px">
         <p>
-            <h2>Member Sign In</h2><br>
-            <br>
+            <h2>Member Sign In</h2><br/><br/>
         </p>
 
-        <label>Username</label><br>
-        <input type="email" placeholder="Enter Username" name="username" maxlength="254" required><br>
-        <br>
+        <label>Username</label><br/>
+        <input type="email" placeholder="Enter Username" name="username" maxlength="254" required><br/><br/>
 
         <label>Password</label><br/>
-        <input type="password" placeholder="Enter Password" name="password" maxlength="254" pattern="(?=.{8,256})(?=.*?[^\w\s])(?=.*?[0-9])(?=.*?[A-Z]).*?[a-z].*" required><br>
-        <a href="#">Forgot Username</a><br>
-        <a href="#">Forgot Password</a><br>
-        <br>
+        <input type="password" placeholder="Enter Password" name="password" maxlength="254" pattern="(?=.{8,256})(?=.*?[^\w\s])(?=.*?[0-9])(?=.*?[A-Z]).*?[a-z].*" required><br/><br/>
+        <a href="#" style="color: gray">Forgot Username</a> <br/>
+        <a href="#" style="color: gray">Forgot Password</a><br/>
+        <br/>
 
-        <button type="submit">Login</button><br>
+        <button type="submit" style="width: 12.8%">Login</button><br/>
 
         <p>
-            <br>
-            <br>Not a member yet?<br>
-            <a href="signUp.php" style="color: gray">Create Account</a><br>
+            <br/><br/>Not a member yet? <br/>
+            <a href="signUp.php" style="color: gray">Create Account</a><br/>
         </p>
 
     </form>
-
     <img src="https://cdn.shopify.com/s/files/1/2379/3029/products/51oNZAKQomL._SL1500_0270363e-8918-419e-80c4-3866316ce410_1024x1024.jpg?v=1551237385">
 </section>
 
-
-<footer>
-    <nav>
-        <ul>
-            <li><a onclick="return false" href="">Facebook</a> </li>
-            <li><a onclick="return false" href="">Twitter</a> </li>
-            <li><a onclick="return false" href="">Google+</a> </li>
-            <li><a onclick="return false" href="">© 2019 Twin Cities Inn</a> </li>
-        </ul>
-    </nav>
-</footer>
+<!-- Footer for the web page.-->
+<?php include_once 'bin/footer.php'; ?>
 
 </body>
 

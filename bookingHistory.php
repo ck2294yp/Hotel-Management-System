@@ -150,17 +150,8 @@ if ($_SESSION['loggedIn'] === 0){
 
 </section>
 
-<!-- <section class="sec3"></section> -->
+<!-- Footer for the web page.-->
+<?php include_once 'bin/footer.php'; ?>
 
-<footer>
-    <nav>
-        <ul>
-            <li><a onclick="return false" href="">Facebook</a> </li>
-            <li><a onclick="return false" href="">Twitter</a> </li>
-            <li><a onclick="return false" href="">Google+</a> </li>
-            <li><a onclick="return false" href="">© 2019 Twin Cities Inn</a> </li>
-        </ul>
-    </nav>
-</footer>
 </body>
 </html>
