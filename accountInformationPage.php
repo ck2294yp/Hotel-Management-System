@@ -53,7 +53,6 @@ try {
     $getCard->setFetchMode(PDO::FETCH_ASSOC);
 
 
-
 } catch (PDOException $e) {
     # Rollback any changes to the database (if possible).
     @$conn->rollBack();
@@ -125,7 +124,7 @@ try {
             <br/>
             <button onclick="showChargeCard()">Manage Charge Card</button>
             <br/><br/><br/>
-            <button id="showDeleteAccount" style="background-color: red">Delete Account</button>
+            <button onclick="deleteAccount()" style="background-color: red">Delete Account</button>
             <br/>
         </div>
         <div class="changeSide">
@@ -233,33 +232,22 @@ try {
 
                     <?php
                     while ($card = $getCard->fetch( PDO::FETCH_ASSOC )):
-                    ?>
-                    <tr>
-                        <td>Your card ending in
-                        <?php echo $ccNum = $card['cardNum']; ?>
-                        <?php echo $last4Digits = preg_replace( "#(.*?)(\d{4})$#", "$2", $ccNum); ?>
-                        </td>
-                        <td>
-                            <?php echo $card['cardExpDate']; ?>
-                        </td>
-                    </tr>
+                        ?>
+                        <tr>
+                            <td>Your card ending in
+                                <?php echo $ccNum = $card['cardNum']; ?>
+                                <?php echo $last4Digits = preg_replace( "#(.*?)(\d{4})$#", "$2", $ccNum); ?>
+                            </td>
+                            <td>
+                                <?php echo $card['cardExpDate']; ?>
+                            </td>
+                        </tr>
                     <?php endwhile; ?>
                 </table>
                 <br/>
                 <button>Add New Card</button>
 
             </div>
-
-            <div class="overlay" id="dialog-container">
-                <div class="popup">
-                    <p style="color: black">Are you sure you want to delete your account?</p>
-                    <div class="text-right">
-                        <button class="dialog-btn2 btn-cancel" id="cancel" style="text-align: center">Cancel</button>
-                        <button class="dialog-btn2 btn-primary" id="confirm" style="text-align: center">Confirm</button>
-                    </div>
-                </div>
-            </div>
-
 
         </div>
     </div>
@@ -296,26 +284,14 @@ try {
 
     </script>
 
-    <script
-            src="https://code.jquery.com/jquery-3.4.0.min.js"
-            integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="
-            crossorigin="anonymous">
-
-    </script>
-
-    <script>
-        $(document).ready(function () {
-            $('#showDeleteAccount').on('click', function () {
-                $('#dialog-container').show();
-            });
-            $('#cancel').on('click', function () {
-                $('#dialog-container').hide();
-            });
-            $('#confirm').on('click', function () {
-                $('#dialog-container').hide();
-            });
-        });
-
+    <script language="javascript">
+        function deleteAccount()
+        {
+            if(confirm("Are you sure you want to delete your account?")){
+                alert("Account deleted");
+                return true;
+            }
+        }
     </script>
 
 </section>
