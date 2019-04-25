@@ -70,9 +70,8 @@ if (sizeof($_REQUEST) > 0) {
 <!--Navigation Bar-->
 <?php include 'bin/nav.php'; ?>
 
-<div class="details">
+<div class="details"     >
     <form action="index.php" method="post">
-
         <table>
             <tr>
                 <th>Check-in Date</th>

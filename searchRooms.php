@@ -26,14 +26,6 @@ $roomInfo['checkInDate'] = @sanitizeDateString($_SESSION['checkInDate']);
 $roomInfo['checkOutDate'] = @sanitizeDateString($_SESSION['checkOutDate']);
 
 
-#TODO Debug:
-$roomInfo['checkInDate'] = '2019-04-01';
-$roomInfo['checkOutDate'] = '2019-04-30';
-echo ("Check In Date: ".$roomInfo['checkInDate']."<br>");
-echo ("Check Out Date: ".$roomInfo['checkOutDate']."<br>");
-
-
-
 # Connects to the SQL database.
 try {
     $conn = new PDO("mysql:host=$dbAddress;dbname=$dbLocation", $dbUsername, $dbPassword);
@@ -208,278 +200,289 @@ try {
         <?php
         foreach ($roomInformation as $currentRoom) {
             // If the current room exists in the booked rooms array AND the current room type is either at (or somehow over) it's maximum allowed amount. DO NOT PRINT THE ROOM DETAILS!
-            if ( (array_key_exists($currentRoom['roomTypeID'], $bookedRooms) === true) && ($currentRoom['numOfRooms'] >= $bookedRooms[$currentRoom['roomTypeID']]) ) {
+            if ((array_key_exists($currentRoom['roomTypeID'], $bookedRooms) === true) && ($currentRoom['numOfRooms'] >= $bookedRooms[$currentRoom['roomTypeID']])) {
 
             } else { ?>
-                <section id="<?php echo($currentRoom['roomNumBeds'].'bed'.$currentRoom['roomCatagory']) ?>" class="roomBox" style="display: inline-block;">
-                    <div style="float: left;text-align: center;padding-left: 100px;">
-                        <h2> <?php echo($currentRoom['roomNumBeds'] . "-bed " . ucfirst($currentRoom['roomCatagory']) . " Room") ?> </h2>
+                <div class="gridMember" id="<?php echo($currentRoom['roomNumBeds'] . 'bed' . $currentRoom['roomCatagory']) ?>" class="roomBox" style="display: inline-block;">
+                    <!-- Room details -->
+                    <div style="float:left; text-align:left; padding-left:5%; ">
+                        <br> <h2> <?php echo($currentRoom['roomNumBeds'] . "-bed " . ucfirst($currentRoom['roomCatagory']) . " Room"); ?> </h2>
                         <br> <b>Room Type: </b> <?php echo(ucfirst($currentRoom['roomCatagory'])); ?>
                         <br> <b>Number of Beds: </b> <?php echo($currentRoom['roomNumBeds']); ?>
-                        <br> <b>Allows Pets? </b> <?php if ($currentRoom['roomAllowsPets'] === 0) {
-                            echo("No");
-                        } else {
-                            echo("Yes");
-                        }; ?>
-                        <br> <b>Nightly Rate: </b>$<?php echo($currentRoom['pricePerNight']); ?>
-
-                        <!-- The great "Book It!" button. -->
-                        <button id="bookRoomButton" onclick="confirmRoomType(<?php echo($currentRoom['roomTypeID']); ?>) " class="bButton">Book It!</button>
-
+                        <br> <b>Pets Allowed: </b> <?php
+                            if ($currentRoom['roomAllowsPets'] === 0) {
+                                echo("No");
+                            } else {
+                                echo("Yes");
+                            }; ?>
+                        <br> <b>Rooms Left: </b> <?php
+                            if (array_key_exists($currentRoom['roomTypeID'], $bookedRooms) === true) {
+                                echo($currentRoom['numOfRooms'] - $bookedRooms[$currentRoom['roomTypeID']]);
+                            } else {
+                                echo($currentRoom['numOfRooms']);
+                            }
+                            ?>
+                        <br> <b>Rate: </b>$<?php echo(number_format($currentRoom['pricePerNight'], 2))."/day"; ?>
                     </div>
-                </section>
-        <?php
+
+
+                    <!-- The great "Book It!" button. -->
+                    <div style="float: right;text-align: center;padding-right: 5%;">
+                        <button id="bookRoomButton" onclick="confirmRoomType(<?php echo($currentRoom['roomTypeID']); ?>) " class="button"> Book It! </button>
+                    </div>
+                </div>
+                <?php
             }
         }
         ?>
 
-    <div class="overlay" id="dialog-container">
-        <div class="popup">
-            <p>Are you sure you want to book reservation?</p>
-            <div class="text-right">
-                <button class="dialog-btn btn-cancel" id="cancel">Cancel</button>
-                <button class="dialog-btn btn-primary" id="confirm">Yes</button>
+        <div class="overlay" id="dialog-container">
+            <div class="popup">
+                <p>Are you sure you want to book reservation?</p>
+                <div class="text-right">
+                    <button class="dialog-btn btn-cancel" id="cancel">Cancel</button>
+                    <button class="dialog-btn btn-primary" id="confirm">Yes</button>
+                </div>
             </div>
         </div>
+
     </div>
 
-</div>
+    <script
+            src="https://code.jquery.com/jquery-3.4.0.min.js"
+            integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="
+            crossorigin="anonymous"></script>
 
-<script
-        src="https://code.jquery.com/jquery-3.4.0.min.js"
-        integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="
-        crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+            $('#bookRoomButton').on('click', function () {
+                $('#dialog-container').show();
+            });
+            $('#cancel').on('click', function () {
+                $('#dialog-container').hide();
+            });
+            $('#confirm').on('click', function () {
+                $('#dialog-container1').show();
+                $('#dialog-container').hide();
+            });
+            $('#stop').on('click', function () {
+                $('#dialog-container1').hide();
+            });
 
-<script>
-    $(document).ready(function () {
-        $('#bookRoomButton').on('click', function () {
-            $('#dialog-container').show();
         });
-        $('#cancel').on('click', function () {
-            $('#dialog-container').hide();
-        });
-        $('#confirm').on('click', function () {
-            $('#dialog-container1').show();
-            $('#dialog-container').hide();
-        });
-        $('#stop').on('click', function () {
-            $('#dialog-container1').hide();
-        });
+        //
+    </script>
 
-    });
-    //
-</script>
+    <!--search rooms section end-->
+    <!--<section class="sec3" style="overflow: hidden;"></section>-->
+    <!--<footer class="foot">
+        <nav>
+            <ul>
+                <li><a href="#">Facebook</a> </li>
+                <li><a href="#">Twitter</a> </li>
+                <li><a href="#">Google+</a> </li>
+                <li><a href="#">© 2019 Twin Cities Inn</a> </li>
+            </ul>
+        </nav>
+    </footer>-->
 
-<!--search rooms section end-->
-<!--<section class="sec3" style="overflow: hidden;"></section>-->
-<!--<footer class="foot">
-    <nav>
-        <ul>
-            <li><a href="#">Facebook</a> </li>
-            <li><a href="#">Twitter</a> </li>
-            <li><a href="#">Google+</a> </li>
-            <li><a href="#">© 2019 Twin Cities Inn</a> </li>
-        </ul>
-    </nav>
-</footer>-->
-
-<script>
-    var a = document.getElementById("1bednormal");
-    var b = document.getElementById("2bednormal");
-    var c = document.getElementById("1bedchef");
-    var d = document.getElementById("2bedchef");
-    var e = document.getElementById("1bedpet");
-    var f = document.getElementById("2bedpet");
-    var g = document.getElementById("2bedfamliy");
-    var h = document.getElementById("3bedfamily");
-    var i = document.getElementById("1bedgaming");
-    var j = document.getElementById("2bedgaming");
+    <script>
+        var a = document.getElementById("1bednormal");
+        var b = document.getElementById("2bednormal");
+        var c = document.getElementById("1bedchef");
+        var d = document.getElementById("2bedchef");
+        var e = document.getElementById("1bedpet");
+        var f = document.getElementById("2bedpet");
+        var g = document.getElementById("2bedfamliy");
+        var h = document.getElementById("3bedfamily");
+        var i = document.getElementById("1bedgaming");
+        var j = document.getElementById("2bedgaming");
 
 
-    function oneBedRoom() {
+        function oneBedRoom() {
 
-        if (a.style.display === "inline-block"
-            && c.style.display === "inline-block"
-            && e.style.display === "inline-block"
-            && i.style.display === "inline-block") {
+            if (a.style.display === "inline-block"
+                && c.style.display === "inline-block"
+                && e.style.display === "inline-block"
+                && i.style.display === "inline-block") {
 
-            a.style.display = "inline-block";
-            c.style.display = "inline-block";
-            e.style.display = "inline-block";
-            i.style.display = "inline-block";
+                a.style.display = "inline-block";
+                c.style.display = "inline-block";
+                e.style.display = "inline-block";
+                i.style.display = "inline-block";
 
-            a.style.display = "none";
-            c.style.display = "none";
-            e.style.display = "none";
-            i.style.display = "none";
+                a.style.display = "none";
+                c.style.display = "none";
+                e.style.display = "none";
+                i.style.display = "none";
+            }
+
+            if (a.style.display === "none"
+                && c.style.display === "none"
+                && e.style.display === "none"
+                && i.style.display === "none") {
+
+                a.style.display = "inline-block";
+                c.style.display = "inline-block";
+                e.style.display = "inline-block";
+                i.style.display = "inline-block";
+
+                a.style.display = "none";
+                c.style.display = "none";
+                e.style.display = "none";
+                i.style.display = "none";
+            }
         }
 
-        if (a.style.display === "none"
-            && c.style.display === "none"
-            && e.style.display === "none"
-            && i.style.display === "none") {
 
-            a.style.display = "inline-block";
-            c.style.display = "inline-block";
-            e.style.display = "inline-block";
-            i.style.display = "inline-block";
+        // b,d,f,g,h,j
+        function twoBedRoom() {
 
-            a.style.display = "none";
-            c.style.display = "none";
-            e.style.display = "none";
-            i.style.display = "none";
-        }
-    }
+            if (b.style.display === "inline-block"
+                && d.style.display === "inline-block"
+                && f.style.display === "inline-block"
+                && g.style.display === "inline-block"
+                && h.style.display === "inline-block"
+                && j.style.display === "inline-block") {
 
+                b.style.display = "inline-block";
+                d.style.display = "inline-block";
+                f.style.display = "inline-block";
+                g.style.display = "inline-block";
+                h.style.display = "inline-block";
+                j.style.display = "inline-block";
 
-    // b,d,f,g,h,j
-    function twoBedRoom() {
+                b.style.display = "none";
+                d.style.display = "none";
+                f.style.display = "none";
+                g.style.display = "none";
+                h.style.display = "none";
+                j.style.display = "none";
+            }
 
-        if (b.style.display === "inline-block"
-            && d.style.display === "inline-block"
-            && f.style.display === "inline-block"
-            && g.style.display === "inline-block"
-            && h.style.display === "inline-block"
-            && j.style.display === "inline-block") {
+            if (b.style.display === "none"
+                && d.style.display === "none"
+                && f.style.display === "none"
+                && g.style.display === "none"
+                && h.style.display === "none"
+                && j.style.display === "none") {
 
-            b.style.display = "inline-block";
-            d.style.display = "inline-block";
-            f.style.display = "inline-block";
-            g.style.display = "inline-block";
-            h.style.display = "inline-block";
-            j.style.display = "inline-block";
+                b.style.display = "inline-block";
+                d.style.display = "inline-block";
+                f.style.display = "inline-block";
+                g.style.display = "inline-block";
+                h.style.display = "inline-block";
+                j.style.display = "inline-block";
 
-            b.style.display = "none";
-            d.style.display = "none";
-            f.style.display = "none";
-            g.style.display = "none";
-            h.style.display = "none";
-            j.style.display = "none";
-        }
-
-        if (b.style.display === "none"
-            && d.style.display === "none"
-            && f.style.display === "none"
-            && g.style.display === "none"
-            && h.style.display === "none"
-            && j.style.display === "none") {
-
-            b.style.display = "inline-block";
-            d.style.display = "inline-block";
-            f.style.display = "inline-block";
-            g.style.display = "inline-block";
-            h.style.display = "inline-block";
-            j.style.display = "inline-block";
-
-            b.style.display = "none";
-            d.style.display = "none";
-            f.style.display = "none";
-            g.style.display = "none";
-            h.style.display = "none";
-            j.style.display = "none";
-        }
-    }
-
-
-    //c,d,e,f,g,h,i,j
-    function specialtyRoom() {
-
-        if (c.style.display === "inline-block"
-            && d.style.display === "inline-block"
-            && e.style.display === "inline-block"
-            && f.style.display === "inline-block"
-            && g.style.display === "inline-block"
-            && h.style.display === "inline-block"
-            && i.style.display === "inline-block"
-            && j.style.display === "inline-block") {
-
-            c.style.display = "inline-block";
-            d.style.display = "inline-block";
-            e.style.display = "inline-block";
-            f.style.display = "inline-block";
-            g.style.display = "inline-block";
-            h.style.display = "inline-block";
-            i.style.display = "inline-block";
-            j.style.display = "inline-block";
-
-            c.style.display = "none";
-            d.style.display = "none";
-            e.style.display = "none";
-            f.style.display = "none";
-            g.style.display = "none";
-            h.style.display = "none";
-            i.style.display = "none";
-            j.style.display = "none";
+                b.style.display = "none";
+                d.style.display = "none";
+                f.style.display = "none";
+                g.style.display = "none";
+                h.style.display = "none";
+                j.style.display = "none";
+            }
         }
 
-        if (c.style.display === "none"
-            && d.style.display === "none"
-            && e.style.display === "none"
-            && f.style.display === "none"
-            && g.style.display === "none"
-            && h.style.display === "none"
-            && i.style.display === "none"
-            && j.style.display === "none") {
 
-            c.style.display = "inline-block";
-            d.style.display = "inline-block";
-            e.style.display = "inline-block";
-            f.style.display = "inline-block";
-            g.style.display = "inline-block";
-            h.style.display = "inline-block";
-            i.style.display = "inline-block";
-            j.style.display = "inline-block";
+        //c,d,e,f,g,h,i,j
+        function specialtyRoom() {
 
-            c.style.display = "none";
-            d.style.display = "none";
-            e.style.display = "none";
-            f.style.display = "none";
-            g.style.display = "none";
-            h.style.display = "none";
-            i.style.display = "none";
-            j.style.display = "none";
+            if (c.style.display === "inline-block"
+                && d.style.display === "inline-block"
+                && e.style.display === "inline-block"
+                && f.style.display === "inline-block"
+                && g.style.display === "inline-block"
+                && h.style.display === "inline-block"
+                && i.style.display === "inline-block"
+                && j.style.display === "inline-block") {
+
+                c.style.display = "inline-block";
+                d.style.display = "inline-block";
+                e.style.display = "inline-block";
+                f.style.display = "inline-block";
+                g.style.display = "inline-block";
+                h.style.display = "inline-block";
+                i.style.display = "inline-block";
+                j.style.display = "inline-block";
+
+                c.style.display = "none";
+                d.style.display = "none";
+                e.style.display = "none";
+                f.style.display = "none";
+                g.style.display = "none";
+                h.style.display = "none";
+                i.style.display = "none";
+                j.style.display = "none";
+            }
+
+            if (c.style.display === "none"
+                && d.style.display === "none"
+                && e.style.display === "none"
+                && f.style.display === "none"
+                && g.style.display === "none"
+                && h.style.display === "none"
+                && i.style.display === "none"
+                && j.style.display === "none") {
+
+                c.style.display = "inline-block";
+                d.style.display = "inline-block";
+                e.style.display = "inline-block";
+                f.style.display = "inline-block";
+                g.style.display = "inline-block";
+                h.style.display = "inline-block";
+                i.style.display = "inline-block";
+                j.style.display = "inline-block";
+
+                c.style.display = "none";
+                d.style.display = "none";
+                e.style.display = "none";
+                f.style.display = "none";
+                g.style.display = "none";
+                h.style.display = "none";
+                i.style.display = "none";
+                j.style.display = "none";
+            }
         }
-    }
 
-    // a,b,c,d,e,f,g,h,i,j
-    function allRooms() {
-        if (a.style.display === "inline-block"
-            || b.style.display === "inline-block"
-            || c.style.display === "inline-block"
-            || d.style.display === "inline-block"
-            || e.style.display === "inline-block"
-            || f.style.display === "inline-block"
-            || g.style.display === "inline-block"
-            || h.style.display === "inline-block"
-            || i.style.display === "inline-block"
-            || j.style.display === "inline-block") {
+        // a,b,c,d,e,f,g,h,i,j
+        function allRooms() {
+            if (a.style.display === "inline-block"
+                || b.style.display === "inline-block"
+                || c.style.display === "inline-block"
+                || d.style.display === "inline-block"
+                || e.style.display === "inline-block"
+                || f.style.display === "inline-block"
+                || g.style.display === "inline-block"
+                || h.style.display === "inline-block"
+                || i.style.display === "inline-block"
+                || j.style.display === "inline-block") {
 
-            a.style.display = "inline-block";
-            b.style.display = "inline-block";
-            c.style.display = "inline-block";
-            d.style.display = "inline-block";
-            e.style.display = "inline-block";
-            f.style.display = "inline-block";
-            g.style.display = "inline-block";
-            h.style.display = "inline-block";
-            i.style.display = "inline-block";
-            j.style.display = "inline-block";
+                a.style.display = "inline-block";
+                b.style.display = "inline-block";
+                c.style.display = "inline-block";
+                d.style.display = "inline-block";
+                e.style.display = "inline-block";
+                f.style.display = "inline-block";
+                g.style.display = "inline-block";
+                h.style.display = "inline-block";
+                i.style.display = "inline-block";
+                j.style.display = "inline-block";
 
+            }
         }
-    }
 
-    // Find out what room the user wants and selects that as their desired room.
-    function confirmRoomType(roomTypeID) {
-        var popup = confirm("Are you sure you want to book this room?");
-        if (popup == true) {
-            window.location = "http://localhost:8081/billingPage.php?roomTypeID=" + roomTypeID;
-            // If user clicks "Cancel" then don't do anything (except close the prompt).
-        } else {
+        // Find out what room the user wants and selects that as their desired room.
+        function confirmRoomType(roomTypeID) {
+            var popup = confirm("Are you sure you want to book this room?");
+            if (popup == true) {
+                window.location = "http://localhost:8081/billingPage.php?roomTypeID=" + roomTypeID;
+                // If user clicks "Cancel" then don't do anything (except close the prompt).
+            } else {
 
+            }
         }
-    }
 
-</script>
+    </script>
 
 
 </body>
