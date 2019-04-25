@@ -80,6 +80,7 @@ try {
 
 <section class="sec2Member">
     <div class="gridMember">
+
         <div class="memberName">
             <h2 style="font-style: italic">My Account</h2>
             <p>Hello, <?php echo($memInfo['memFname'] . " " . $memInfo['memLname'] . "!"); ?>  </p>
@@ -90,13 +91,15 @@ try {
             <br/><br/>
             <br>
         </div>
+
         <div class="gridMemberReward">
             <h2 style="font-style: italic">Reward Points</h2>
             <p><?php echo($memInfo['memRewardPoints']) ?> points</p>
             <button class="redeemPoints">Redeem</button>
             <br/><br/>
-            <a href="#" style="color: orange">Report Missing Points</a>
+            <a href="mailto:tcihotelsmn@gmail.com?Subject=Report%20Missing%20Points" style="color: orange">Report Missing Points</a>
         </div>
+
         <div class="bookNow">
             <h2 style="font-style: italic">Make Reservation</h2>
             <p>Rooms can be booked from our website or in person.</p>
