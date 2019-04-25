@@ -336,7 +336,7 @@ $memInfo = array();
     function oneBedRoom() {
 
 
-        if (a.style.display == "inline-block" && onePet.style.display == "inline-block") {
+        if (a.style.display == "inline-block" || onePet.style.display == "inline-block") {
             a.style.display = "inline-block";
             onePet.style.display = "inline-block";
             b.style.display = "none";
@@ -345,7 +345,7 @@ $memInfo = array();
            twoPet.style.display = "none";
         }
 
-        if (a.style.display == "none" && onePet.style.display == "none") {
+        if (a.style.display == "none" || onePet.style.display == "none") {
             a.style.display = "inline-block";
             onePet.style.display = "inline-block";
             b.style.display = "none";
@@ -357,7 +357,7 @@ $memInfo = array();
 
     function twoBedRoom() {
 
-        if (b.style.display == "inline-block" && twoPet.style.display == "inline-block") {
+        if (b.style.display == "inline-block" || twoPet.style.display == "inline-block") {
            b.style.display = "inline-block";
             twoPet.style.display = "inline-block";
             a.style.display = "none";
@@ -366,9 +366,9 @@ $memInfo = array();
            onePet.style.display = "none";
         }
 
-        if (b.style.display == "none" && twoPet.style.display == "none") {
+        if (b.style.display == "none" || twoPet.style.display == "none") {
             b.style.display = "inline-block";
-            twoPet.style.display = "inline-block"
+            twoPet.style.display = "inline-block";
             a.style.display = "none";
             c.style.display = "none";
             d.style.display = "none";
@@ -378,18 +378,22 @@ $memInfo = array();
 
     function specialtyRoom() {
 
-        if (c.style.display == "inline-block" && d.style.display == "inline-block") {
+        if (c.style.display == "inline-block" || d.style.display == "inline-block" ||
+            onePet.style.display == "inline-block" || twoPet.style.display == "inline-block") {
             c.style.display = "inline-block";
             d.style.display = "inline-block";
-           // e.style.display = "inline-block";
+           onePet.style.display = "inline-block";
+           twoPet.style.display = "inline-block";
             a.style.display = "none";
             b.style.display = "none";
         }
 
-        if (c.style.display == "none" && d.style.display == "none") {
+        if (c.style.display == "none" || d.style.display == "none" || onePet.style.display == "none"
+        || twoPet.style.display == "none") {
             c.style.display = "inline-block";
             d.style.display = "inline-block";
-            //e.style.display = "inline-block";
+            onePet.style.display = "inline-block";
+            twoPet.style.display = "inline-block";
             a.style.display = "none";
             b.style.display = "none";
         }
