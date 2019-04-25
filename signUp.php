@@ -10,9 +10,10 @@ require_once "bin/sendEmail.php";
 require_once "vendor/autoload.php";
 
 # If member is already logged in, send them to the member's page.
-if (key_exists('loggedIn', $_SESSION)) {
+if (array_key_exists('loggedIn', $_SESSION)) {
     echo "<script> alert(\"You are already logged in! Redirecting you to the membership page...\"); </script>";
     header('Location: membersPage.php');
+    exit;
 }
 
 if (sizeof($_REQUEST) > 0) {
@@ -284,15 +285,9 @@ if (sizeof($_REQUEST) > 0) {
     <img src="https://tbncdn.freelogodesign.org/4fc3ec1c-1e7a-4304-b812-4b6b0bdb6b68.png?1553471553913">
     <h1> Twin Cities Inn </h1>
 </header>
-<nav>
-    <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="aboutUs.html">About</a></li>
-        <li><a href="whyTci.html">Why TCI?</a></li>
-        <li><a href="signIn.php" class="active">Sign In</a></li>
-    </ul>
-</nav>
 
+<!--Navigation Bar-->
+<?php include 'bin/nav.php'; ?>
 
 <!-- Makes a JavaScript function to check for invalid input. -->
 <script type="text/javascript" language="JavaScript">
@@ -714,15 +709,9 @@ if (sizeof($_REQUEST) > 0) {
 </section>
 
 <section class="sec3"></section>
-<footer>
-    <nav>
-        <ul>
-            <li><a href="#">Facebook</a href="#"></li>
-            <li><a href="#">Twitter</a></li>
-            <li><a href="#">Google+</a></li>
-            <li><a href="#">© 2019 Twin Cities Inn</a></li>
-        </ul>
-    </nav>
-</footer>
+
+<!-- Footer for the web page.-->
+<?php include_once 'bin/footer.php'; ?>
+
 </body>
 </html>

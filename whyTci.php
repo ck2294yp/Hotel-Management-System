@@ -4,101 +4,21 @@
     <meta charset="UTF-8">
     <title>Why TCI</title>
     <link rel="stylesheet" href="style.css" type="text/css" />
-    <style>
-        .header {
-            text-align: center;
-            overflow: hidden;
-
-        }
-        .header li {
-            display: inline-block;
-            padding-bottom: 0px;
-            padding-top: 0px;
-        }
-        .image {
-            background-image: url("Lobby.jpg");
-            background-repeat: no-repeat;
-            height: 550px;
-            background-size: cover;
-        }
-        .features {
-
-            overflow: hidden;
-        }
-        .features ul {
-            display: inline-block;
-            float: left;
-            padding-bottom: 5px;
-
-        }
-        .sr {
-            overflow: hidden;
-        }
-
-        .sr li{
-            display: inline-block;
-            padding-bottom: 5px;
-        }
-
-        .sr2 {
-        }
-
-        .sr2 li{
-            display: inline-block;
-
-        }
-        .feat {
-
-        }
-        .contact {
-            text-align: center;
-            height: 100px;
-            padding-bottom: 5px;
-        }
-        .footer {
-
-            overflow: auto;
-        }
-        .footer ul {
-            padding-bottom: 5px;
-            list-style-type: none;
-        }
-        .footer li {
-            display: inline-block;
-            font-weight: bold;
-        }
-        body {
-            background-color: white;
-
-        }
-
-        .bord {
-
-            overflow: auto;
-        }
-    </style>
 </head>
+
 <body>
 <header>
     <img src="https://tbncdn.freelogodesign.org/4fc3ec1c-1e7a-4304-b812-4b6b0bdb6b68.png?1553471553913">
     <h1 class="headOne"> Twin Cities Inn</h1>
 </header>
-<nav>
-    <ul>
-        <li><a href="index.html">Home</a> </li>
-        <li><a href="aboutUs.html" >About</a> </li>
-        <li><a href="whyTci.html">Why TCI?</a> </li>
-        <li><a href="signIn.php">Sign In</a> </li>
-    </ul>
-</nav>
 
-<!--why tci start-->
+<!--Navigation Bar-->
+<?php include 'bin/nav.php'; ?>
 
 <h2 style="text-align: center;font-size: 70px;font-style: italic;">Why book with TCI?</h2>
-<br>
-<!--start specialty rooms section-->
+
 <div class="sr">
-    <h2 style="text-align:center; font-size: 3em">Specialty Rooms<!--<button style="padding-left:10px;" type="button" onclick="sRooms()">More</button>--></h2>
+    <h2 style="text-align:center; font-size: 3em">Specialty Rooms</h2>
     <div class="grid1">
         <div><p style="text-align: center; font-size: 2em">Pets</p></div>
         <div><p style="text-align: center; font-size: 2em">Chef</p></div>
@@ -149,7 +69,7 @@
 
 </div>
 <!--end specialty rooms section-->
-<br>
+
 <!--start amenities section-->
 <section class="sec2">
     <h2 style="text-align: center;">Amenities</h2>
@@ -182,19 +102,9 @@
         <div class="arcadePool"></div>
     </div>
 </section>
-<!--end amenities section-->
 
-<!--why tci end-->
-<!-- <section class="sec3"></section> -->
-<footer>
-    <nav>
-        <ul>
-            <li><a href="#">Facebook</a> </li>
-            <li><a href="#">Twitter</a> </li>
-            <li><a href="#">Google+</a> </li>
-            <li><a href="#">© 2019 Twin Cities Inn</a> </li>
-        </ul>
-    </nav>
-</footer>
+<!-- Footer for the web page.-->
+<?php include_once 'bin/footer.php'; ?>
+
 </body>
 </html>

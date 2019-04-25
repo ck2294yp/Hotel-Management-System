@@ -20,5 +20,5 @@ session_destroy();
 
 // Sends the user back to the homepage.
 echo "<script> alert(\"You have successfully logged out!\"); </script>";
-header('Location: /index.html');
+header('Location: /index.php');
 
