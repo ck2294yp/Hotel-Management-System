@@ -70,10 +70,6 @@ if ($_SESSION['loggedIn'] === 0){
 <!--Navigation Bar-->
 <?php include 'bin/nav.php'; ?>
 
-<section class="reservation">
-
-</section>
-
 <section class="sec2">
 
     <h2>Booking History</h2><br/>
@@ -94,61 +90,28 @@ if ($_SESSION['loggedIn'] === 0){
                     <td><?php $timestamp2 = strtotime($invoice['invoiceEndDate']);
                         echo date('m-d-Y',$timestamp2);?></td>
                     <?php $date = time();
-                    if ($date < $timestamp1): ?>
-                    <td><input class="cancel" type="button" id="btn-show-dialog" value="Cancel Reservation" /></td>
-                    <?php endif; ?>
+                    if ($date < $timestamp1):
+                        ?>
+                    <td><input type="button" onClick="deleteReservation(<?php echo $invoice['invoiceID']; ?>)" value="Cancel Reservation">
+                    <?php endif;
+                    ?>
                 </tr>
             <?php endwhile;
             ?>
+
+            <script language="javascript">
+                function deleteReservation(delid)
+                {
+                    if(confirm("Are you sure you want to cancel this reservation?")){
+                        window.location.href='delete.php?del_id=' +delid+'';
+                        alert("Reservation cancel, please check your email for a confirmation.");
+                        return true;
+                    }
+                }
+            </script>
+
         </table>
-
-    <div class="overlay" id="dialog-container">
-        <div class="popup">
-            <p>Are you sure you want to cancel reservation?</p>
-            <div class="text-right">
-                <button class="dialog-btn btn-cancel" id="cancel">Cancel</button>
-                <button class="dialog-btn btn-primary" id="confirm">Yes</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="overlay" id="dialog-container1">
-        <div class="popup">
-            <p>Reservation is cancel, a confirmation will be send to your email.</p>
-            <div class="text-right">
-                <button class="dialog-btn btn-exit" id="stop">Ok</button>
-            </div>
-        </div>
-    </div>
-
-    <script
-            src="https://code.jquery.com/jquery-3.4.0.min.js"
-            integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="
-            crossorigin="anonymous">
-
-    </script>
-
-    <script>
-        $(document).ready(function () {
-            $('#btn-show-dialog').on('click', function () {
-                $('#dialog-container').show();
-            });
-            $('#cancel').on('click', function () {
-                $('#dialog-container').hide();
-            });
-            $('#confirm').on('click', function () {
-                $('#dialog-container1').show();
-                $('#dialog-container').hide();
-            });
-            $('#stop').on('click', function () {
-                $('#dialog-container1').hide();
-                $('#btn-show-dialog').hide();
-            });
-
-        });
-
-    </script>
-
+    <br/><br/><br/><br/><br/><br/><br/>
 </section>
 
 <!-- Footer for the web page.-->

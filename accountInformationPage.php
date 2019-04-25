@@ -44,6 +44,15 @@ try {
     $userInfoStmt->setFetchMode(PDO::FETCH_ASSOC);
     $memInfo = $userInfoStmt->fetchAll(PDO::FETCH_ASSOC);
 
+
+    # Queries the database the Charge Card of the user.
+    $getCard = $conn->prepare('select * from ChargeCard where `memID`=:memID');
+    $getCard->bindParam(':memID', $memInfo['memID'], PDO::PARAM_STR, 254);
+    $getCard->execute();
+    # Gets the member's account details from out of the database query.
+    $getCard->setFetchMode(PDO::FETCH_ASSOC);
+
+
 } catch (PDOException $e) {
     # Rollback any changes to the database (if possible).
     @$conn->rollBack();
@@ -220,9 +229,18 @@ try {
                         <th>Your charge card</th>
                         <th>Expires</th>
                     </tr>
+
+                    <?php
+                    while ($card = $getCard->fetch( PDO::FETCH_ASSOC )):
+                    ?>
                     <tr>
-                        <td>Your card ending in <?php ?></td>
-                        <td><?php ?></td>
+                        <td>Your card ending in
+                        <?php $ccNum = $card['cardNum'];
+                        echo $last4Digits = preg_replace( "#(.*?)(\d{4})$#", "$2", $ccNum); ?> ?>
+                        </td>
+                        <td>
+                            <?php echo $card['cardExpDate']?>
+                        </td>
                     </tr>
 
                 </table>

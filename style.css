@@ -45,10 +45,6 @@ section.sec1Member {
     background-size: cover;
     position: relative;
 }
-section.reservation {
-    background: url("http://newsmobile.in/wp-content/uploads/2019/01/reservation-10.jpeg");
-    background-size: cover;
-}
 
 h3 {
     position: absolute;
