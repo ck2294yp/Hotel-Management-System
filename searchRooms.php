@@ -26,10 +26,9 @@ try {
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     # Queries the database to get the number of .
-    $getBookedRoomsByTypeStmt = $conn->prepare('SELECT roomTypeID, COUNT(*) FROM `InvoiceReservation` WHERE (DATE(`invoiceStartDate`) BETWEEN DATE(:startDate) AND DATE(:endDate)) OR (DATE(invoiceEndDate) BETWEEN DATE(:startDate) AND DATE(:endDate)) GROUP BY InvoiceReservation.roomTypeID;');
+    $getBookedRoomsByTypeStmt = $conn->prepare('SELECT COUNT(*) FROM `InvoiceReservation` WHERE (DATE(`invoiceStartDate`) BETWEEN DATE(:startDate) AND DATE(:endDate)) OR (DATE(invoiceEndDate) BETWEEN DATE(:startDate) AND DATE(:endDate)) GROUP BY InvoiceReservation.roomTypeID;');
     $getBookedRoomsByTypeStmt->bindParam(':startDate', $_SESSION['checkInDate']);
     $getBookedRoomsByTypeStmt->bindParam(':endDate', $_SESSION['checkOutDate']);
-
     $allRoomInfoStmt = $conn->prepare('SELECT * FROM `RoomType`;');
 
     # Begins a transaction, if there are any changes (which there shouldn't be) rollback the changes.
@@ -44,7 +43,7 @@ try {
     # Gets the member's account details from out of the database query.
     $getBookedRoomsByTypeStmt->setFetchMode(PDO::FETCH_ASSOC);
     $allRoomInfoStmt->setFetchMode(PDO::FETCH_ASSOC);
-    $currentBookingsPerType = $getBookedRoomsByTypeStmt->fetchAll(PDO::FETCH_ASSOC);
+    $currentReservations = $getBookedRoomsByTypeStmt->fetchAll(PDO::FETCH_ASSOC);
     $roomInformation = $allRoomInfoStmt->fetchAll(PDO::FETCH_ASSOC);
 
 } catch (PDOException $e) {
@@ -53,7 +52,8 @@ try {
 
     # Sends a JavaScript alert message back to the user notifying them that there was an error processing their request.
     echo "<script> alert(\"We are sorry, there seems to be a problem with our systems. Please try again. If problems still persist, please notify TCI at 651-000-0000.\"); </script>";
-    header('Location: membersPage.php');
+    #TODO: renable this
+    #header('Location: membersPage.php');
     exit;
 }
 ?>
@@ -191,11 +191,25 @@ try {
     <div style="float: right; height: 700px ;width:80%;">
         <h2 style="text-align: left;">Available Rooms</h2>
 
-
         <?php
+        #TODO: DEbug.
+        echo ("test");
+        echo $currentReservations;
+        foreach ($currentReservations as $key => $value) {
+            echo "Array value:";
+            echo "Key: $key; Value: $value\n";
+        }
+
+
+
+
+
         foreach ($roomInformation as $currentRoom) {
-            //Todo: Finish this. (have it check against the number of availible rooms.)
-            if ($currentRoom['numOfRooms'] === 0) {
+            //Todo: Finish this. (have it check against the number of available rooms.)
+            // Gets the room type ID out of the current room number.
+            $tempRoomTypeID = $currentRoom['roomTypeID'];
+            print_r($currentReservations);
+            if ($currentRoom['numOfRooms'] >= $currentReservations[$currentRoom['roomTypeID']]['Count(*)'] ) {
                 echo "<br>";
 
             } else { ?>
