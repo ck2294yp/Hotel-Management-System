@@ -28,30 +28,30 @@ try {
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     # Queries the database to get the username and the password of the user.
-    $userInfoStmt = $conn->prepare('SELECT * FROM `Member` INNER JOIN `Address` USING(memID) WHERE `memEmail`=:email');
+    $userInfoStmt = $conn->prepare('SELECT memID FROM `Member` INNER JOIN `Address` USING(memID) WHERE `memEmail`=:email');
     $userInfoStmt->bindParam(':email', $memInfo['username'], PDO::PARAM_STR, 254);
 
     # Begins a transaction, if there are any changes (which there shouldn't be) rollback the changes.
     $conn->beginTransaction();
     $userInfoStmt->execute();
     $conn->rollBack();
-
-    # Closes the database connection.
-    $conn = null;
-
-
+        
     # Gets the member's account details from out of the database query.
     $userInfoStmt->setFetchMode(PDO::FETCH_ASSOC);
     $memInfo = $userInfoStmt->fetchAll(PDO::FETCH_ASSOC);
 
-
     # Queries the database the Charge Card of the user.
-    $getCard = $conn->prepare('select * from ChargeCard where `memID`=:memID');
-    $getCard->bindParam(':memID', $memInfo['memID'], PDO::PARAM_STR, 254);
-    $getCard->execute();
-    # Gets the member's account details from out of the database query.
-    $getCard->setFetchMode(PDO::FETCH_ASSOC);
+    $cardInfoStmt = $conn->prepare('SELECT * FROM `ChargeCard` WHERE `memID`=:memID');
+    $cardInfoStmt->bindParam(':memID', $memInfo[0]['memID'], PDO::PARAM_STR, 254);
+    $cardInfoStmt->execute();
 
+    # Gets the member's account details from out of the database query.
+    $cardInfoStmt->setFetchMode(PDO::FETCH_ASSOC);
+    $cardInfo = $cardInfoStmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+    # Closes the database connection.
+    $conn = null;
 
 } catch (PDOException $e) {
     # Rollback any changes to the database (if possible).
@@ -60,6 +60,7 @@ try {
     # Sends a JavaScript alert message back to the user notifying them that there was an error processing their request.
     echo "<script> alert(\"We are sorry, there seems to be a problem with our systems. Please try again. If problems still persist, please notify TCI at 651-000-0000.\"); </script>";
     header('Location: membersPage.php');
+    exit;
 }
 
 ?>
@@ -231,17 +232,23 @@ try {
                     </tr>
 
                     <?php
-                    while ($card = $getCard->fetch( PDO::FETCH_ASSOC )):
+                    foreach ($cardInfo as $currentCard) {
+
+                        ?>
+
+                        <tr>
+                            <td>Your card ending in
+                                <?php echo $last4Digits = preg_replace("#(.*?)(\d{4})$#", "$2", $cardInfo['cardNum']); ?>
+                            </td>
+                            <td>
+                                <?php echo $card['cardExpDate'] ?>
+                            </td>
+                        </tr>
+
+                        <?php
+                    }
                     ?>
-                    <tr>
-                        <td>Your card ending in
-                        <?php $ccNum = $card['cardNum'];
-                        echo $last4Digits = preg_replace( "#(.*?)(\d{4})$#", "$2", $ccNum); ?> ?>
-                        </td>
-                        <td>
-                            <?php echo $card['cardExpDate']?>
-                        </td>
-                    </tr>
+
 
                 </table>
                 <br/>
