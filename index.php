@@ -58,144 +58,8 @@ if (sizeof($_REQUEST) > 0) {
     <meta charset="UTF-8">
     <title>Home</title>
     <link rel="stylesheet" href="style.css" type="text/css"/>
-    <style>
-
-        .header li {
-            display: inline-block;
-            padding-bottom: 0px;
-            padding-top: 0px;
-        }
-
-        .image {
-            background-image: url("Lobby.jpg");
-            background-repeat: no-repeat;
-            height: 550px;
-            background-size: cover;
-        }
-
-        .features {
-
-            overflow: hidden;
-        }
-
-        .features ul {
-            display: inline-block;
-            float: left;
-            padding-bottom: 5px;
-
-        }
-
-        .sr {
-            overflow: hidden;
-        }
-
-        .sr li {
-            display: inline-block;
-            padding-bottom: 5px;
-        }
-
-        .sr2 li {
-            display: inline-block;
-
-        }
-
-        .feat {
-
-        }
-
-        .contact {
-            text-align: center;
-            height: 100px;
-            padding-bottom: 5px;
-        }
-
-        .footer {
-
-            overflow: auto;
-        }
-
-        .footer ul {
-            padding-bottom: 5px;
-            list-style-type: none;
-        }
-
-        .footer li {
-            display: inline-block;
-            font-weight: bold;
-        }
-
-        body {
-            background-color: white;
-
-        }
-
-
-        .details {
-            position: absolute;
-            width: 400px;
-            height: 300px;
-            display: flex;
-            justify-content: center;
-            font-family: serif;
-            font-size: 20px;
-            top: 70%;
-            left: 70%;
-        }
-
-
-        .details input[type="submit"] {
-            width: 100%;
-            height: 45px;
-            background-color: brown;
-            color: white;
-            display: flex;
-            justify-content: center;
-            box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
-            font-size: 20px;
-
-        }
-
-        table tr td {
-            border: 1px solid black;
-
-        }
-
-
-        .details input[type="number"] {
-            width: 100%;
-            height: 35px;
-            font-size: 20px;
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-        .detail input[type="text"] {
-            width: 100%;
-            height: 55px;
-        }
-
-        .details input[type="date"] {
-            font-size: 20px;
-            width: 100%;
-            height: 35px;
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-
-        .details select {
-            width: 100%;
-            height: 35px;
-            font-size: 20px;
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-        footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-
-    </style>
 </head>
+
 <body>
 <header>
     <img src="https://tbncdn.freelogodesign.org/4fc3ec1c-1e7a-4304-b812-4b6b0bdb6b68.png?1553471553913">
@@ -279,14 +143,6 @@ if (sizeof($_REQUEST) > 0) {
     </div>
 </div>
 
-<!--start of specialy rooms section-->
-
-
-<!--end of specialy rooms section-->
-</div>
-<!--start of amenties section-->
-
-<!--end of amenties section-->
 </div>
 <div class="sr">
     <ul>
@@ -304,15 +160,12 @@ if (sizeof($_REQUEST) > 0) {
     </ul>
 </div>
 
-<div class="contact">
-    <ul class="footer">
-        <li>Contact Twin Cities Inn</li>
-        <li>|</li>
-        <li>Phone Number: 651-222-2020</li>
-        <li>|</li>
-        <li>Email: twincitiesinnsupport@twincitiesinn.com</li>
-    </ul>
+<div style="text-align: center">
+    <p> Contact Twin Cities Inn | Phone Number: 651-222-2020 | Email: TCIsupport@TwinCitiesInn.com </p>
 </div>
+
+<!-- Footer for the web page.-->
+<?php include_once 'bin/footer.php'; ?>
 
 <script>
 
@@ -335,9 +188,6 @@ if (sizeof($_REQUEST) > 0) {
     }
 
 </script>
-
-<!-- Footer for the webpage.-->
-<?php include_once 'bin/footer.php'; ?>
 
 </body>
 </html>

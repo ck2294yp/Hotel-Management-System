@@ -62,15 +62,8 @@ try {
     <meta charset="UTF-8">
     <title>Account Information Page</title>
     <link rel="stylesheet" href="style.css" type="text/css"/>
-    <style>
-        label:hover {
-            background: #f2f5ff;
-            border-radius: 5px;
-            padding: 2px 4px;
-        }
-    </style>
-
 </head>
+
 <body>
 <header>
     <img src="https://tbncdn.freelogodesign.org/4fc3ec1c-1e7a-4304-b812-4b6b0bdb6b68.png?1553471553913">
@@ -308,18 +301,9 @@ try {
 
 </section>
 
-<!-- <section class="sec3"></section> -->
+<!-- Footer for the web page.-->
+<?php include_once 'bin/footer.php'; ?>
 
-<footer>
-    <nav>
-        <ul>
-            <li><a onclick="return false" href="">Facebook</a></li>
-            <li><a onclick="return false" href="">Twitter</a></li>
-            <li><a onclick="return false" href="">Google+</a></li>
-            <li><a onclick="return false" href="">© 2019 Twin Cities Inn</a></li>
-        </ul>
-    </nav>
-</footer>
 </body>
 </html>
 
