@@ -345,7 +345,7 @@ try {
 
             <br>
             <button class="button" type="button" onclick="hideShowAddCardForm()">Add New Card</button>
-            <button class="button" type="submit" class="process-btn">Pay Now</button>
+            <button class="button" type="submit" class="process-btn" onclick="processingMessage()">Pay Now</button>
         </form>
     </div>
     <div class="column right" id="newCardEntry">
@@ -413,8 +413,8 @@ try {
         integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="
         crossorigin="anonymous"></script>
 <script>
-    function bookRoom() {
-        alert("Thank you for booking with TCI, We look forward to seeing you soon!");
+    function processingMessage() {
+        alert("Please wait patiently while your order processes. DO NOT NAVIGATE AWAY WHILE ORDER IS PROCESSING! It will be done soon. Please click 'OK' to continue...");
 
     }
 

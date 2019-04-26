@@ -3,6 +3,7 @@ session_start();
 
 require_once "settings/settings.php";
 require_once "bin/inputSanitization.php";
+require_once "bin/sendEmail.php";
 
 // Sanitizes input from the POST request.
 $_REQUEST['cardNum'] = sanitizeNumString($_REQUEST['cardNum']);
@@ -42,14 +43,21 @@ try {
     $orderStmt->bindParam(':invoiceStartDate', $_REQUEST['checkInDate']);
     $orderStmt->bindParam(':invoiceEndDate', $_REQUEST['checkOutDate']);
 
+
     # Commit the changes.
     $conn->beginTransaction();
     $orderStmt->execute();
+    $orderNumber = $conn->lastInsertId();       // Gets the last insert ID (the invoice number)
     $conn->commit();
 
     # Close the database connection.
     $conn = null;
 
+    // Send order notification email out to user.
+    orderProcess($_REQUEST['memID'], $orderNumber);
+
+
+    # Notify user that order has been processed.
     echo "<script> alert(\"Your order has been processed successfully! Thank you for booking with TCI!\"); </script>";
     echo"Order processed successfully! Thank you for booking with TCI! <br>";
     echo "You should be redirected to the member's page. If that doesn't work, please click <a href=\"membersPage.php\">here</a>.";
