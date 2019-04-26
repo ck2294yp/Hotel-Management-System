@@ -3,11 +3,11 @@
 session_start();
 
 require_once "settings/settings.php";
-require_once  "bin/inputSanitization.php";
+require_once "bin/inputSanitization.php";
 
 
 # If member is NOT already signed in (loggedIn is false) then redirect them to the SignIn page IMMEDIATELY.
-if ($_SESSION['loggedIn'] === 0){
+if (array_key_exists('loggedIn', $_SESSION) === false)  {
     echo "<script> alert(\"Your session has timed out, please sign in again.\"); </script>";
     header('Location: signIn.php');
 
@@ -25,25 +25,59 @@ if ($_SESSION['loggedIn'] === 0){
         # Set the PDO error mode to exception
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+        # Continues on to display the rest of the page (regardless if reservation is removed or not).
         # Gets the memId of the member.
-        $userInfoStmt = $conn->prepare('select memId from Member where `memEmail`=:memEmail');
+        $userInfoStmt = $conn->prepare('SELECT memId FROM Member WHERE `memEmail`=:memEmail');
         $userInfoStmt->bindParam(':memEmail', $memInfo['username'], PDO::PARAM_STR, 254);
-        # Gets query and turns it into a variable.
         $userInfoStmt->execute();
+
+        # Gets query and turns it into a variable.
         $userInfoStmt->setFetchMode(PDO::FETCH_ASSOC);
         $memInfo = $userInfoStmt->fetch(PDO::FETCH_ASSOC);
 
+        # Removes undesired card from the database.
+        if (array_key_exists('removeResv', $_REQUEST) === false) {
+
+            #TODO DEBUG
+            echo($_REQUEST['removeResv']);
+
+            #TODO: Figure out why this is not working. Also have code send out an email to the user saying that their reservation has been canciled.
+            # SQL statement to remove the card from the database.
+            $removeResvStmt = $conn->prepare('REMOVE FROM `InvoiceReservation` WHERE `invoiceID`=:invoiceID AND `memID =:memID`');
+            $removeResvStmt->bindParam(':invoiceID', $_REQUEST['removeResv']);
+            $removeResvStmt->bindParam(':memID', $memInfo['memId']);
+            $removeResvStmt->execute();
+            $removeResvID = null;
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+        #TODO: DEBUG
+        echo(print_r($memInfo));
+
 
         # Queries the database the Booking History of the user.
-        $getInvoiceStmt = $conn->prepare('select * from InvoiceReservation where `memId`=:memId order by invoiceStartDate DESC');
-        $getInvoiceStmt->bindParam(':memId', $memInfo['memId'], PDO::PARAM_STR, 254);
-        $getInvoiceStmt->execute();
+        $bookingHistoryStmt = $conn->prepare('SELECT * FROM InvoiceReservation WHERE `memId`=:memId ORDER BY invoiceStartDate DESC');
+        $bookingHistoryStmt->bindParam(':memId', $memInfo['memId'], PDO::PARAM_STR, 254);
+        $bookingHistoryStmt->execute();
         # Gets the member's account details from out of the database query.
-        $getInvoiceStmt->setFetchMode(PDO::FETCH_ASSOC);
-
+        $bookingHistoryStmt->setFetchMode(PDO::FETCH_ASSOC);
 
 
     } catch (PDOException $e) {
+        @$conn->rollBack();
+
         # Sends a JavaScript alert message back to the user notifying them that there was an error processing their request.
         echo "<script> alert(\"We are sorry, there seems to be a problem with our systems. Please try again. If problems still persist, please notify TCI at 651-000-0000.\"); </script>";
         header('Location: membersPage.php');
@@ -58,7 +92,7 @@ if ($_SESSION['loggedIn'] === 0){
 <head>
     <meta charset="UTF-8">
     <title>Booking History</title>
-    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="stylesheet" href="style.css" type="text/css"/>
 </head>
 
 <body>
@@ -72,45 +106,54 @@ if ($_SESSION['loggedIn'] === 0){
 
 <section class="sec2">
 
+    <script language="javascript">
+        function deleteReservation(resvId) {
+            var popup = confirm("Are you sure you want to cancel this reservation?");
+            if (popup == true) {
+                window.location = "http://localhost:8080/bookingHistory.php?removeResv=" + resvId;
+                // If user clicks "Cancel" then don't do anything (except close the prompt).
+            } else {
+
+            }
+        }
+    </script>
+
+
     <h2>Booking History</h2><br/>
 
-        <table class="bookingHistoryTable">
-        <tr> <th>Invoice ID</th> <th>Card Number</th> <th style='display: none'>Member ID</th> <th>From</th> <th>To</th> <th>Cancel Reservation</th> </tr>
-            <?php
-            while ($invoice = $getInvoiceStmt->fetch( PDO::FETCH_ASSOC )):
+    <table class="bookingHistoryTable">
+        <tr>
+            <th>Invoice ID</th>
+            <th>Card Number</th>
+            <th style='display: none'>Member ID</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Cancel Reservation</th>
+        </tr>
+        <?php
+        while ($invoice = $bookingHistoryStmt->fetch(PDO::FETCH_ASSOC)):
+            ?>
+            <tr>
+                <td><?php echo $invoice['invoiceID']; ?></td>
+                <td><?php $ccNum = $invoice['cardNum'];
+                    echo $last4Digits = preg_replace("#(.*?)(\d{4})$#", "$2", $ccNum); ?>
+                </td>
+                <td style='display: none;'><?php echo $invoice['memID']; ?></td>
+                <td><?php $timestamp1 = strtotime($invoice['invoiceStartDate']);
+                    echo date('m-d-Y', $timestamp1); ?></td>
+                <td><?php $timestamp2 = strtotime($invoice['invoiceEndDate']);
+                    echo date('m-d-Y', $timestamp2); ?></td>
+                <?php $date = time();
+                if ($date < $timestamp1):
                 ?>
-                <tr>
-                    <td><?php echo $invoice['invoiceID']; ?></td>
-                    <td><?php $ccNum = $invoice['cardNum'];
-                        echo $last4Digits = preg_replace( "#(.*?)(\d{4})$#", "$2", $ccNum); ?>
-                    </td>
-                    <td style='display: none;'><?php echo $invoice['memID']; ?></td>
-                    <td><?php $timestamp1 = strtotime($invoice['invoiceStartDate']);
-                        echo date('m-d-Y',$timestamp1); ?></td>
-                    <td><?php $timestamp2 = strtotime($invoice['invoiceEndDate']);
-                        echo date('m-d-Y',$timestamp2);?></td>
-                    <?php $date = time();
-                    if ($date < $timestamp1):
-                        ?>
-                    <td><input type="button" onClick="deleteReservation(<?php echo $invoice['invoiceID']; ?>)" value="Cancel Reservation">
+                <td><input type="button" onClick="deleteReservation(<?php echo $invoice['invoiceID']; ?>)"
+                           value="Cancel Reservation">
                     <?php endif;
                     ?>
-                </tr>
-            <?php endwhile;
-            ?>
-
-            <script language="javascript">
-                function deleteReservation(delid)
-                {
-                    if(confirm("Are you sure you want to cancel this reservation?")){
-                        window.location.href='delete.php?del_id=' +delid+'';
-                        alert("Reservation cancel, please check your email for a confirmation.");
-                        return true;
-                    }
-                }
-            </script>
-
-        </table>
+            </tr>
+        <?php endwhile;
+        ?>
+    </table>
     <br/><br/><br/><br/><br/><br/><br/>
 </section>
 
