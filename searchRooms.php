@@ -475,7 +475,7 @@ try {
         function confirmRoomType(roomTypeID) {
             var popup = confirm("Are you sure you want to book this room?");
             if (popup == true) {
-                window.location = "http://localhost:8081/billingPage.php?roomTypeID=" + roomTypeID;
+                window.location = "http://localhost:8080/billingPage.php?roomTypeID=" + roomTypeID;
                 // If user clicks "Cancel" then don't do anything (except close the prompt).
             } else {
 

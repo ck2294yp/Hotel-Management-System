@@ -59,7 +59,7 @@ function accountActivate($userEmail)
     // Sets the body of the email
     $body = '
         <center> Welcome to TCI, ' . $memInfo['memFname'] . ' ' . $memInfo['memLname'] . '!
-        <p> Click <a href="http://localhost:8081/activate.php?user=' . $memInfo['memEmail'] . '&activationId=' . $memInfo['memActivationLink'] . '">here</a> to activate your account.
+        <p> Click <a href="http://localhost:8080/activate.php?user=' . $memInfo['memEmail'] . '&activationId=' . $memInfo['memActivationLink'] . '">here</a> to activate your account.
         <p>
         <br>
         <br>

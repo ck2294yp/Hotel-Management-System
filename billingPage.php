@@ -8,11 +8,11 @@ require_once "bin/inputSanitization.php";
 
 // TODO: Fix this
 // Stops if the room Type ID is not set.
-//if (isset($_REQUEST['roomTypeID'])) {
-//    echo "<script> alert(\"Invalid room type specified please try again.\"); </script>";
-//    header('Location: searchRooms.php');
-//    exit;
-//}
+if (array_key_exists('roomTypeID', $_REQUEST) === false) {
+    echo "<script> alert(\"Invalid room type specified please try again.\"); </script>";
+    header('Location: searchRooms.php');
+    exit;
+}
 
 // Stops if user is not logged in.
 if (array_key_exists('loggedIn', $_SESSION) === false) {
@@ -128,7 +128,6 @@ try {
         float: left;
         margin: 0px;
         text-align: center;
-        /* TODO: Should be removed. Only for demonstration */
     }
 
     .left {
@@ -311,7 +310,12 @@ try {
 <div class="row">
     <div class="column left">
         <h2>Checkout Details</h2>
-        <div>
+        <form action="processOrder.php" method="post">
+            <input type="hidden" name="memID" id="memID" value="<?php echo($memInfo['memID']); ?>" />
+            <input type="hidden" name="roomTypeID" id="roomTypeID" value="<?php echo($roomInfo['roomTypeID']); ?>" />
+            <input type="hidden" name="checkInDate" id="checkInDate" value="<?php echo($_SESSION['checkInDate']); ?>" />
+            <input type="hidden" name="checkOutDate" id="checkOutDate" value="<?php echo($_SESSION['checkOutDate']); ?>" />
+
             <p>
                 <br> Room Type: <?php echo(ucfirst($roomInfo['roomCatagory'])); ?>
                 <br> Number of Beds: <?php echo($roomInfo['roomNumBeds']); ?>
@@ -330,28 +334,28 @@ try {
 
 
 
-            <select name="chooseExistingCard" id="chooseExistingCard">
+            <select name="cardNum" id="cardNum">
             <?php
             foreach ($paymentInfo as $row) {
                 $last4Digits = preg_replace( '/[0-9]{12}/', "*", $row['cardNum']);
-                echo "<option value='" . $last4Digits . "'>" . $last4Digits . "</option>";
+                echo "<option value='".$row['cardNum']."'>".$last4Digits."</option>";
             }
             ?>
             </select>
 
             <br>
-            <button class="button" onclick="hideShowAddCardForm()">Add New Card</button>
-            <button class="button" onclick="bookRoom()" class="process-btn">Pay Now</button>
-        </div>
+            <button class="button" type="button" onclick="hideShowAddCardForm()">Add New Card</button>
+            <button class="button" type="submit" class="process-btn">Pay Now</button>
+        </form>
     </div>
     <div class="column right" id="newCardEntry">
-        <form class="credit-card form>
+        <form class="chargeCardForm">
             <div class="form-header"
             <h4 class="title">Add New Form of Payment</h4>
 
             <div class="form-body">
                 <!-- Card Number -->
-                <input type="text" class="card-number" placeholder="Card Number" pattern="[0-9 \-]>
+                <input type="text" class="newCardNum" placeholder="newCardNum" pattern="[0-9 \-]>
 
                 <!-- Expiration Date -->
                 <div class="experation-date">
@@ -398,7 +402,7 @@ try {
                     </div>
                 </div>
 
-                <!-- Buttons -->
+                <!-- Button -->
                 <button type="submit" class="proceed-btn"><a href="billingPage.php">Add Card</a></button>
             </div>
         </form>
