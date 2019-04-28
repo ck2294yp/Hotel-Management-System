@@ -74,9 +74,8 @@ try {
 
     # Sends a JavaScript alert message back to the user notifying them that there was an error processing their request.
     echo "<script> alert(\"We are sorry, there seems to be a problem with our systems. Please try again. If problems still persist, please notify TCI at 651-000-0000.\"); </script>";
-    #TODO DEBUG:
-    //header('Location: searchRooms.php');
-    //exit;
+    header('Location: searchRooms.php');
+    exit;
 }
 
 ?>
@@ -348,18 +347,23 @@ try {
         </form>
     </div>
     <div class="column right" id="newCardEntry">
-        <form class="chargeCardForm">
+        <form class="chargeCardForm" action="addPayment.php" method="post">
             <div class="form-header"
             <h4 class="title">Add New Form of Payment</h4>
 
             <div class="form-body">
-                <!-- Card Number -->
-                <input type="text" class="newCardNum" placeholder="newCardNum" pattern="[0-9 \-]>
+                <!-- Name on Card-->
+                <input type="text" class="newCardFName" placeholder="Joe" pattern="[A-Za-z\-\h]{2,64}">
+                <input type="text" class="newCardMInitial" placeholder="A" pattern="[A-Za-z]{1}">
+                <input type="text" class="newCardLName" placeholder="Smith" pattern="[A-Za-z\-\h]{2,64}">
+
+                <!-- Card Number-->
+                <input type="text" class="newCardNum" placeholder="1111-2222-3333-4444" maxlength="23" pattern="[0-9 \-]">
 
                 <!-- Expiration Date -->
-                <div class="experation-date">
+                <div class="expiration-date">
                     <div class="month">
-                        <select name="Month">
+                        <select name="newCardExpMonth">
                             <option value="January">January</option>
                             <option value="February">February</option>
                             <option value="March">March</option>
@@ -375,7 +379,7 @@ try {
                         </select>
                     </div>
                     <div class="year">
-                        <select name="Year">
+                        <select name="newCardExpYear">
                             <option value="2019">2019</option>
                             <option value="2020">2020</option>
                             <option value="2021">2021</option>
@@ -394,8 +398,7 @@ try {
                 <!-- Card Verification Field -->
                 <div class="card-verification">
                     <div class="cvv-input">
-                        <input type="text" placeholder="CVV" minlength="3" maxlength="4" pattern="[0-9]">
-                    </div>
+F                    </div>
                     <div class="cvv-details">
                         <p>3 or 4 digits usually found <br> on the signature strip</p>
                     </div>

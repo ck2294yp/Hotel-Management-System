@@ -99,17 +99,16 @@ try {
             $_SESSION['username'] = $userInput['username'];
             $_SESSION['loggedIn'] = true;
 
-            # Since the user has managed to login, remove all instances where the clientIP has failed to login.
+            # Since user has managed to login, remove all instances where his/her clientIP has failed.
             $numFailedStmt = $conn->prepare('DELETE FROM `FailedLogins` WHERE (failLoginIP=:IP)');
             $numFailedStmt->bindParam(':IP', $clientIp);
             $conn->beginTransaction();
             $numFailedStmt->execute();
             $conn->commit();
-
             # Closes the database connection.
             $conn = null;
 
-            # Redirects the user to members page after successful login
+            # Redirects the user to members page after successful login.
             header('Location: membersPage.php');
             exit;
 

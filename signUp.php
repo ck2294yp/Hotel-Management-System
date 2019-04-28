@@ -384,7 +384,7 @@ if (sizeof($_REQUEST) > 0) {
                  minlength="2"
                  maxlength="64"
                  spellcheck="true"
-                 autocorrect="om"
+                 autocorrect="on"
                  pattern="[A-Za-z\-\h]{2,64}"
                  required>
         <script>checkInput('memFname', 'Please enter a valid first name!');</script>
@@ -399,7 +399,7 @@ if (sizeof($_REQUEST) > 0) {
                  minlength="2"
                  maxlength="64"
                  spellcheck="true"
-                 autocorrect="om"
+                 autocorrect="on"
                  placeholder="Last Name"
                  pattern="[A-Za-z\-\h]{2-64}">
         <script>checkInput('memLname', 'Please enter a valid last name!');</script>
