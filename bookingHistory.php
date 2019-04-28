@@ -27,50 +27,33 @@ if (array_key_exists('loggedIn', $_SESSION) === false)  {
 
         # Continues on to display the rest of the page (regardless if reservation is removed or not).
         # Gets the memId of the member.
-        $userInfoStmt = $conn->prepare('SELECT memId FROM Member WHERE `memEmail`=:memEmail');
+        $userInfoStmt = $conn->prepare('SELECT memID FROM Member WHERE `memEmail`=:memEmail');
         $userInfoStmt->bindParam(':memEmail', $memInfo['username'], PDO::PARAM_STR, 254);
+        $conn->beginTransaction();
         $userInfoStmt->execute();
 
         # Gets query and turns it into a variable.
         $userInfoStmt->setFetchMode(PDO::FETCH_ASSOC);
         $memInfo = $userInfoStmt->fetch(PDO::FETCH_ASSOC);
 
-        # Removes undesired card from the database.
-        if (array_key_exists('removeResv', $_REQUEST) === false) {
 
-            #TODO DEBUG
-            echo($_REQUEST['removeResv']);
 
-            #TODO: Figure out why this is not working. Also have code send out an email to the user saying that their reservation has been canciled.
+        # Removes undesired booking from the database.
+        if (array_key_exists('removeResv', $_REQUEST) === true) {
+
             # SQL statement to remove the card from the database.
-            $removeResvStmt = $conn->prepare('REMOVE FROM `InvoiceReservation` WHERE `invoiceID`=:invoiceID AND `memID =:memID`');
+            $removeResvStmt = $conn->prepare('DELETE FROM `InvoiceReservation` WHERE `invoiceID`=:invoiceID AND `memID`=:memID');
             $removeResvStmt->bindParam(':invoiceID', $_REQUEST['removeResv']);
-            $removeResvStmt->bindParam(':memID', $memInfo['memId']);
+            $removeResvStmt->bindParam(':memID', $memInfo['memID']);
             $removeResvStmt->execute();
-            $removeResvID = null;
-
-
-
         }
-
-
-
-
-
-
-
-
-
-
-
-        #TODO: DEBUG
-        echo(print_r($memInfo));
 
 
         # Queries the database the Booking History of the user.
         $bookingHistoryStmt = $conn->prepare('SELECT * FROM InvoiceReservation WHERE `memId`=:memId ORDER BY invoiceStartDate DESC');
-        $bookingHistoryStmt->bindParam(':memId', $memInfo['memId'], PDO::PARAM_STR, 254);
+        $bookingHistoryStmt->bindParam(':memId', $memInfo['memID'], PDO::PARAM_STR, 254);
         $bookingHistoryStmt->execute();
+        $conn->commit();
         # Gets the member's account details from out of the database query.
         $bookingHistoryStmt->setFetchMode(PDO::FETCH_ASSOC);
 
@@ -80,6 +63,7 @@ if (array_key_exists('loggedIn', $_SESSION) === false)  {
 
         # Sends a JavaScript alert message back to the user notifying them that there was an error processing their request.
         echo "<script> alert(\"We are sorry, there seems to be a problem with our systems. Please try again. If problems still persist, please notify TCI at 651-000-0000.\"); </script>";
+
         header('Location: membersPage.php');
     }
 
