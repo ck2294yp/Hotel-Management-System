@@ -186,7 +186,7 @@ try {
 <div style="width: 100%;padding-left: 4px;">
     <div style="float: left; height: auto; width: 20%;">
         <h2 style="text-align: left">Filter by:</h2>
-        <button onclick="oneBedRoom()" style="width: 60%">One Bed</button>
+        <button id="oneBedRoom" onclick="oneBedRoom()" style="width: 60%">One Bed</button>
         <br><br>
         <button onclick="twoBedRoom()" style="width: 60%">Two Bed</button>
         <br><br>
@@ -203,7 +203,7 @@ try {
             if ((array_key_exists($currentRoom['roomTypeID'], $bookedRooms) === true) && ($currentRoom['numOfRooms'] >= $bookedRooms[$currentRoom['roomTypeID']])) {
 
             } else { ?>
-                <div class="gridMember" id="<?php echo($currentRoom['roomNumBeds'] . 'bed' . $currentRoom['roomCatagory']) ?>" class="roomBox" style="display: inline-block;">
+                <div class="gridMember roomBox" id="<?php echo($currentRoom['roomNumBeds'] . 'bed' . $currentRoom['roomCatagory']); ?>"   style="display: inline-block;">
                     <!-- Room details -->
                     <div style="float:left; text-align:left; padding-left:5%; ">
                         <br> <h2> <?php echo($currentRoom['roomNumBeds'] . "-bed " . ucfirst($currentRoom['roomCatagory']) . " Room"); ?> </h2>
@@ -293,50 +293,103 @@ try {
         var d = document.getElementById("2bedchef");
         var e = document.getElementById("1bedpet");
         var f = document.getElementById("2bedpet");
-        var g = document.getElementById("2bedfamliy");
+        var g = document.getElementById("2bedfamily");
         var h = document.getElementById("3bedfamily");
         var i = document.getElementById("1bedgaming");
         var j = document.getElementById("2bedgaming");
+        var k = document.getElementById("3bedfamily");
+
 
 
         function oneBedRoom() {
 
             if (a.style.display === "inline-block"
-                && c.style.display === "inline-block"
-                && e.style.display === "inline-block"
-                && i.style.display === "inline-block") {
+                || c.style.display === "inline-block"
+                || e.style.display === "inline-block"
+                || i.style.display === "inline-block") {
 
                 a.style.display = "inline-block";
                 c.style.display = "inline-block";
                 e.style.display = "inline-block";
                 i.style.display = "inline-block";
 
-                a.style.display = "none";
-                c.style.display = "none";
-                e.style.display = "none";
-                i.style.display = "none";
+
+                b.style.display = "none";
+                d.style.display = "none";
+                f.style.display = "none";
+                g.style.display = "none";
+                h.style.display = "none";
+                j.style.display = "none";
+                k.style.display = "none";
+
             }
 
             if (a.style.display === "none"
-                && c.style.display === "none"
-                && e.style.display === "none"
-                && i.style.display === "none") {
+                || c.style.display === "none"
+                || e.style.display === "none"
+                || i.style.display === "none") {
 
                 a.style.display = "inline-block";
                 c.style.display = "inline-block";
                 e.style.display = "inline-block";
                 i.style.display = "inline-block";
 
+
+                b.style.display = "none";
+                d.style.display = "none";
+                f.style.display = "none";
+                g.style.display = "none";
+                h.style.display = "none";
+                j.style.display = "none";
+                k.style.display = "none";
+            }
+        }
+
+        function twoBedRoom(){
+
+            if (b.style.display === "inline-block"
+                || d.style.display === "inline-block"
+                || f.style.display === "inline-block"
+                || g.style.display === "inline-block" || h.style.display === "inline-block" || j.style.display === "inline-block") {
+
+                b.style.display = "inline-block";
+                d.style.display = "inline-block";
+                f.style.display = "inline-block";
+                g.style.display = "inline-block";
+                h.style.display = "inline-block";
+                j.style.display = "inline-block";
+
                 a.style.display = "none";
                 c.style.display = "none";
                 e.style.display = "none";
                 i.style.display = "none";
+                h.style.display = "none";
+
+
+            }
+
+            if (b.style.display === "none"
+                || d.style.display === "none"
+                || f.style.display === "none"
+                || g.style.display === "none" || h.style.display === "none" || j.style.display === "none") {
+
+                b.style.display = "inline-block";
+                d.style.display = "inline-block";
+                f.style.display = "inline-block";
+                g.style.display = "inline-block";
+                h.style.display = "inline-block";
+                j.style.display = "inline-block";
+
+                a.style.display = "none";
+                c.style.display = "none";
+                e.style.display = "none";
+                i.style.display = "none";
+                h.style.display = "none";
             }
         }
 
-
         // b,d,f,g,h,j
-        function twoBedRoom() {
+        function oldtwoBedRoom() {
 
             if (b.style.display === "inline-block"
                 && d.style.display === "inline-block"
@@ -352,12 +405,11 @@ try {
                 h.style.display = "inline-block";
                 j.style.display = "inline-block";
 
-                b.style.display = "none";
-                d.style.display = "none";
-                f.style.display = "none";
-                g.style.display = "none";
+                a.style.display = "none";
+                c.style.display = "none";
+                e.style.display = "none";
+                i.style.display = "none";
                 h.style.display = "none";
-                j.style.display = "none";
             }
 
             if (b.style.display === "none"
@@ -388,13 +440,13 @@ try {
         function specialtyRoom() {
 
             if (c.style.display === "inline-block"
-                && d.style.display === "inline-block"
-                && e.style.display === "inline-block"
-                && f.style.display === "inline-block"
-                && g.style.display === "inline-block"
-                && h.style.display === "inline-block"
-                && i.style.display === "inline-block"
-                && j.style.display === "inline-block") {
+                || d.style.display === "inline-block"
+                || e.style.display === "inline-block"
+                || f.style.display === "inline-block"
+                || g.style.display === "inline-block"
+                || h.style.display === "inline-block"
+                || i.style.display === "inline-block"
+                || j.style.display === "inline-block") {
 
                 c.style.display = "inline-block";
                 d.style.display = "inline-block";
@@ -405,24 +457,26 @@ try {
                 i.style.display = "inline-block";
                 j.style.display = "inline-block";
 
-                c.style.display = "none";
+                /*c.style.display = "none";
                 d.style.display = "none";
                 e.style.display = "none";
                 f.style.display = "none";
                 g.style.display = "none";
                 h.style.display = "none";
                 i.style.display = "none";
-                j.style.display = "none";
+                j.style.display = "none";*/
+                a.style.display = "none";
+                b.style.display = "none";
             }
 
             if (c.style.display === "none"
-                && d.style.display === "none"
-                && e.style.display === "none"
-                && f.style.display === "none"
-                && g.style.display === "none"
-                && h.style.display === "none"
-                && i.style.display === "none"
-                && j.style.display === "none") {
+                || d.style.display === "none"
+                || e.style.display === "none"
+                || f.style.display === "none"
+                || g.style.display === "none"
+                || h.style.display === "none"
+                || i.style.display === "none"
+                || j.style.display === "none") {
 
                 c.style.display = "inline-block";
                 d.style.display = "inline-block";
