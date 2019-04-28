@@ -47,10 +47,6 @@ function accountActivate($userEmail)
         $memInfo = $userInfoStmt->fetch(PDO::FETCH_ASSOC);
 
     } catch (PDOException $e) {
-        # Rollback any changes to the database and closes the connection (if possible).
-        @$conn->rollBack();
-        @$conn = null;
-
         # If database connection fails for whatever reason, return false.
         return false;
     }
@@ -151,10 +147,6 @@ function orderProcess($memID, $invoiceID)
 
 
     } catch (PDOException $e) {
-        # Rollback any changes to the database and closes the connection (if possible).
-        @$conn->rollBack();
-        @$conn = null;
-
         # If database connection fails for whatever reason, return false.
         return false;
     }

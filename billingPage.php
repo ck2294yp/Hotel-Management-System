@@ -69,9 +69,6 @@ try {
     $roomInfo = $roomInfoStmt->fetch(PDO::FETCH_ASSOC);
 
 } catch (PDOException $e) {
-    # Rollback any changes to the database (if possible).
-    @$conn->rollBack();
-
     # Sends a JavaScript alert message back to the user notifying them that there was an error processing their request.
     echo "<script> alert(\"We are sorry, there seems to be a problem with our systems. Please try again. If problems still persist, please notify TCI at 651-000-0000.\"); </script>";
     header('Location: searchRooms.php');
@@ -358,7 +355,7 @@ try {
                 <input type="text" class="newCardLName" placeholder="Smith" pattern="[A-Za-z\-\h]{2,64}">
 
                 <!-- Card Number-->
-                <input type="text" class="newCardNum" placeholder="1111-2222-3333-4444" maxlength="23" pattern="[0-9 \-]">
+                <input type="text" class="newCardNum" placeholder="1111-2222-3333-4444" minlength="12" maxlength="23" pattern="[0-9 \-]">
 
                 <!-- Expiration Date -->
                 <div class="expiration-date">
@@ -398,9 +395,16 @@ try {
                 <!-- Card Verification Field -->
                 <div class="card-verification">
                     <div class="cvv-input">
-F                    </div>
+                        <input type="text"
+                               name="newCardCvv"
+                               placeholder="CVV"
+                               required
+                               minlength="3"
+                               maxlength="4"
+                               pattern="[0-9\h]">
+                    </div>
                     <div class="cvv-details">
-                        <p>3 or 4 digits usually found <br> on the signature strip</p>
+                        <p>3 or 4 digits usually found <br> on the signature strip.</p>
                     </div>
                 </div>
 

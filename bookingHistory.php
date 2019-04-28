@@ -59,8 +59,6 @@ if (array_key_exists('loggedIn', $_SESSION) === false)  {
 
 
     } catch (PDOException $e) {
-        @$conn->rollBack();
-
         # Sends a JavaScript alert message back to the user notifying them that there was an error processing their request.
         echo "<script> alert(\"We are sorry, there seems to be a problem with our systems. Please try again. If problems still persist, please notify TCI at 651-000-0000.\"); </script>";
 

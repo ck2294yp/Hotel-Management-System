@@ -1,16 +1,12 @@
 <?php
-// Checks to make sure user is actually logged in.
-session_start();
 
 require_once "settings/settings.php";
 require_once "bin/inputSanitization.php";
 
-// Stops if user is not logged in.
-if (array_key_exists('loggedIn', $_SESSION) === false) {
-    echo "<script> alert(\"Your session has timed out, please sign in again.\"); </script>";
-    header('Location: signIn.php');
-    exit;
-}
+
+#TODO DEBUG:
+print_r($_REQUEST);
+
 
 
 // If there is a post request coming into this page then handle it. Otherwise display the card entry details.
@@ -78,14 +74,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
     } catch (PDOException $e) {
-        # Rollback any changes to the database (if possible/required).
-        @$conn->rollBack();
-        @$conn = null;
-
         # Sends a JavaScript alert message back to the user notifying them that there was an error processing their request.
         echo "<script> alert(\"We are sorry. There was a problem processing your request. Please try again, if problem persists please call TCI at 651-000-0000.\"); </script>";
     }
 }
+
+
+
+// Starts the session with the user
+session_start();
+
+// Stops if user is not logged in.
+if (array_key_exists('loggedIn', $_SESSION) === false) {
+    echo "<script> alert(\"Your session has timed out, please sign in again.\"); </script>";
+    header('Location: signIn.php');
+    exit;
+}
+
 
 
 ?>
@@ -263,7 +268,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                name="newCardNum"
                                required
                                placeholder="1111-2222-3333-4444"
-                               minlength="19"
+                               minlength="12"
                                maxlength="23"
                                pattern="[0-9\-\h]>
 

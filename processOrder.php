@@ -65,10 +65,6 @@ try {
 
 
 } catch (PDOException $e) {
-    # Rollback any changes to the database (if possible/required).
-    @$conn->rollBack();
-    @$conn = null;
-
     # Sends a JavaScript alert message back to the user notifying them that there was an error processing their request.
     echo "<script> alert(\"We are sorry. There was a problem processing your request. Please try again, if problem persists please call TCI at 651-000-0000.\"); </script>";
     header('Location: billingPage.php');
