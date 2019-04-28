@@ -136,11 +136,11 @@
                         <div class="row">
                             <div class="col-50">
                                 <label for="state">State</label>
-                                <input type="text" id="state" name="state" placeholder="NY">
+                                <input type="text" id="state" name="state" placeholder="MN">
                             </div>
                             <div class="col-50">
                                 <label for="zip">Zip</label>
-                                <input type="text" id="zip" name="zip" placeholder="10001">
+                                <input type="text" id="zip" name="zip" placeholder="11111">
                             </div>
                         </div>
                     </div>
@@ -155,15 +155,15 @@
                             <i class="fa fa-cc-discover" style="color:orange;"></i>
                         </div>
                         <label for="cname">Name on Card</label>
-                        <input type="text" id="cname" name="cardname" placeholder="John More Doe">
+                        <input type="text" id="cname" name="cardname" placeholder="John Doe">
                         <label for="ccnum">Credit card number</label>
                         <input type="text" id="ccnum" name="cardnumber" placeholder="1111-2222-3333-4444">
-                        <label for="expmonth">Exp Month</label>
+                        <label for="expmonth">Expiration Month</label>
                         <input type="text" id="expmonth" name="expmonth" placeholder="September">
                         <div class="row">
                             <div class="col-50">
                                 <label for="expyear">Exp Year</label>
-                                <input type="text" id="expyear" name="expyear" placeholder="2018">
+                                <input type="text" id="expyear" name="expyear" placeholder="2019">
                             </div>
                             <div class="col-50">
                                 <label for="cvv">CVV</label>
@@ -175,7 +175,7 @@
                 </div>
                 <label>
 
-                    <input type="submit" value="Add Payment" class="btn">
+                    <input type="submit" onclick="window.location.href = 'accountInformationPage.php';" value="Add Payment" class="btn">
             </form>
         </div>
     </div>

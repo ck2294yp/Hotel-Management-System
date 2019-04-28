@@ -245,7 +245,7 @@ try {
                     <?php endwhile; ?>
                 </table>
                 <br/>
-                <button>Add New Card</button>
+                <button onclick="window.location.href = 'addPayment.php';">Add New Card</button>
 
             </div>
 
