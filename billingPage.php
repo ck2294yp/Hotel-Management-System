@@ -6,7 +6,6 @@ require_once "settings/settings.php";
 require_once "bin/inputSanitization.php";
 
 
-// TODO: Fix this
 // Stops if the room Type ID is not set.
 if (array_key_exists('roomTypeID', $_REQUEST) === false) {
     echo "<script> alert(\"Invalid room type specified please try again.\"); </script>";
