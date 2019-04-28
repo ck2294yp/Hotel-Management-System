@@ -123,9 +123,9 @@ if (array_key_exists('loggedIn', $_SESSION) === false)  {
                     echo $last4Digits = preg_replace("#(.*?)(\d{4})$#", "$2", $ccNum); ?>
                 </td>
                 <td style='display: none;'><?php echo $invoice['memID']; ?></td>
-                <td><?php $timestamp1 = strtotime($invoice['invoiceStartDate']);
+                <td><?php $timestamp1 = strtotime($invoice['invoiceEndDate']);
                     echo date('m-d-Y', $timestamp1); ?></td>
-                <td><?php $timestamp2 = strtotime($invoice['invoiceEndDate']);
+                <td><?php $timestamp2 = strtotime($invoice['invoiceStartDate']);
                     echo date('m-d-Y', $timestamp2); ?></td>
                 <?php $date = time();
                 if ($date < $timestamp1):

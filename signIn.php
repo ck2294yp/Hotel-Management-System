@@ -6,70 +6,80 @@ session_start();
 require_once "settings/settings.php";
 require_once "bin/inputSanitization.php";
 
+function logIP($clientIP, $conn){
+    # Record the client IP in the database.
+    $recordIpStmt = $conn->prepare('INSERT INTO `FailedLogins` (failLoginIP) VALUES (:failLoginIP)');
+    $recordIpStmt->bindParam(':failLoginIP', $clientIP);
+    $conn->beginTransaction();
+    $recordIpStmt->execute();
+    $conn->commit();
+}
+
 # If member is already logged in, send them to the member's page.
 if (key_exists('loggedIn', $_SESSION)) {
-    echo"<script> alert(\"You are already logged in! Redirecting you to the membership page...\"); </script>";
+    echo "<script> alert(\"You are already logged in! Redirecting you to the membership page...\"); </script>";
     header('Location: membersPage.php');
     exit;
 }
 
+// Try to connect to the database.
+try {
+    $conn = new PDO("mysql:host=$dbAddress;dbname=$dbLocation", $dbUsername, $dbPassword);
+    # Set the PDO error mode to exception
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-# If member has entered a username and password on this webpage check their validity.
-if (isset($_REQUEST['username']) && isset($_REQUEST['password'])){
 
-    // Create connection to the database.
-    $userInput['username'] = sanitizeEmail($_REQUEST['username']);
-    $userInput['password'] = sanitizePassword($_REQUEST['password'], $_REQUEST['password'], $passwdHashAlgo, $beginingSalt, $endingSalt);
+    # Gets the IP address of the client.
+    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+        //ip from share internet
+        $clientIp = trim($_SERVER['HTTP_CLIENT_IP'], '`\'[]');
+    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        //ip pass from proxy
+        $clientIp = trim($_SERVER['HTTP_X_FORWARDED_FOR'], '`\'[]');
+    } else {
+        $clientIp = trim($_SERVER['REMOTE_ADDR'], '`\'[]');
+    }
 
-    // If the username or password do not match the required format (or contains harmful strings) stop here!
-    if ($userInput === false || $userInput['password'] === false){
-        # Remove values from request.
-        $_REQUEST['username'] = null;
-        $_REQUEST['password'] = null;
-        $userInput['username'] = null;
-        $userInput['password'] = null;
 
-        # Redirect user back to the same login page.
-        header('Location: signIn.php');
+    // Checks how many times this client IP has tried to connect.
+    $numFailedStmt = $conn->prepare('SELECT failLoginIP, COUNT(*) FROM `FailedLogins` WHERE (failLoginIP=:IP) GROUP BY FailedLogins.failLoginIP;');
+    $numFailedStmt->bindParam(':IP', $clientIp);
+    $numFailedStmt->execute();
+    $numFailedStmt->setFetchMode(PDO::FETCH_ASSOC);
+    $numFailFromIP = $numFailedStmt->fetch(PDO::FETCH_ASSOC);
+
+    # If clientIP has tried to login 10 (or more) times in a row. Block the IP (send them to another page).
+    if ($numFailFromIP['COUNT(*)'] >= 10) {
+        header('Location: blockedIP.php');
         exit;
     }
 
 
-    // Try to connect to the database.
-    try {
-        $conn = new PDO("mysql:host=$dbAddress;dbname=$dbLocation", $dbUsername, $dbPassword);
-        # Set the PDO error mode to exception
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    # Otherwise, if the member has tried to login, sanitize the input.
+    if (isset($_REQUEST['username']) && isset($_REQUEST['password'])) {
 
-        # Gets the IP address of the client.
-        if(!empty($_SERVER['HTTP_CLIENT_IP'])){
-            //ip from share internet
-            $clientIp = trim($_SERVER['HTTP_CLIENT_IP'], '`\'[]');
-        }elseif(!empty($_SERVER['HTTP_X_FORWARDED_FOR'])){
-            //ip pass from proxy
-            $clientIp = trim($_SERVER['HTTP_X_FORWARDED_FOR'], '`\'[]');
-        }else{
-            $clientIp = trim($_SERVER['REMOTE_ADDR'],'`\'[]');
-        }
+        // Create connection to the database.
+        $userInput['username'] = sanitizeEmail($_REQUEST['username']);
+        $userInput['password'] = sanitizePassword($_REQUEST['password'], $_REQUEST['password'], $passwdHashAlgo, $beginingSalt, $endingSalt);
 
+        // If the username or password contain harmful strings, stop here!
+        if ($userInput === false || $userInput['password'] === false) {
+            # Remove values from request.
+            $_REQUEST['username'] = null;
+            $_REQUEST['password'] = null;
+            $userInput['username'] = null;
+            $userInput['password'] = null;
 
-        // Checks how many times this client IP has tried to connect.
-        $numFailedStmt = $conn->prepare('SELECT failLoginIP, COUNT(*) FROM `FailedLogins` WHERE (failLoginIP=:IP) GROUP BY FailedLogins.failLoginIP;');
-        $numFailedStmt->bindParam(':IP', $clientIp);
-        $numFailedStmt->execute();
-        $numFailedStmt->setFetchMode(PDO::FETCH_ASSOC);
-        $numFailFromIP = $numFailedStmt->fetch(PDO::FETCH_ASSOC);
+            # Log the IP of the user.
+            logIP($clientIp, $conn);
 
-        # If clientIP has tried to login 10 (or more) times in a row. Block the IP (send them to another page).
-        if ($numFailFromIP['COUNT(*)'] >= 10){
-            header('Location: blockedIP.php');
+            // Redirect user back to the same login page.
+            header('Location: signIn.php');
             exit;
         }
 
 
-
-
-        // Queries the database to try to get the username and the password of the user.
+        // If username and password are "sensible" check if the username and password are correct and match to the same account.
         $checkValidStmt = $conn->prepare('select memEmail from `Member` where `memEmail`=:email AND `memPasswd`=:password AND `isMember`=1');
         $checkValidStmt->bindParam(':email', $userInput['username'], PDO::PARAM_STR, 254);
         $checkValidStmt->bindParam(':password', $userInput['password'], PDO::PARAM_STR, 64);
@@ -80,8 +90,9 @@ if (isset($_REQUEST['username']) && isset($_REQUEST['password'])){
         $conn->rollBack();
 
 
-        # If user has entered a VALID username and password. (value with the specified username and password DOES exist in the database).
-        if ($checkValidStmt->rowCount() === 1 ){
+
+        # Log the user in if input MATCHES an account. (value with the specified username and password DOES exist in the database).
+        if ($checkValidStmt->rowCount() === 1) {
             echo "<script> alert(\"Login successful! Logging you in...\"); </script>";
 
             # Sets the username and logged in session variables.
@@ -102,9 +113,8 @@ if (isset($_REQUEST['username']) && isset($_REQUEST['password'])){
             header('Location: membersPage.php');
             exit;
 
-        # If user enters an INVALID username and password. Log the user's IP Address and return them back to this login page.
+            # If user enters an INVALID username and password. Log the user's IP Address and return them back to this login page.
         } else {
-
             # Record the client IP in the database.
             $recordIpStmt = $conn->prepare('INSERT INTO `FailedLogins` (failLoginIP) VALUES (:failLoginIP)');
             $recordIpStmt->bindParam(':failLoginIP', $clientIp);
@@ -119,18 +129,16 @@ if (isset($_REQUEST['username']) && isset($_REQUEST['password'])){
             echo "<script> alert(\"Incorrect username or password (or user is not a member), Your failed login attempt has been logged. Please try again.\"); </script>";
             header('Location: signIn.php');
         }
-
-    } catch (PDOException $e) {
-        # Rollback any changes to the database (if possible).
-        @$conn->rollBack();
-        $conn = null;
-
-        echo $e->getMessage();
-
-        # Sends a JavaScript alert message back to the user notifying them that there was an error processing their request.
-        echo "<script> alert(\"We are sorry, there seems to be a problem with our systems. Please try again. If problems still persist, please notify TCI at 651-000-0000.\"); </script>";
     }
+} catch (PDOException $e) {
+    # Rollback any changes to the database (if possible).
+    @$conn->rollBack();
+    $conn = null;
 
+    echo $e->getMessage();
+
+    # Sends a JavaScript alert message back to the user notifying them that there was an error processing their request.
+    echo "<script> alert(\"We are sorry, there seems to be a problem with our systems. Please try again. If problems still persist, please notify TCI at 651-000-0000.\"); </script>";
 }
 
 ?>
@@ -139,7 +147,7 @@ if (isset($_REQUEST['username']) && isset($_REQUEST['password'])){
 <head>
     <meta charset="UTF-8">
     <title>Sign In</title>
-    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="stylesheet" href="style.css" type="text/css"/>
 </head>
 <body>
 <header>
@@ -153,7 +161,7 @@ if (isset($_REQUEST['username']) && isset($_REQUEST['password'])){
 <section class="sec2">
     <form action="signIn.php" method="post" style="padding-bottom: 200px">
         <p>
-            <h2>Member Sign In</h2><br/><br/>
+        <h2>Member Sign In</h2><br/><br/>
         </p>
 
         <label>Username</label><br/>
@@ -165,7 +173,8 @@ if (isset($_REQUEST['username']) && isset($_REQUEST['password'])){
         <a href="#" style="color: gray">Forgot Password</a><br/>
         <br/>
 
-        <button type="submit" style="width: 12.8%">Login</button><br/>
+        <button type="submit" style="width: 12.8%">Login</button>
+        <br/>
 
         <p>
             <br/><br/>Not a member yet? <br/>
