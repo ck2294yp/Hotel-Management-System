@@ -173,9 +173,10 @@ try {
                 <h2 style="font-style: italic">Change Password</h2><br/><br/>
                 <label class="pull-left">Current password: </label>
                 <input class="clickedit"
-                       type="text"
-                       name="memPasswd"
-                       id="memPasswd"
+                       type="password"
+                       name="oldPassword"
+                       id="oldPassword"
+                       required
                        minlength="8"
                        maxlength="254"
                        title="Passwords must be:
@@ -188,9 +189,10 @@ try {
 
                 <label class="pull-left">New Password: </label>
                 <input class="clickedit"
-                       type="text"
-                       name="memPasswd"
-                       id="memPasswd"
+                       type="password"
+                       name="newPassword"
+                       id="newPassword"
+                       required
                        minlength="8"
                        maxlength="254"
                        title="Passwords must be:
@@ -203,9 +205,10 @@ try {
 
                 <label class="pull-left">Confirm Password: </label>
                 <input class="clickedit"
-                       type="text"
-                       name="memPasswd"
-                       id="memPasswd"
+                       type="password"
+                       name="newPasswordConfirm"
+                       id="newPasswordConfirm"
+                       required
                        minlength="8"
                        maxlength="254"
                        title="Passwords must be:

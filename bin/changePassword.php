@@ -23,19 +23,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $_SESSION['loggedIn'] = sanitizeNumString($_SESSION['loggedIn']);
 
     # Sanitize input.
-    $oldUsername = ucfirst(sanitizeEmail($_REQUEST['oldUsername']));
-    $newUsername = ucfirst(sanitizeEmail($_REQUEST['newUsername']));
-    $newUsernameConfirm = ucfirst(sanitizeEmail($_REQUEST['newUsernameConfirm']));
+    $oldPassword = sanitizePassword($_REQUEST['oldPassword'], $_REQUEST['oldPassword'], $passwdHashAlgo, $beginingSalt, $endingSalt);
+    $newPassword = sanitizePassword($_REQUEST['newPassword'], $_REQUEST['newPasswordConfirm'], $passwdHashAlgo, $beginingSalt, $endingSalt);
 
-    # Checks if old username matches the currently logged in account.
-    if ($_SESSION['username'] !== $oldUsername){
-        echo "<script> alert(\"Old username does not match currently logged in account!\"); </script>";
-        exit;
-    }
 
-    # Checks if old and new usernames are the same.
-    if ($oldUsername === $newUsername){
-        echo "<script> alert(\"No new username provided!\"); </script>";
+    # Checks if old and new password hashes are the same.
+    if ($oldPassword === $newPassword) {
+        echo "<script> alert(\"Password is the same!\"); </script>";
         exit;
     }
 
@@ -45,32 +39,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         # Set the PDO error mode to exception
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-
-        #Check if new username is already taken.
-        $checkUsernameStmt = $conn->prepare('SELECT `memEmail` FROM `Member` WHERE `memEmail`=:oldUsername');
-        $checkUsernameStmt->bindParam(':oldUsername', $oldUsername, PDO::PARAM_STR, 254);
-        $checkUsernameStmt->execute();
-        if($checkUsernameStmt->rowCount() > 0) {
-            echo "<script> alert(\"Username is already taken!\"); </script>";
-            exit;
-        }
-
-
-        # Updates the username.
-        $chUsernameStmt = $conn->prepare('UPDATE `Member` SET `memEmail`=:newUsername  WHERE `memEmail`=:oldUsername');
-        $chUsernameStmt->bindParam(':newUsername', $newUsername, PDO::PARAM_STR, 254);
-        $chUsernameStmt->bindParam(':oldUsername', $oldUsername, PDO::PARAM_STR, 254);
+        # Updates the user's Password.
+        $chPasswordStmt = $conn->prepare('UPDATE `Member` SET `memPasswd`=:memPasswd  WHERE `memEmail`=:username');
+        $chPasswordStmt->bindParam(':username', $_SESSION['username'], PDO::PARAM_STR, 254);
+        $chPasswordStmt->bindParam(':memPasswd', $newPassword, PDO::PARAM_STR, 254);
         $conn->beginTransaction();
-        $chUsernameStmt->execute();
+        $chPasswordStmt->execute();
         $conn->commit();
 
         # Tells the user that their email/username has been changed.
         echo "<script> alert(\"Username/email address successfully changed.\"); </script>";
 
-        # Change Session variable over to reflect new change.
-        $_SESSION['username'] = $newUsername;
 
-    // Catch any sort of failure.
+        // Catch any sort of failure.
     } catch (PDOException $e) {
         # Sends a JavaScript alert message back to the user notifying them that there was an error processing their request.
         echo "<script> alert(\"We are sorry, there seems to be a problem with our systems. Please try again. If problems still persist, please notify TCI at 651-222-2020.\"); </script>";
@@ -79,13 +60,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
 
-
-
 }
-
-
-
-
-
-
-
