@@ -152,29 +152,43 @@ try {
 <?php include 'bin/nav.php'; ?>
 
 <section class="sec2">
-    <form action="signIn.php" method="post" style="padding-bottom: 200px">
-        <p>
-        <h2>Member Sign In</h2><br/><br/>
+    <form action="signIn.php" method="post" style="padding-bottom: 200px;  width: 30%; z-index: 1; ">
+        <h2>Sign In</h2><br/><br/>
         </p>
 
         <label>Username/Email Address</label><br/>
-        <input type="email" placeholder="Enter Username" name="username" maxlength="254" required><br/><br/>
+        <input type="email"
+               placeholder="Enter Username"
+               id="username"
+               name="username"
+               required
+               minlength="3"
+               maxlength="254">
+        <br/>
+        <br/>
 
         <label>Password</label><br/>
-        <input type="password" placeholder="Enter Password" name="password" maxlength="254" required><br/><br/>
+        <input type="password"
+               placeholder="Enter Password"
+               id="password"
+               name="password"
+               required
+               maxlength="254">
+        <br/>
+        <br/>
         <a href="#" style="color: gray">Forgot Password?</a><br/>
         <br/>
 
-        <button type="submit" style="width: 12.8%">Login</button>
+        <button type="submit" style="width: 25%">Login</button>
         <br/>
 
         <p>
             <br/><br/>Not a member yet? <br/>
-            <a href="signUp.php" style="color: gray">Create Account</a><br/>
+            <a href="signUp.php" style="color: gray"> Create Account </a><br/>
         </p>
 
     </form>
-    <img src="https://cdn.shopify.com/s/files/1/2379/3029/products/51oNZAKQomL._SL1500_0270363e-8918-419e-80c4-3866316ce410_1024x1024.jpg?v=1551237385">
+    <img src="signIn.png" style="width: 70%; height: auto">
 </section>
 
 <!-- Footer for the web page.-->
