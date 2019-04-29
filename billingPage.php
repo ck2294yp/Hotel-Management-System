@@ -6,9 +6,9 @@ require_once "settings/settings.php";
 require_once "bin/inputSanitization.php";
 
 
-// Stops if the room Type ID is not set.
-if (array_key_exists('roomTypeID', $_REQUEST) === false) {
-    echo "<script> alert(\"Invalid room type specified please try again.\"); </script>";
+// Stops if the room Type ID is not set in either the session or the POST request.
+if ((array_key_exists('roomTypeID', $_REQUEST) === false) && (array_key_exists('roomTypeID', $_SESSION) === false) ) {
+    echo "<script> alert(\"Invalid room type specified please select a room and try again.\"); </script>";
     header('Location: searchRooms.php');
     exit;
 }
@@ -321,7 +321,7 @@ try {
                 <br> Check-in Date: <?php echo($_SESSION['checkInDate']); ?>
                 <br> Check-out Date: <?php echo($_SESSION['checkOutDate']); ?>
                 <br> Total Number of Nights: <?php echo($_SESSION['stayDuration']); ?>
-                <br> Points available: <?php echo($memInfo['memRewardPoints']); ?>
+                <br> Reward Points Available: <?php echo($memInfo['memRewardPoints']); ?>
             </p>
 
 
@@ -344,23 +344,51 @@ try {
         </form>
     </div>
     <div class="column right" id="newCardEntry">
-        <form class="chargeCardForm" action="addPayment.php" method="post">
+        <form class="chargeCardForm" action="bin/addCard.php" method="post">
             <div class="form-header"
             <h4 class="title">Add New Form of Payment</h4>
 
             <div class="form-body">
                 <!-- Name on Card-->
-                <input type="text" class="newCardFName" placeholder="Joe" pattern="[A-Za-z\-\h]{2,64}">
-                <input type="text" class="newCardMInitial" placeholder="A" pattern="[A-Za-z]{1}">
-                <input type="text" class="newCardLName" placeholder="Smith" pattern="[A-Za-z\-\h]{2,64}">
+                <input type="text"
+                       class="newCardFName"
+                       name="newCardFName"
+                       id="newCardFName"
+                       required
+                       placeholder="Joe"
+                       pattern="[A-Za-z\-\h]{2,64}">
+
+                <input type="text"
+                       class="newCardMInitial"
+                       name="newCardMInitial"
+                       id="newCardMInitial"
+                       required
+                       placeholder="A"
+                       pattern="[A-Za-z]{1}">
+
+                <input type="text"
+                       class="newCardLName"
+                       name="newCardLName"
+                       id="newCardLName"
+                       required
+                       placeholder="Smith"
+                       pattern="[A-Za-z\-\h]{2,64}">
 
                 <!-- Card Number-->
-                <input type="text" class="newCardNum" placeholder="1111-2222-3333-4444" minlength="12" maxlength="23" pattern="[0-9 \-]">
+                <input type="text"
+                       class="newCardNum"
+                       name="newCardNum"
+                       id="newCardNum"
+                       required
+                       placeholder="1111-2222-3333-4444"
+                       minlength="12"
+                       maxlength="23"
+                       pattern="[0-9 \h\-]">
 
                 <!-- Expiration Date -->
                 <div class="expiration-date">
                     <div class="month">
-                        <select name="newCardExpMonth">
+                        <select name="newCardExpMonth" id="newCardExpMonth" required>
                             <option value="January">January</option>
                             <option value="February">February</option>
                             <option value="March">March</option>
@@ -376,7 +404,7 @@ try {
                         </select>
                     </div>
                     <div class="year">
-                        <select name="newCardExpYear">
+                        <select name="newCardExpYear" id="newCardExpYear" required>
                             <option value="2019">2019</option>
                             <option value="2020">2020</option>
                             <option value="2021">2021</option>
@@ -397,6 +425,7 @@ try {
                     <div class="cvv-input">
                         <input type="text"
                                name="newCardCvv"
+                               id="newCardCvv"
                                placeholder="CVV"
                                required
                                minlength="3"
@@ -409,7 +438,7 @@ try {
                 </div>
 
                 <!-- Button -->
-                <button type="submit" class="proceed-btn"><a href="billingPage.php">Add Card</a></button>
+                <button type="submit" class="proceed-btn"> Add Card </a></button>
             </div>
         </form>
     </div>

@@ -125,13 +125,14 @@ try {
             <br/>
         </div>
         <div class="changeSide">
-            <div id="changeUser" style="display: none">
+            <form id="changeUser" action="bin/changeUsername.php" method="post" style="display: none">
                 <h2 style="font-style: italic">Change Username/Email</h2><br/><br/>
                 <label class="pull-left">Current Username/Email: </label>
                 <input class="clickedit"
-                       type="text"
-                       name="memEmail"
-                       id="memEmail"
+                       type="email"
+                       required
+                       name="oldUsername"
+                       id="oldUsername"
                        minlength="3"
                        maxlength="254"
                        autocomplete="email"
@@ -140,9 +141,10 @@ try {
 
                 <label class="pull-left">New Username/Email: </label>
                 <input class="clickedit"
-                       type="text"
-                       name="memEmail"
-                       id="memEmail"
+                       type="email"
+                       required
+                       name="newUsername"
+                       id="newUsername"
                        minlength="3"
                        maxlength="254"
                        autocomplete="email"
@@ -151,22 +153,23 @@ try {
 
                 <label class="pull-left">Confirm Username/Email: </label>
                 <input class="clickedit"
-                       type="text"
-                       name="memEmail"
-                       id="memEmail"
+                       type="email"
+                       required
+                       name="newUsernameConfirm"
+                       id="newUsernameConfirm"
                        minlength="3"
                        maxlength="254"
                        autocomplete="email"
                        autocorrect="on"
                        title="Enter a email address."/><br/><br/>
 
-                <button class="makeChange" style="text-align: center;">Submit</button>
+                <button type="submit" class="makeChange" style="text-align: center;">Submit</button>
                 <br/><br/>
 
-            </div>
+            </form>
 
 
-            <div id="changePassword" style="display: none">
+            <form id="changePassword" action="bin/changePassword.php" method="post" style="display: none">
                 <h2 style="font-style: italic">Change Password</h2><br/><br/>
                 <label class="pull-left">Current password: </label>
                 <input class="clickedit"
@@ -213,10 +216,10 @@ try {
                  - Contain at least ONE special character."
                        pattern="(?=.{8,256})(?=.*?[^\w\s])(?=.*?[0-9])(?=.*?[A-Z]).*?[a-z].*"/><br/><br/>
 
-                <button class="makeChange" style="text-align: center;">Submit</button>
+                <button type="submit" class="makeChange" style="text-align: center;">Submit</button>
                 <br/><br/>
 
-            </div>
+            </form>
 
             <div id="chargeCard" style="display: none">
                 <table>
@@ -250,32 +253,38 @@ try {
     </div>
 
     <script>
-        var a = document.getElementById("changeUser");
-        var b = document.getElementById("changePassword");
-        var c = document.getElementById("chargeCard");
+        var changeUsername = document.getElementById("changeUser");
+        var changePassword = document.getElementById("changePassword");
+        var chargeCard = document.getElementById("chargeCard");
 
 
         function showChangeUser() {
-            if (a.style.display === "none") {
-                a.style.display = "block";
-                b.style.display = "none";
-                c.style.display = "none";
+            if (changeUsername.style.display === "none") {
+                changeUsername.style.display = "block";
+                changeUsername.required=true;
+                changePassword.style.display = "none";
+                changePassword.required=false;
+                chargeCard.style.display = "none";
             }
         }
 
         function showChangePassword() {
-            if (b.style.display === "none") {
-                b.style.display = "block";
-                a.style.display = "none";
-                c.style.display = "none";
+            if (changePassword.style.display === "none") {
+                changePassword.style.display = "block";
+                changePassword.required=true;
+                changeUsername.style.display = "none";
+                changeUsername.required=false;
+                chargeCard.style.display = "none";
             }
         }
 
         function showChargeCard() {
-            if (c.style.display === "none") {
-                c.style.display = "block";
-                a.style.display = "none";
-                b.style.display = "none";
+            if (chargeCard.style.display === "none") {
+                chargeCard.style.display = "block";
+                changeUsername.style.display = "none";
+                changeUsername.required=false;
+                changePassword.style.display = "none";
+                changePassword.required=false;
             }
         }
 

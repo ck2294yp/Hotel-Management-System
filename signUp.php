@@ -186,7 +186,18 @@ if (sizeof($_REQUEST) > 0) {
             # Set the PDO error mode to exception
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            # Begins transaction before anything happens.
+
+            #Check if username/email address already exists.
+            $checkUsernameStmt = $conn->prepare("SELECT memEmail FROM Member WHERE memEmail=:memEmail");
+            $checkUsernameStmt->bindParam(':memEmail', $userInput['email'], PDO::PARAM_STR, 254);
+            $checkUsernameStmt->execute();
+
+            if($checkUsernameStmt->rowCount() > 0) {
+                echo "<script> alert(\"Username is already taken!\"); </script>";
+            }
+
+
+            # Begins transaction before inserting any new data into the database.
             $conn->beginTransaction();
 
             # Creates prepared SQL statement for the member.

@@ -2,6 +2,11 @@
 // Starts a session with the user just as soon as they enter the page.
 session_start();
 
+define('__ROOT__', dirname(dirname(__FILE__)));
+
+require_once 'bin/inputSanitization.php';
+
+
 // Creates minimum and maximum allowable dates upon booking.
 $todayDate = date_create('now');
 $minStartDate = date_format(date_add($todayDate, date_interval_create_from_date_string('+1 day')), 'Y-m-d');
@@ -12,7 +17,6 @@ $maxEndDate = $maxStartDate = date_format(date_add($todayDate, date_interval_cre
 // If the user chooses a variable in the calenders. Sanitize and do a "Sanity check" on it. If all is well, store dates as a $_SESSION variable.
 if (sizeof($_REQUEST) > 0) {
     # Imports a required library.
-    require_once 'bin/inputSanitization.php';
 
     $checkInDate = @sanitizeDateString($_REQUEST['checkInDate']);
     $checkOutDate = @sanitizeDateString($_REQUEST['checkOutDate']);
