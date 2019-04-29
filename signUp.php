@@ -273,7 +273,7 @@ if (sizeof($_REQUEST) > 0) {
 
         } catch (PDOException $e) {
             # Sends a JavaScript alert message back to the user notifying them that there was an error processing their request.
-            echo "<script> alert(\"We are sorry. There was a problem processing your request. Please try again, if problem persists please call TCI at 651-000-0000.\"); </script>";
+            echo "<script> alert(\"We are sorry. There was a problem processing your request. Please try again, if problem persists please call TCI at 651-222-2020.\"); </script>";
         }
     }
 }

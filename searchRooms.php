@@ -55,7 +55,7 @@ try {
 
 } catch (PDOException $e) {
     # Sends a JavaScript alert message back to the user notifying them that there was an error processing their request.
-    echo "<script> alert(\"We are sorry, there seems to be a problem with our systems. Please try again. If problems still persist, please notify TCI at 651-000-0000.\"); </script>";
+    echo "<script> alert(\"We are sorry, there seems to be a problem with our systems. Please try again. If problems still persist, please notify TCI at 651-222-2020.\"); </script>";
     header('Location: membersPage.php');
     exit;
 }
@@ -197,7 +197,7 @@ try {
         <?php
         foreach ($roomInformation as $currentRoom) {
             // If the current room exists in the booked rooms array AND the current room type is either at (or somehow over) it's maximum allowed amount. DO NOT PRINT THE ROOM DETAILS!
-            if ((array_key_exists($currentRoom['roomTypeID'], $bookedRooms) === true) && ($currentRoom['numOfRooms'] >= $bookedRooms[$currentRoom['roomTypeID']])) {
+            if ((array_key_exists($currentRoom['roomTypeID'], $bookedRooms) === true) && ($currentRoom['numOfRooms'] <= $bookedRooms[$currentRoom['roomTypeID']])) {
 
             } else { ?>
                 <div class="gridMember roomBox" id="<?php echo($currentRoom['roomNumBeds'] . 'bed' . $currentRoom['roomCatagory']); ?>"   style="display: inline-block;">
@@ -212,7 +212,7 @@ try {
                             } else {
                                 echo("Yes");
                             }; ?>
-                        <br> <b>Rooms Left: </b> <?php
+                        <br> <b>Room(s) Left: </b> <?php
                             if (array_key_exists($currentRoom['roomTypeID'], $bookedRooms) === true) {
                                 echo($currentRoom['numOfRooms'] - $bookedRooms[$currentRoom['roomTypeID']]);
                             } else {

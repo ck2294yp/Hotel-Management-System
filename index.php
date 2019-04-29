@@ -2,8 +2,6 @@
 // Starts a session with the user just as soon as they enter the page.
 session_start();
 
-define('__ROOT__', dirname(dirname(__FILE__)));
-
 require_once 'bin/inputSanitization.php';
 
 

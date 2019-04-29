@@ -80,7 +80,7 @@ try {
 
 
         // If username and password are "sensible" check if the username and password are correct and match to the same account.
-        $checkValidStmt = $conn->prepare('select memEmail from `Member` where `memEmail`=:email AND `memPasswd`=:password AND `isMember`=1');
+        $checkValidStmt = $conn->prepare('select `memEmail` from `Member` where `memEmail`=:email AND `memPasswd`=:password AND `isMember`=1');
         $checkValidStmt->bindParam(':email', $userInput['username'], PDO::PARAM_STR, 254);
         $checkValidStmt->bindParam(':password', $userInput['password'], PDO::PARAM_STR, 64);
 
@@ -131,7 +131,7 @@ try {
     }
 } catch (PDOException $e) {
     # Sends a JavaScript alert message back to the user notifying them that there was an error processing their request.
-    echo "<script> alert(\"We are sorry, there seems to be a problem with our systems. Please try again. If problems still persist, please notify TCI at 651-000-0000.\"); </script>";
+    echo "<script> alert(\"We are sorry, there seems to be a problem with our systems. Please try again. If problems still persist, please notify TCI at 651-222-2020.\"); </script>";
 }
 
 ?>
@@ -157,13 +157,12 @@ try {
         <h2>Member Sign In</h2><br/><br/>
         </p>
 
-        <label>Username</label><br/>
+        <label>Username/Email Address</label><br/>
         <input type="email" placeholder="Enter Username" name="username" maxlength="254" required><br/><br/>
 
         <label>Password</label><br/>
         <input type="password" placeholder="Enter Password" name="password" maxlength="254" required><br/><br/>
-        <a href="#" style="color: gray">Forgot Username</a> <br/>
-        <a href="#" style="color: gray">Forgot Password</a><br/>
+        <a href="#" style="color: gray">Forgot Password?</a><br/>
         <br/>
 
         <button type="submit" style="width: 12.8%">Login</button>

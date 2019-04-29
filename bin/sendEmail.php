@@ -1,17 +1,17 @@
 <?php
 
 # Imports the required files needed to ensure program page works properly.
-require_once "../settings/settings.php";
-require_once "../bin/inputSanitization.php";
-require_once '../vendor/autoload.php';
+require_once "settings/settings.php";
+require_once "bin/inputSanitization.php";
+require_once 'vendor/autoload.php';
 
 // Sends email when changeUsername new user account is created.
 function accountActivate($userEmail)
 {
     # Imports the required files needed to ensure program page works properly.
-    $dependecy1 = "../settings/settings.php";
-    $dependecy2 = "../bin/inputSanitization.php";
-    $dependecy3 = "../vendor/autoload.php";
+    $dependecy1 = "settings/settings.php";
+    $dependecy2 = "bin/inputSanitization.php";
+    $dependecy3 = "vendor/autoload.php";
     if (is_file($dependecy1) && is_file($dependecy2) && is_file($dependecy3)) {
         ob_start();
         include $dependecy1;

@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     # Reports that card has been created (since any SQL errors would have errored out at this point).
     } catch (PDOException $e) {
         # Sends changeUsername JavaScript alert message back to the user notifying them that there was an error processing their request.
-        echo "<script> alert(\"We are sorry, there seems to be changeUsername problem with our systems. Please try again. If problems still persist, please notify TCI at 651-000-0000.\"); </script>";
+        echo "<script> alert(\"We are sorry, there seems to be changeUsername problem with our systems. Please try again. If problems still persist, please notify TCI at 651-222-2020.\"); </script>";
         header('Location: ' . $_SERVER['HTTP_REFERER']);
     }
 }

@@ -14,7 +14,7 @@ For the safety of TCI and it's members, <br> traffic from your IP has been block
 <br>
 <br>
 <br>
-<b> Please contact TCI directly at 651-000-0000</b>.<br>
+<b> Please contact TCI directly at 651-222-2020</b>.<br>
 <br>
 We apologise for any inconvenience this may cause.
 </body>

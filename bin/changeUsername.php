@@ -57,11 +57,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
         # Updates the username.
-        $activationId = random_int(1, 999999999);
-        $chUsernameStmt = $conn->prepare('UPDATE `Member` SET `memEmail`=:newUsername, `isMember`=false, `memActivationLink`=:activationID  WHERE `memEmail`=:oldUsername');
+        $chUsernameStmt = $conn->prepare('UPDATE `Member` SET `memEmail`=:newUsername  WHERE `memEmail`=:oldUsername');
         $chUsernameStmt->bindParam(':newUsername', $newUsername, PDO::PARAM_STR, 254);
         $chUsernameStmt->bindParam(':oldUsername', $oldUsername, PDO::PARAM_STR, 254);
-        $chUsernameStmt->bindParam(':activationID', $activationId);
         $conn->beginTransaction();
         $chUsernameStmt->execute();
         $conn->commit();
