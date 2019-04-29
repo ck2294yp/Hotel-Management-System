@@ -34,6 +34,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     # Checks if old and new password hashes are the same.
     if ($oldPassword === $newPassword) {
         echo "<script> alert(\"Password is the same!\"); </script>";
+        # Return user to previous page.
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
         exit;
     }
 
@@ -44,9 +46,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         # Updates the user's Password.
-        $chPasswordStmt = $conn->prepare('UPDATE `Member` SET `memPasswd`=:memPasswd  WHERE `memEmail`=:username');
+        $chPasswordStmt = $conn->prepare('UPDATE `Member` SET `memPasswd`=:newPassword  WHERE `memEmail`=:username');
         $chPasswordStmt->bindParam(':username', $_SESSION['username'], PDO::PARAM_STR, 254);
-        $chPasswordStmt->bindParam(':memPasswd', $newPassword, PDO::PARAM_STR, 254);
+        $chPasswordStmt->bindParam(':newPassword', $newPassword, PDO::PARAM_STR, 254);
         $conn->beginTransaction();
         $chPasswordStmt->execute();
         $conn->commit();
@@ -54,8 +56,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         # Tells the user that their email/username has been changed.
         echo "<script> alert(\"Username/email address successfully changed.\"); </script>";
 
+        # Return user to previous page.
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
 
-        // Catch any sort of failure.
+
+
+    // Catch any sort of failure.
     } catch (PDOException $e) {
         # Sends a JavaScript alert message back to the user notifying them that there was an error processing their request.
         echo "<script> alert(\"We are sorry, there seems to be a problem with our systems. Please try again. If problems still persist, please notify TCI at 651-222-2020.\"); </script>";

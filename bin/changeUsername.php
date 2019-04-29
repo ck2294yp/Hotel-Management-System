@@ -33,12 +33,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     # Checks if old username matches the currently logged in account.
     if ($_SESSION['username'] !== $oldUsername){
         echo "<script> alert(\"Old username does not match currently logged in account!\"); </script>";
+        # Return user to previous page.
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
         exit;
     }
 
     # Checks if old and new usernames are the same.
     if ($oldUsername === $newUsername){
         echo "<script> alert(\"No new username provided!\"); </script>";
+        # Return user to previous page.
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
         exit;
     }
 
@@ -50,11 +54,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
         #Check if new username is already taken.
-        $checkUsernameStmt = $conn->prepare('SELECT `memEmail` FROM `Member` WHERE `memEmail`=:oldUsername');
-        $checkUsernameStmt->bindParam(':oldUsername', $oldUsername, PDO::PARAM_STR, 254);
+        $checkUsernameStmt = $conn->prepare('SELECT `memEmail` FROM `Member` WHERE `memEmail`=:newUsername');
+        $checkUsernameStmt->bindParam(':newUsername', $newUsername, PDO::PARAM_STR, 254);
         $checkUsernameStmt->execute();
         if($checkUsernameStmt->rowCount() > 0) {
             echo "<script> alert(\"Username is already taken!\"); </script>";
+            # Return user to previous page.
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
             exit;
         }
 
@@ -68,10 +74,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $conn->commit();
 
         # Tells the user that their email/username has been changed.
-        echo "<script> alert(\"Username/email address successfully changed.\"); </script>";
+        echo "<script> alert(\"Username/email address successfully changed!\"); </script>";
 
         # Change Session variable over to reflect new change.
         $_SESSION['username'] = $newUsername;
+
+        # Return user to previous page.
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
+
+
 
     // Catch any sort of failure.
     } catch (PDOException $e) {
