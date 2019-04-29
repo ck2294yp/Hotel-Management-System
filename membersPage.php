@@ -47,7 +47,7 @@ try {
 } catch (PDOException $e) {
     # Sends a JavaScript alert message back to the user notifying them that there was an error processing their request.
     echo "<script> alert(\"We are sorry, there seems to be a problem with our systems. Please try again. If problems still persist, please notify TCI at 651-222-2020.\"); </script>";
-    header('Location: membersPage.php');
+    header('Location: signIn.php');
 }
 
 ?>
@@ -92,7 +92,6 @@ try {
         <div class="gridMemberReward">
             <h2 style="font-style: italic">Reward Points</h2>
             <p><?php echo($memInfo['memRewardPoints']) ?> points</p>
-            <button class="redeemPoints">Redeem</button>
             <br/><br/>
             <a href="mailto:tcihotelsmn@gmail.com?Subject=Report%20Missing%20Points" style="color: orange">Report Missing Points</a>
         </div>

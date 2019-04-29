@@ -1,4 +1,9 @@
 <?php
+
+# Change Directory back to the main directory.
+chdir('..');
+
+
 // Initialize the session.
 session_start();
 
