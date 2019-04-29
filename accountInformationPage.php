@@ -234,12 +234,12 @@ try {
                     </tr>
 
                     <?php
-                    while ($card = $getCard->fetch( PDO::FETCH_ASSOC )):
+                    while ($card = $getCard->fetch(PDO::FETCH_ASSOC)):
                         ?>
                         <tr>
                             <td>Your card ending in
                                 <?php echo $ccNum = $card['cardNum']; ?>
-                                <?php echo $last4Digits = preg_replace( "#(.*?)(\d{4})$#", "$2", $ccNum); ?>
+                                <?php echo $last4Digits = preg_replace("#(.*?)(\d{4})$#", "$2", $ccNum); ?>
                             </td>
                             <td>
                                 <?php echo $card['cardExpDate']; ?>
@@ -254,59 +254,60 @@ try {
 
         </div>
     </div>
-
-    <script>
-        var changeUsername = document.getElementById("changeUser");
-        var changePassword = document.getElementById("changePassword");
-        var chargeCard = document.getElementById("chargeCard");
-
-
-        function showChangeUser() {
-            if (changeUsername.style.display === "none") {
-                changeUsername.style.display = "block";
-                changeUsername.required=true;
-                changePassword.style.display = "none";
-                changePassword.required=false;
-                chargeCard.style.display = "none";
-            }
-        }
-
-        function showChangePassword() {
-            if (changePassword.style.display === "none") {
-                changePassword.style.display = "block";
-                changePassword.required=true;
-                changeUsername.style.display = "none";
-                changeUsername.required=false;
-                chargeCard.style.display = "none";
-            }
-        }
-
-        function showChargeCard() {
-            if (chargeCard.style.display === "none") {
-                chargeCard.style.display = "block";
-                changeUsername.style.display = "none";
-                changeUsername.required=false;
-                changePassword.style.display = "none";
-                changePassword.required=false;
-            }
-        }
-
-    </script>
-
-    <script language="javascript">
-        function deleteAccount()
-        {
-            if(confirm("Are you sure you want to delete your account?")){
-                alert("Account deleted");
-                return true;
-            }
-        }
-    </script>
-
 </section>
 
 <!-- Footer for the web page.-->
 <?php include_once 'bin/footer.php'; ?>
+
+
+<script>
+    var changeUsername = document.getElementById("changeUser");
+    var changePassword = document.getElementById("changePassword");
+    var chargeCard = document.getElementById("chargeCard");
+
+
+    function showChangeUser() {
+        if (changeUsername.style.display === "none") {
+            changeUsername.style.display = "block";
+            changeUsername.required = true;
+            changePassword.style.display = "none";
+            changePassword.required = false;
+            chargeCard.style.display = "none";
+        }
+    }
+
+    function showChangePassword() {
+        if (changePassword.style.display === "none") {
+            changePassword.style.display = "block";
+            changePassword.required = true;
+            changeUsername.style.display = "none";
+            changeUsername.required = false;
+            chargeCard.style.display = "none";
+        }
+    }
+
+    function showChargeCard() {
+        if (chargeCard.style.display === "none") {
+            chargeCard.style.display = "block";
+            changeUsername.style.display = "none";
+            changeUsername.required = false;
+            changePassword.style.display = "none";
+            changePassword.required = false;
+        }
+    }
+
+</script>
+
+<script language="javascript">
+    function deleteAccount() {
+        if (confirm("Are you sure you want to delete your account?")) {
+            alert("Account deleted");
+            return true;
+        }
+    }
+</script>
+
+</section>
 
 </body>
 </html>
