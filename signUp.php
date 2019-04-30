@@ -43,7 +43,7 @@ if (sizeof($_REQUEST) > 0) {
 
     # Sanitizes and creates variable for the firstName.
     $userInput['fName'] = sanitizeAlphaString($_REQUEST['memFname']);
-    if ($userInput['fName'] === false) {
+    if ($userInput['fName'] === falsealphabetical) {
         echo "<script> alert(\"First name is invalid, please try again.\"); </script>";
         $isError = true;
     }
@@ -80,7 +80,7 @@ if (sizeof($_REQUEST) > 0) {
     }
 
     # Sanitizes and creates variable for the addrStrName.
-    $userInput['strName'] = sanitizeAlphaString($_REQUEST['strName']);
+    $userInput['strName'] = sanitizeAlphaNumString($_REQUEST['strName']);
     if ($userInput['strName'] === false) {
         echo "<script> alert(\"Street name is invalid, please try again.\"); </script>";
         $isError = true;
@@ -116,7 +116,7 @@ if (sizeof($_REQUEST) > 0) {
         $userInput['aptNum'] = "";
         # If user DOES input an apartment number then sanitize it and use it in the rest of the program.
     } else {
-        $userInput['aptNum'] = sanitizeNumString($_REQUEST['aptNum']);
+        $userInput['aptNum'] = sanitizeAlphaNumString($_REQUEST['aptNum']);
         if ($userInput['aptNum'] === false) {
             echo "<script> alert(\"Apartment number is invalid, please try again.\"); </script>";
             $isError = true;
@@ -137,7 +137,7 @@ if (sizeof($_REQUEST) > 0) {
         }
 
         # Sanitizes and creates variable for the addrStrName.
-        $userInput['billStrName'] = sanitizeAlphaString($_REQUEST['billStrName']);
+        $userInput['billStrName'] = sanitizeAlphaNumString($_REQUEST['billStrName']);
         if ($userInput['billStrName'] === false) {
             echo "<script> alert(\"Billing street name is invalid, please try again.\"); </script>";
             $isError = true;
@@ -168,7 +168,7 @@ if (sizeof($_REQUEST) > 0) {
         $userInput['billCountry'] = "United States";
 
         # Sanitizes and creates variable for the optional apartment number.
-        $userInput['billAptNum'] = sanitizeNumString($_REQUEST['billAptNum']);
+        $userInput['billAptNum'] = sanitizeAlphaNumString($_REQUEST['billAptNum']);
         if ($userInput['billAptNum'] === false) {
             echo "<script> alert(\"Billing apartment number is invalid, please try again.\"); </script>";
             $isError = true;
@@ -632,7 +632,7 @@ if (sizeof($_REQUEST) > 0) {
                      spellcheck="true"
                      autocomplete="on"
                      placeholder="Street Address"
-                     pattern="[A-Za-z\.\-\h]">
+                     pattern="[A-Za-z0-9\.\-\h]">
             <script>checkInput('billStrName', 'Please enter a valid street name!');</script>
             <br>
             <br>

@@ -52,6 +52,23 @@ function sanitizeNumString($input) {
     }
 }
 
+
+# Sanitizes both Alpha and Numeric Strings.
+function sanitizeAlphaNumString($input) {
+    if (isset($input) && $input !== "" && preg_match('/[A-Za-z0-9]/', $input)) {
+        $input = stripslashes($input);
+        $input = htmlspecialchars($input);
+        $input = ucwords($input);
+        $input = trim($input);
+        return $input;
+    } else {
+        return false;
+    }
+}
+
+
+
+
 # Sanitizes date values.
 function sanitizeDateString($dateString) {
     if (isset($dateString) && preg_match('/[0-9\-]/', $dateString)) {
