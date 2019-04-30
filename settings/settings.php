@@ -11,7 +11,7 @@ $dbLocation = "tci";
 
 
 # Password complexity requirements (entered as a Regex expression).
-$passwordComplexityRequirements = '/(?=.{8,256})(?=.*?[^\w\s])(?=.*?[0-9])(?=.*?[A-Z]).*?[a-z].*/';
+$passwordComplexityRequirements = '(?=.{8,256})(?=.*?[^\w\s])(?=.*?[0-9])(?=.*?[A-Z]).*?[a-z].*';
 
 # Password storage settings.
 $passwdHashAlgo = "sha256";

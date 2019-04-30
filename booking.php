@@ -12,13 +12,6 @@ $maxStartDate = date_format(date_add($todayDate, date_interval_create_from_date_
 $minEndDate = date_format(date_add($todayDate, date_interval_create_from_date_string('+2 days')), 'Y-m-d');
 $maxEndDate = $maxStartDate = date_format(date_add($todayDate, date_interval_create_from_date_string('+5 years +1 day')), 'Y-m-d');
 
-// If member has already submitted checkInDate/checkOutDates. Then use those and proceed to searchRooms page.
-if ((array_key_exists('checkInDate', $_SESSION) === true) || (array_key_exists('checkOutDate', $_SESSION) === true)) {
-    header('Location: searchRooms.php');
-    exit;
-}
-
-
 // If the user chooses a variable in the calenders ON THIS PAGE. Sanitize and do a "Sanity check" on it. If all is well, store dates as a $_SESSION variable.
 if (sizeof($_REQUEST) > 0) {
 
@@ -172,6 +165,13 @@ if (sizeof($_REQUEST) > 0) {
                            id="checkInDate"
                            name="checkInDate"
                            required
+                           value=<?php
+                                if (array_key_exists('checkInDate', $_SESSION) === true){
+                                    echo $_SESSION['checkInDate'];
+                                } else {
+                                    echo "";
+                                }
+                           ?>
                            min=<?php echo($minStartDate); ?>
                            max=<?php echo($maxStartDate); ?>
                     >
@@ -181,6 +181,13 @@ if (sizeof($_REQUEST) > 0) {
                            id="checkOutDate"
                            name="checkOutDate"
                            required
+                           value=<?php
+                           if (array_key_exists('checkOutDate', $_SESSION) === true){
+                               echo $_SESSION['checkOutDate'];
+                           } else {
+                               echo "";
+                           }
+                           ?>
                            min=<?php echo($minStartDate); ?>
                            max=<?php echo($maxEndDate); ?>
                     >

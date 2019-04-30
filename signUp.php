@@ -9,6 +9,12 @@ require_once "bin/inputSanitization.php";
 require_once "bin/sendEmail.php";
 require_once "vendor/autoload.php";
 
+
+// Creates minimum and maximum allowable birth dates.
+$todayDate = date_create('now');
+$youngestBirthDate = date_format(date_add($todayDate, date_interval_create_from_date_string('-18 years')), 'Y-m-d');
+$oldestBirthDate = date_format(date_add($todayDate, date_interval_create_from_date_string('-100 years')), 'Y-m-d');
+
 # If member is already logged in, send them to the member's page.
 if (array_key_exists('loggedIn', $_SESSION)) {
     echo "<script> alert(\"You are already logged in! Redirecting you to the membership page...\"); </script>";
@@ -49,8 +55,12 @@ if (sizeof($_REQUEST) > 0) {
         $isError = true;
     }
 
-    # Adds the member's DOB to the userInput array (doesn't need to be sanitized).
-    $userInput['dob'] = $_REQUEST['memDob'];
+    # Sanitizes and creates variable for the DOB.
+    $userInput['dob'] = sanitizeAlphaString($_REQUEST['memDob']);
+    if ($userInput['dob'] === false) {
+        echo "<script> alert(\"Date of birth is invalid, please try again.\"); </script>";
+        $isError = true;
+    }
 
     # Sanitizes and creates variable for the member's phone number.
     $userInput['phoneNum'] = sanitizeNumString(str_replace(array("-", "(", ")", "+"), "", $_REQUEST['phoneNum']));
@@ -355,7 +365,7 @@ if (sizeof($_REQUEST) > 0) {
                  - Contain at least ONE lowercase letter.
                  - Contain at least ONE number.
                  - Contain at least ONE special character."
-                 pattern="(?=.{8,256})(?=.*?[^\w\s])(?=.*?[0-9])(?=.*?[A-Z]).*?[a-z].*">
+                 pattern=<?php echo($passwordComplexityRequirements); ?> >
         <script>
             checkInput('memPasswd', 'Passwords must be:\n' +
                 '- Between 8 at 254 characters long.\n' +
@@ -376,7 +386,7 @@ if (sizeof($_REQUEST) > 0) {
                  maxlength="254"
                  placeholder="Confirm Password"
                  title="Passwords must match!"
-                 pattern="?=.{8,256})(?=.*?[^\w\s])(?=.*?[0-9])(?=.*?[A-Z]).*?[a-z].*">
+                 pattern=<?php echo($passwordComplexityRequirements); ?> >
         <br>
         <br>
 
@@ -390,9 +400,8 @@ if (sizeof($_REQUEST) > 0) {
                  autocomplete="given-name"
                  minlength="2"
                  maxlength="64"
-                 spellcheck="true"
                  autocorrect="on"
-                 pattern="[A-Za-z\-\h]{2,64}"
+                 pattern="[A-Za-z\-\h]"
                  required>
         <script>checkInput('memFname', 'Please enter a valid first name!');</script>
         <br>
@@ -405,10 +414,9 @@ if (sizeof($_REQUEST) > 0) {
                  required
                  minlength="2"
                  maxlength="64"
-                 spellcheck="true"
                  autocorrect="on"
                  placeholder="Last Name"
-                 pattern="[A-Za-z\-\h]{2-64}">
+                 pattern="[A-Za-z\-\h]">
         <script>checkInput('memLname', 'Please enter a valid last name!');</script>
         <br>
         <br>
@@ -422,8 +430,8 @@ if (sizeof($_REQUEST) > 0) {
                  name="memDob"
                  required
                  autocomplete="bday"
-                 min="1919-04-10"
-                 max="2001-04-10"
+                 min=<?php echo($oldestBirthDate); ?>
+                 max=<?php echo($youngestBirthDate); ?>
                  placeholder="Date Of Birth">
         <script>checkInput('memDob', 'Please enter a valid date of birth!');</script>
         <br>
@@ -465,9 +473,11 @@ if (sizeof($_REQUEST) > 0) {
                  name="strName"
                  required
                  autocomplete="on"
+                 minlength="2"
                  maxlength="64"
+                 spellcheck="true"
                  placeholder="Street Address"
-                 pattern="[A-Za-z\.\-\h]{2,64}">
+                 pattern="[A-Za-z\.\-\h]">
         <script>checkInput('strName', 'Please enter a valid street name!');</script>
         <br>
         <br>
@@ -476,10 +486,12 @@ if (sizeof($_REQUEST) > 0) {
         * <input type="text"
                  name="city"
                  required
+                 minlength="2"
                  maxlength="64"
                  autocomplete="on"
+                 spellcheck="true"
                  placeholder="City"
-                 pattern="[A-Za-z\-\h]{2,64}">
+                 pattern="[A-Za-z\-\h]">
         <script>checkInput('city', 'Please enter a valid city!');</script>
         <br>
         <br>
@@ -561,7 +573,7 @@ if (sizeof($_REQUEST) > 0) {
                min="1"
                maxlength="7"
                placeholder="Apartment Number"
-               pattern="[a-zA-Z0-9\-\h]{7}">
+               pattern="[a-zA-Z0-9\-\h]">
         <script>checkInput('aptNum', 'Please enter a valid apartment number!');</script>
         <br>
         <br>
@@ -577,8 +589,10 @@ if (sizeof($_REQUEST) > 0) {
                 // If the checkbox is checked, display the output text
                 if (checkBox.checked === true) {
                     text.style.display = "block";
+                    text.required = "true";
                 } else {
                     text.style.display = "none";
+                    text.required = "false";
                 }
             }
         </script>
@@ -592,17 +606,19 @@ if (sizeof($_REQUEST) > 0) {
 
 
         <!-- Allows the member to add their billing information (if it is different then their mailing address). -->
-        <section class="sec2" id="additionalBillingInfo" style="display:none">
+        <section class="sec2" id="additionalBillingInfo" style="display:none;">
             <h2><font size="5">Billing Address</font></h2>
             <br>
             Enter the building number you'd like to use for billing. <br>
             * <input
-                    type="text"
+                    type="number"
                     name="billBuildNum"
+                    id="billBuildNum"
                     min="1"
                     maxlength="8"
+                    autocomplete="on"
                     placeholder="Building/House Number"
-                    pattern="[0-9]{8}">
+                    pattern="[0-9]">
             <script>checkInput('billBuildNum', 'Please enter a valid building number!');</script>
             <br>
             <br>
@@ -610,9 +626,13 @@ if (sizeof($_REQUEST) > 0) {
             Enter your billing street address. <br>
             * <input type="text"
                      name="billStrName"
+                     id="billStrName"
+                     minlength="2"
                      maxlength="64"
+                     spellcheck="true"
+                     autocomplete="on"
                      placeholder="Street Address"
-                     pattern="[A-Za-z\.\-\h]{2,64}">
+                     pattern="[A-Za-z\.\-\h]">
             <script>checkInput('billStrName', 'Please enter a valid street name!');</script>
             <br>
             <br>
@@ -620,20 +640,24 @@ if (sizeof($_REQUEST) > 0) {
             Enter your billing city. <br>
             * <input type="text"
                      name="billCity"
+                     minlength="2"
                      maxlength="64"
+                     spellcheck="true"
+                     autocomplete="on"
                      placeholder="City"
-                     pattern="[A-Za-z\-\h]{2,64}">
+                     pattern="[A-Za-z\-\h]">
             <script>checkInput('billCity', 'Please enter a valid city name!');</script>
             <br>
             <br>
 
             Enter your billing zip code. <br>
-            * <input type="text"
+            * <input type="number"
                      name="billZip"
                      min="1"
                      maxlength="7"
+                     autocomplete="on"
                      placeholder="Zip Code"
-                     pattern="[0-9]{7}">
+                     pattern="[0-9]">
             <script>checkInput('billZip', 'Please enter a valid Zip code!');</script>
             <br>
             <br>
@@ -697,12 +721,12 @@ if (sizeof($_REQUEST) > 0) {
             <br>
 
             Enter your billing apartment number, if needed (optional). <br>
-            <input type="text"
+            <input type="number"
                    name="billAptNum"
                    min="1"
                    maxlength="7"
                    placeholder="Apartment Number"
-                   pattern="[a-zA-Z0-9\-\h]{7}">
+                   pattern="[a-zA-Z0-9\-\h]">
             <script>checkInput('billAptNum', 'Please enter a valid apartment number!');</script>
             <br>
             <br>
