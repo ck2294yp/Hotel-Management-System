@@ -28,29 +28,26 @@ try {
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     # Queries the database to get the username and the password of the user.
-    $userInfoStmt = $conn->prepare('SELECT * FROM `Member` INNER JOIN `Address` USING(memID) WHERE `memEmail`=:email');
+    $userInfoStmt = $conn->prepare('SELECT * FROM `Member` INNER JOIN `Address` USING(memID)  WHERE `memEmail`=:email');
     $userInfoStmt->bindParam(':email', $memInfo['username'], PDO::PARAM_STR, 254);
 
-
-    # Queries the database the Charge Card of the user.
-    $getCard = $conn->prepare('select * from `ChargeCard` where `memID`=:memID');
-    $getCard->bindParam(':memID', $memInfo['memID'], PDO::PARAM_STR, 254);
-
+    $cardInfoStmt = $conn->prepare('SELECT * FROM `Member` INNER JOIN `ChargeCard` USING(memID) WHERE `memEmail`=:email');
+    $cardInfoStmt->bindParam(':email', $memInfo['username'], PDO::PARAM_STR, 254);
 
     # Begins a transaction, if there are any changes (which there shouldn't be) rollback the changes.
     $conn->beginTransaction();
     $userInfoStmt->execute();
+    $cardInfoStmt->execute();
     $conn->rollBack();
 
     # Closes the database connection.
     $conn = null;
 
-
     # Gets the member's account details from out of the database query.
     $userInfoStmt->setFetchMode(PDO::FETCH_ASSOC);
     $memInfo = $userInfoStmt->fetchAll(PDO::FETCH_ASSOC);
-
-    $getCard->setFetchMode(PDO::FETCH_ASSOC);
+    $cardInfoStmt->setFetchMode(PDO::FETCH_ASSOC);
+    $cardInfo = $cardInfoStmt->fetchAll(PDO::FETCH_ASSOC);
 
 
 } catch (PDOException $e) {
@@ -119,7 +116,7 @@ try {
             <br/>
             <button onclick="showChangePassword()">Change Password</button>
             <br/>
-            <button onclick="showChargeCard()">Manage Charge Card</button>
+            <button onclick="showChargeCard()">Manage Charge Cards</button>
             <br/><br/><br/>
             <button onclick="deleteAccount()" style="background-color: red">Delete Account</button>
             <br/>
@@ -184,8 +181,9 @@ try {
                  - Contain at least ONE capital letter.
                  - Contain at least ONE lowercase letter.
                  - Contain at least ONE number.
-                 - Contain at least ONE special character."
-                       pattern="(?=.{8,256})(?=.*?[^\w\s])(?=.*?[0-9])(?=.*?[A-Z]).*?[a-z].*"/><br/><br/>
+                 - Contain at least ONE special character.">
+                <br>
+                <br>
 
                 <label class="pull-left">New Password: </label>
                 <input class="clickedit"
@@ -201,7 +199,9 @@ try {
                  - Contain at least ONE lowercase letter.
                  - Contain at least ONE number.
                  - Contain at least ONE special character."
-                       pattern="(?=.{8,256})(?=.*?[^\w\s])(?=.*?[0-9])(?=.*?[A-Z]).*?[a-z].*"/><br/><br/>
+                       pattern=<?php echo($passwordComplexityRequirements); ?>>
+                 <br>
+                 <br>
 
                 <label class="pull-left">Confirm Password: </label>
                 <input class="clickedit"
@@ -217,10 +217,13 @@ try {
                  - Contain at least ONE lowercase letter.
                  - Contain at least ONE number.
                  - Contain at least ONE special character."
-                       pattern="(?=.{8,256})(?=.*?[^\w\s])(?=.*?[0-9])(?=.*?[A-Z]).*?[a-z].*"/><br/><br/>
+                       pattern=<?php echo($passwordComplexityRequirements); ?>>
+                <br>
+                <br>
 
                 <button type="submit" class="makeChange" style="text-align: center;">Submit</button>
-                <br/><br/>
+                <br>
+                <br>
 
             </form>
 
@@ -229,23 +232,18 @@ try {
                     <h2 style="font-style: italic">Your TCI Wallet</h2>
                     <p>An overview of your charge cards.</p>
                     <tr>
-                        <th>Your charge card</th>
-                        <th>Expires</th>
+                        <th>Card number</th>
+                        <th>Expiration Date</th>
                     </tr>
 
                     <?php
-                    while ($card = $getCard->fetch(PDO::FETCH_ASSOC)):
+                        for ($card = 1; $card < sizeof($cardInfo); $card++){
+                        echo "<tr>";
+                        echo "<th> *".preg_replace("#(.*?)(\d{4})$#", "$2",$cardInfo[$card]['cardNum'])."</th>";
+                        echo "<th>".date('M/Y', strtotime($cardInfo[$card]['cardExpDate']))."</th>";
+                        echo "</tr>";
+                        }
                         ?>
-                        <tr>
-                            <td>Your card ending in
-                                <?php echo $ccNum = $card['cardNum']; ?>
-                                <?php echo $last4Digits = preg_replace("#(.*?)(\d{4})$#", "$2", $ccNum); ?>
-                            </td>
-                            <td>
-                                <?php echo $card['cardExpDate']; ?>
-                            </td>
-                        </tr>
-                    <?php endwhile; ?>
                 </table>
                 <br/>
                 <button onclick="window.location.href = 'addPayment.php';">Add New Card</button>
