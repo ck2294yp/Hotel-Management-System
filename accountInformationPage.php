@@ -237,7 +237,7 @@ try {
                     </tr>
 
                     <?php
-                        for ($card = 1; $card < sizeof($cardInfo); $card++){
+                        for ($card = 0; $card < sizeof($cardInfo); $card++){
                         echo "<tr>";
                         echo "<th> *".preg_replace("#(.*?)(\d{4})$#", "$2",$cardInfo[$card]['cardNum'])."</th>";
                         echo "<th>".date('M/Y', strtotime($cardInfo[$card]['cardExpDate']))."</th>";
