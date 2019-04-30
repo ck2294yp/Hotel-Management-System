@@ -108,8 +108,8 @@ if (array_key_exists('loggedIn', $_SESSION) === false)  {
             <th>Invoice ID</th>
             <th>Card Number</th>
             <th style='display: none'>Member ID</th>
-            <th>From</th>
-            <th>To</th>
+            <th>Starts</th>
+            <th>Ends</th>
             <th>Cancel Reservation</th>
         </tr>
         <?php
@@ -118,15 +118,16 @@ if (array_key_exists('loggedIn', $_SESSION) === false)  {
             <tr>
                 <td><?php echo $invoice['invoiceID']; ?></td>
                 <td><?php $ccNum = $invoice['cardNum'];
-                    echo $last4Digits = preg_replace("#(.*?)(\d{4})$#", "$2", $ccNum); ?>
+                    echo "*".$last4Digits = preg_replace("#(.*?)(\d{4})$#", "$2", $ccNum); ?>
                 </td>
                 <td style='display: none;'><?php echo $invoice['memID']; ?></td>
-                <td><?php $timestamp1 = strtotime($invoice['invoiceEndDate']);
-                    echo date('m-d-Y', $timestamp1); ?></td>
-                <td><?php $timestamp2 = strtotime($invoice['invoiceStartDate']);
-                    echo date('m-d-Y', $timestamp2); ?></td>
-                <?php $date = time();
-                if ($date < $timestamp1):
+                <td><?php $timestamp1 = strtotime($invoice['invoiceStartDate']);
+                    echo date('n/d/Y', $timestamp1); ?></td>
+                <td><?php $timestamp2 = strtotime($invoice['invoiceEndDate']);
+                    echo date('n/d/Y', $timestamp2); ?></td>
+                <?php $todayDate = date_create('now');
+                $cancelDueDate = date_format(date_add($todayDate, date_interval_create_from_date_string('+2 days')), 'n/d/Y');
+                if ($cancelDueDate < date('n/d/Y', strtotime($invoice['invoiceStartDate']))):
                 ?>
                 <td><input type="button" onClick="deleteReservation(<?php echo $invoice['invoiceID']; ?>)"
                            value="Cancel Reservation">
@@ -136,6 +137,9 @@ if (array_key_exists('loggedIn', $_SESSION) === false)  {
         <?php endwhile;
         ?>
     </table>
+    <br>
+    Note: Room cancellations require at least a 48-hour (CST) notice prior to scheduled check-in date.
+
     <br/><br/><br/><br/><br/><br/><br/>
 </section>
 
