@@ -56,7 +56,7 @@ if (sizeof($_REQUEST) > 0) {
     }
 
     # Sanitizes and creates variable for the DOB.
-    $userInput['dob'] = sanitizeAlphaString($_REQUEST['memDob']);
+    $userInput['dob'] = sanitizeDateString($_REQUEST['memDob']);
     if ($userInput['dob'] === false) {
         echo "<script> alert(\"Date of birth is invalid, please try again.\"); </script>";
         $isError = true;

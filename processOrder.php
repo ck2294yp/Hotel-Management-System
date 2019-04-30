@@ -70,6 +70,21 @@ VALUES (:cardNum, :memID, :roomTypeID, :invoiceStartDate, :invoiceEndDate)");
     $conn->commit();
     $conn = null;
 
+    $orderStmt = $conn->prepare("INSERT INTO InvoiceReservation (cardNum, memID, roomTypeID, invoiceStartDate, invoiceEndDate)
+VALUES (:cardNum, :memID, :roomTypeID, :invoiceStartDate, :invoiceEndDate)");
+    $addRewardPoints->bindParam(':cardNum', $_REQUEST['cardNum']);
+    $->bindParam(':memID', $_REQUEST['memID']);
+    $orderStmt->bindParam(':roomTypeID', $_REQUEST['roomTypeID']);
+    $orderStmt->bindParam(':invoiceStartDate', $_REQUEST['checkInDate']);
+    $orderStmt->bindParam(':invoiceEndDate', $_REQUEST['checkOutDate']);
+    $orderStmt->execute();
+    $orderNumber = $conn->lastInsertId();       // Gets the last insert ID (the invoice number)
+    $conn->commit();
+    $conn = null;
+
+
+
+
 // Send order notification email out to the user.
     orderProcess($_REQUEST['memID'], $orderNumber);
 
