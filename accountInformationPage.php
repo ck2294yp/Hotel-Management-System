@@ -256,10 +256,6 @@ try {
     </div>
 </section>
 
-<!-- Footer for the web page.-->
-<?php include_once 'bin/footer.php'; ?>
-
-
 <script>
     var changeUsername = document.getElementById("changeUser");
     var changePassword = document.getElementById("changePassword");

@@ -194,8 +194,5 @@ if (sizeof($_REQUEST) > 0) {
     </form>
 </div>
 
-<!-- Footer for the web page.-->
-<?php include_once 'bin/footer.php'; ?>
-
 </body>
 </html>

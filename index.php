@@ -165,9 +165,6 @@ if (sizeof($_REQUEST) > 0) {
     <p> Contact Twin Cities Inn | Phone Number: 651-222-2020 | Email: TCIsupport@TwinCitiesInn.com </p>
 </div>
 
-<!-- Footer for the web page.-->
-<?php include_once 'bin/footer.php'; ?>
-
 <script>
 
     function sRooms() {

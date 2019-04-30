@@ -229,6 +229,5 @@
     </div>
 
 </div>
-<?php include_once 'bin/footer.php'; ?>
 </body>
 </html>

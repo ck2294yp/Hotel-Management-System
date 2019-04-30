@@ -139,8 +139,5 @@ if (array_key_exists('loggedIn', $_SESSION) === false)  {
     <br/><br/><br/><br/><br/><br/><br/>
 </section>
 
-<!-- Footer for the web page.-->
-<?php include_once 'bin/footer.php'; ?>
-
 </body>
 </html>

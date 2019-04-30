@@ -191,8 +191,6 @@ try {
     <img src="signIn.png" style="width: 70%; height: auto">
 </section>
 
-<!-- Footer for the web page.-->
-<?php include_once 'bin/footer.php'; ?>
 
 </body>
 

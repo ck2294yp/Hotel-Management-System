@@ -715,10 +715,5 @@ if (sizeof($_REQUEST) > 0) {
     <br> *: Input is required.<br>
 </section>
 
-<section class="sec3"></section>
-
-<!-- Footer for the web page.-->
-<?php include_once 'bin/footer.php'; ?>
-
 </body>
 </html>

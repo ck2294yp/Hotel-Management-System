@@ -107,8 +107,5 @@ try {
 
 </section>
 
-<!-- Footer for the web page.-->
-<?php include_once 'bin/footer.php'; ?>
-
 </body>
 </html>

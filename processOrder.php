@@ -34,6 +34,13 @@ try {
     # Set the PDO error mode to exception
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+
+    # Check if already exists in the database
+
+
+
+
+
     # Creates prepared SQL statement to enter the order information
     $orderStmt = $conn->prepare("INSERT INTO InvoiceReservation (cardNum, memID, roomTypeID, invoiceStartDate, invoiceEndDate) 
               VALUES (:cardNum, :memID, :roomTypeID, :invoiceStartDate, :invoiceEndDate)");
@@ -60,6 +67,7 @@ try {
     # Notify user that order has been processed.
     echo "<script> alert(\"Your order has been processed successfully! Thank you for booking with TCI!\"); </script>";
     echo"Order processed successfully! Thank you for booking with TCI! <br>";
+    echo "Your order number is: <?php echo($orderNumber); ?>";
     echo "You should be redirected to the member's page. If that doesn't work, please click <a href=\"membersPage.php\">here</a>.";
     header("membersPage.php");
 
