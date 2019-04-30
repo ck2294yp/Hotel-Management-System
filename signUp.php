@@ -477,7 +477,7 @@ if (sizeof($_REQUEST) > 0) {
                  maxlength="64"
                  spellcheck="true"
                  placeholder="Street Address"
-                 pattern="[A-Za-z\.\-\h]">
+                 pattern="[A-Za-z0-9\.\-\h]">
         <script>checkInput('strName', 'Please enter a valid street name!');</script>
         <br>
         <br>
