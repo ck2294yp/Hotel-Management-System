@@ -321,7 +321,6 @@ try {
                 <br> Check-in Date: <?php echo($_SESSION['checkInDate']); ?>
                 <br> Check-out Date: <?php echo($_SESSION['checkOutDate']); ?>
                 <br> Total Number of Nights: <?php echo($_SESSION['stayDuration']); ?>
-                <br> Reward Points Available: <?php echo($memInfo['memRewardPoints']); ?>
             </p>
 
 
