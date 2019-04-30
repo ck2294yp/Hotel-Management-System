@@ -86,6 +86,13 @@ if (sizeof($_REQUEST) > 0) {
                                id= "checkInDate"
                                name= "checkInDate"
                                required
+                               value=<?php
+                               if (array_key_exists('checkInDate', $_SESSION) === true){
+                                   echo $_SESSION['checkInDate'];
+                               } else {
+                                   echo "";
+                               }
+                               ?>
                                min= <?php echo($minStartDate); ?>
                                max= <?php echo($maxStartDate); ?>
                         >
@@ -95,6 +102,13 @@ if (sizeof($_REQUEST) > 0) {
                                id= "checkOutDate"
                                name= "checkOutDate"
                                required
+                               value=<?php
+                               if (array_key_exists('checkOutDate', $_SESSION) === true){
+                                   echo $_SESSION['checkOutDate'];
+                               } else {
+                                   echo "";
+                               }
+                               ?>
                                min= <?php echo($minStartDate); ?>
                                max= <?php echo($maxEndDate); ?>
                         >
