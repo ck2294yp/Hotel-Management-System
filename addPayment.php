@@ -3,6 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="style.css" type="text/css"/>
     <style>
         body {
             font-family: Arial;
@@ -124,7 +125,7 @@
 
                 <div class="row">
                     <div class="col-50">
-                        <h3>Name on Card</h3>
+                        <h2>Name on Card</h2>
 
                         <label for="newCardFName"><i class="fa fa-user"></i> First Name</label>
                         <input type="text"
@@ -157,7 +158,7 @@
                     </div>
 
                     <div class="col-50">
-                        <h3>Card Details</h3>
+                        <h2>Card Details</h2>
                         <label for="newCardNum">Accepted Cards</label>
                         <div class="icon-container">
                             <i class="fa fa-cc-visa" style="color:navy;"></i>
