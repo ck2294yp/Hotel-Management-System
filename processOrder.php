@@ -67,20 +67,16 @@ VALUES (:cardNum, :memID, :roomTypeID, :invoiceStartDate, :invoiceEndDate)");
     $orderStmt->bindParam(':invoiceEndDate', $_REQUEST['checkOutDate']);
     $orderStmt->execute();
     $orderNumber = $conn->lastInsertId();       // Gets the last insert ID (the invoice number)
+
+
+    # Adds 10% of the cost of the room to the reward points.
+    $pointsAddition = floor(($roomInfo['pricePerNight'] * $_SESSION['stayDuration']) * 0.10);
+    $addPointsStmt = $conn->prepare('UPDATE `Member` SET `memRewardPoints`=`memRewardPoints`+:pointsAddition WHERE `memID`=:memID');
+    $addPointsStmt->bindParam(':memID', $_REQUEST['memID']);
+    $addPointsStmt->bindParam(':pointsAddition', $pointsAddition);
+    $addPointsStmt->execute();
     $conn->commit();
     $conn = null;
-
-//    $orderStmt = $conn->prepare('UPDATE `Member` SET `memEmail`=:newUsername  WHERE `memEmail`=:email');
-//VALUES (:cardNum, :memID, :roomTypeID, :invoiceStartDate, :invoiceEndDate)");
-//    $addRewardPoints->bindParam(':cardNum', $_REQUEST['cardNum']);
-//    $->bindParam(':memID', $_REQUEST['memID']);
-//    $orderStmt->bindParam(':roomTypeID', $_REQUEST['roomTypeID']);
-//    $orderStmt->bindParam(':invoiceStartDate', $_REQUEST['checkInDate']);
-//    $orderStmt->bindParam(':invoiceEndDate', $_REQUEST['checkOutDate']);
-//    $orderStmt->execute();
-//    $orderNumber = $conn->lastInsertId();       // Gets the last insert ID (the invoice number)
-//    $conn->commit();
-//    $conn = null;
 
 
 
