@@ -155,7 +155,7 @@ function orderProcess($memID, $invoiceID)
     // Sets the body of the email
     $body = '
         <center> Your recent booking date at TCI! </center>
-        <br> thank you for your recent order, '.$userInfo['memFname'].'!
+        <br> thank you for registering a room at the TCI, '.$userInfo['memFname'].'!
         <br> You are scheduled to stay with us between:
         <br>'.$orderInfo['invoiceStartDate'].' and '.$orderInfo['invoiceEndDate'];
 

@@ -32,7 +32,7 @@ try {
     # Set the PDO error mode to exception
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    # Queries the database to get the number of .
+    # Queries the database to get the number of rooms.
     $bookedRoomsStmt = $conn->prepare('SELECT roomTypeID, COUNT(*) FROM `InvoiceReservation` WHERE (DATE(`invoiceStartDate`) BETWEEN DATE(:startDate) AND DATE(:endDate)) OR (DATE(invoiceEndDate) BETWEEN DATE(:startDate) AND DATE(:endDate)) GROUP BY InvoiceReservation.roomTypeID;');
     $bookedRoomsStmt->bindParam(':startDate', $roomInfo['checkInDate']);
     $bookedRoomsStmt->bindParam(':endDate', $roomInfo['checkOutDate']);
