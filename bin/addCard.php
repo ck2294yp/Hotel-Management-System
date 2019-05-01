@@ -11,11 +11,10 @@ require_once "../settings/settings.php";
 require_once "inputSanitization.php";
 
 
-// Stops if user is not logged in.
+// Stops if no session exists.
 if (array_key_exists('loggedIn', $_SESSION) === false) {
-    echo "<script> alert(\"Your session has timed out, please sign in again.\"); </script>";
-    header('Location: signIn.php');
-    exit;
+    echo'<script src="/displayError.js"></script>';
+    echo("<script> sessionTimeoutError(); </script>");
 }
 
 
@@ -40,14 +39,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         cal_days_in_month(CAL_GREGORIAN,
             date("m", strtotime($_REQUEST['newCardExpMonth'])),
             $_REQUEST['newCardExpYear']);
-
-    # Checks to make sure all of the values passed sanitation.
-    if (in_array(false, $_REQUEST) === true || $_SESSION['username'] === true) {
-        echo "<script> alert(\"Invalid card details entered. Please try again.\"); </script>";
-        header('Location: ' . $_SERVER['HTTP_REFERER']);
-        exit;
-    }
-
 
     # Starts Database connection, begins sending queries.
     try {
@@ -79,16 +70,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $conn->commit();
         $conn = null;
 
+        # Reports that card has been created (since any SQL errors would have errored out at this point).
+        echo'<script src="/displayError.js"></script>';
+        echo("<script> newPaymentFormAcceptedMsg(); </script>");
 
-        echo "<script> alert(\"New form of payment added successfully!\"); </script>";
-        header('Location: ' . $_SERVER['HTTP_REFERER']);
-
-
-    # Reports that card has been created (since any SQL errors would have errored out at this point).
+    # If there are any database failures, notify the user.
     } catch (PDOException $e) {
-        # Sends changeUsername JavaScript alert message back to the user notifying them that there was an error processing their request.
-        echo "<script> alert(\"We are sorry, there seems to be changeUsername problem with our systems. Please try again. If problems still persist, please notify TCI at 651-222-2020.\"); </script>";
-        header('Location: ' . $_SERVER['HTTP_REFERER']);
+        echo'<script src="/displayError.js"></script>';
+        echo("<script> databaseError(); </script>");
     }
 }
 

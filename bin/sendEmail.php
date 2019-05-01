@@ -19,6 +19,9 @@ function accountActivate($userEmail)
         include $dependecy3;
     }
 
+    // Sanitize user input.
+    $userEmail = sanitizeEmail($userEmail);
+
     // If user's Email address is not valid or administrators don't want emails to be sent return false.
     if (sanitizeEmail($userEmail) === false || $sendEmails === false) {
         return false;

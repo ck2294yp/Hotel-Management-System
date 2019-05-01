@@ -16,10 +16,9 @@ function logIP($clientIP, $conn){
 }
 
 # If member is already logged in, send them to the member's page.
-if (key_exists('loggedIn', $_SESSION)) {
-    echo "<script> alert(\"You are already logged in! Redirecting you to the membership page...\"); </script>";
-    header('Location: membersPage.php');
-    exit;
+if (array_key_exists('loggedIn', $_SESSION)) {
+    echo'<script src="/displayError.js"></script>';
+    echo("<script>alreadyLoggedInMsg(); </script>");
 }
 
 // Try to connect to the database.
@@ -93,7 +92,6 @@ try {
 
         # Log the user in if input MATCHES an account. (value with the specified username and password DOES exist in the database).
         if ($checkValidStmt->rowCount() === 1) {
-            echo "<script> alert(\"Login successful! Logging you in...\"); </script>";
 
             # Sets the username and logged in session variables.
             $_SESSION['username'] = $userInput['username'];
@@ -108,9 +106,11 @@ try {
             # Closes the database connection.
             $conn = null;
 
-            # Redirects the user to members page after successful login.
-            header('Location: membersPage.php');
-            exit;
+            # Logs member in.
+            echo'<script src="/displayError.js"></script>';
+            echo("<script> loginSuccessMsg(); </script>");
+
+
 
             # If user enters an INVALID username and password. Log the user's IP Address and return them back to this login page.
         } else {
@@ -125,14 +125,14 @@ try {
             $conn = null;
 
             # Tells the user that their username/password combination was wrong.
-            echo "<script> alert(\"Incorrect username or password (or user is not a member), Your failed login attempt has been logged. Please try again.\"); </script>";
-            header('Location: signIn.php');
+            echo'<script src="/displayError.js"></script>';
+            echo("<script> loginFailedMsg(); </script>");
         }
     }
 } catch (PDOException $e) {
-    # Sends a JavaScript alert message back to the user notifying them that there was an error processing their request.
-    echo "<script> alert(\"We are sorry, there seems to be a problem with our systems. Please try again. If problems still persist, please notify TCI at 651-222-2020.\"); </script>";
-}
+    # Sends user database error message.
+    echo'<script src="/displayError.js"></script>';
+    echo("<script> databaseError(); </script>");}
 
 ?>
 <!DOCTYPE html>
@@ -173,7 +173,8 @@ try {
                id="password"
                name="password"
                required
-               maxlength="254">
+               maxlength="254"
+               pattern=<?php echo($passwordComplexityRequirements); ?>>
         <br/>
         <br/>
         <a href="#" style="color: gray">Forgot Password?</a><br/>

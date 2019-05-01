@@ -7,9 +7,8 @@ require_once "bin/inputSanitization.php";
 
 // Stops if no session exists.
 if (array_key_exists('loggedIn', $_SESSION) === false ) {
-    echo "<script> alert(\"Your session has timed out, please sign in again.\"); </script>";
-    header('Location: signIn.php');
-    exit;
+    echo'<script src="/displayError.js"></script>';
+    echo("<script> sessionTimeoutError(); </script>");
 }
 
 $memInfo['username'] = @sanitizeEmail($_SESSION['username']);
@@ -45,9 +44,9 @@ try {
     $memInfo = $userInfoStmt->fetch(PDO::FETCH_ASSOC);
 
 } catch (PDOException $e) {
-    # Sends a JavaScript alert message back to the user notifying them that there was an error processing their request.
-    echo "<script> alert(\"We are sorry, there seems to be a problem with our systems. Please try again. If problems still persist, please notify TCI at 651-222-2020.\"); </script>";
-    header('Location: signIn.php');
+    # Sends user database error message.
+    echo'<script src="/displayError.js"></script>';
+    echo("<script> databaseError(); </script>");
 }
 
 ?>

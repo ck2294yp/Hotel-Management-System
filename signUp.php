@@ -9,7 +9,6 @@ require_once "bin/inputSanitization.php";
 require_once "bin/sendEmail.php";
 require_once "vendor/autoload.php";
 
-
 // Creates minimum and maximum allowable birth dates.
 $todayDate = date_create('now');
 $youngestBirthDate = date_format(date_add($todayDate, date_interval_create_from_date_string('-18 years')), 'Y-m-d');
@@ -17,164 +16,48 @@ $oldestBirthDate = date_format(date_add($todayDate, date_interval_create_from_da
 
 # If member is already logged in, send them to the member's page.
 if (array_key_exists('loggedIn', $_SESSION)) {
-    echo "<script> alert(\"You are already logged in! Redirecting you to the membership page...\"); </script>";
-    header('Location: membersPage.php');
-    exit;
+    echo '<script src="/displayError.js"></script>';
+    echo("<script> alreadyLoggedInMsg(); </script>");
 }
 
 if (sizeof($_REQUEST) > 0) {
-
+    // Makes sure the userInput variable is empty first.
     $userInput = array();
-    $isError = false;
 
-    # Sanitizes and creates variable for the memEmail.
+    // Sanitizes all of the user input.
     $userInput['email'] = sanitizeEmail($_REQUEST['memEmail']);
-    if ($userInput['email'] === false) {
-        echo "<script> alert(\"Invalid username/email address specified, please try again.\"); </script>";
-        $isError = false;
-    }
-
-    # Sanitizes and creates variable for the password.
     $userInput['password'] = sanitizePassword($_REQUEST['memPasswd'], $_REQUEST['confirmMemPasswd'], $passwdHashAlgo, $beginingSalt, $endingSalt);
-    if ($userInput['password'] === false) {
-        echo "<script> alert(\"Invalid password specified or passwords do not match, please try again.\"); </script>";
-        $isError = true;
-    }
-
-    # Sanitizes and creates variable for the firstName.
     $userInput['fName'] = sanitizeAlphaString($_REQUEST['memFname']);
-    if ($userInput['fName'] === falsealphabetical) {
-        echo "<script> alert(\"First name is invalid, please try again.\"); </script>";
-        $isError = true;
-    }
-
-    # Sanitizes and creates variable for the lName.
     $userInput['lName'] = sanitizeAlphaString($_REQUEST['memLname']);
-    if ($userInput['lName'] === false) {
-        echo "<script> alert(\"Last name is invalid, please try again.\"); </script>";
-        $isError = true;
-    }
-
-    # Sanitizes and creates variable for the DOB.
     $userInput['dob'] = sanitizeDateString($_REQUEST['memDob']);
-    if ($userInput['dob'] === false) {
-        echo "<script> alert(\"Date of birth is invalid, please try again.\"); </script>";
-        $isError = true;
-    }
-
-    # Sanitizes and creates variable for the member's phone number.
     $userInput['phoneNum'] = sanitizeNumString(str_replace(array("-", "(", ")", "+"), "", $_REQUEST['phoneNum']));
-
-    if ($userInput['phoneNum'] === false) {
-        echo "<script> alert(\"Phone number is invalid, please try again.\"); </script>";
-        $isError = true;
-    }
-
-    ######## Address Entry ########
-
-    # Sanitizes and creates variable for the addressBuildNum.
     $userInput['buildNum'] = sanitizeNumString($_REQUEST['buildNum']);
-    if ($userInput['buildNum'] === false) {
-        echo "<script> alert(\"Building number is invalid, please try again.\"); </script>";
-        $isError = true;
-    }
-
-    # Sanitizes and creates variable for the addrStrName.
     $userInput['strName'] = sanitizeAlphaNumString($_REQUEST['strName']);
-    if ($userInput['strName'] === false) {
-        echo "<script> alert(\"Street name is invalid, please try again.\"); </script>";
-        $isError = true;
-    }
-
-    # Sanitizes and creates variable for the addrCity.
     $userInput['city'] = sanitizeAlphaString($_REQUEST['city']);
-    if ($userInput === false) {
-        echo "<script> alert(\"City is invalid, please try again.\"); </script>";
-        $isError = true;
-    }
-
-    # Sanitizes and creates variable for the addrZip.
     $userInput['zip'] = sanitizeNumString($_REQUEST['zip']);
-    if ($userInput['zip'] === false) {
-        echo "<script> alert(\"Zip code is invalid, please try again.\"); </script>";
-        $isError = true;
-    }
-
-    # Sanitizes and creates variable for the Provence/State.
     $userInput['provence'] = sanitizeAlphaString($_REQUEST['provence']);
-    if ($userInput['provence'] === false) {
-        echo "<script> alert(\"State/provence is invalid, please try again.\"); </script>";
-        $isError = true;
-    }
+    $userInput['country'] = sanitizeAlphaString("United States");
+    $userInput['aptNum'] = sanitizeAlphaNumString($_REQUEST['aptNum']);
 
-    # Sets the country of the user. (currently set to ONLY the US!)
-    $userInput['country'] = "United States";
 
-    # Sanitizes and creates variable for the OPTIONAL apartment number.
-    # If user doesn't input an apartment number then just bring in an empty string.
-    if ($_REQUEST['aptNum'] === "") {
-        $userInput['aptNum'] = "";
-        # If user DOES input an apartment number then sanitize it and use it in the rest of the program.
-    } else {
-        $userInput['aptNum'] = sanitizeAlphaNumString($_REQUEST['aptNum']);
-        if ($userInput['aptNum'] === false) {
-            echo "<script> alert(\"Apartment number is invalid, please try again.\"); </script>";
-            $isError = true;
-        }
+    // Checks if selected password matches the confirmation password.
+    if ($userInput['password'] === false) {
+        echo '<script src="/displayError.js"></script>';
+        echo("<script> unacceptibleNewPasswordMsg('http://localhost:8080/signUp.php'); </script>");
     }
 
 
-    ######### Checks if billing address is the same. ###########
-
-    # If the check box was NOT checked (Member has a separate billing address).
+    # If member has a SEPARATE billing address (the check box was NOT checked) then sanitize that input too.
     if (!empty($_REQUEST['billingMailingAddressIsSame'])) {
-
-        # Sanitizes and creates variable for the addressBuildNum.
         $userInput['billBuildNum'] = sanitizeNumString($_REQUEST['billBuildNum']);
-        if ($userInput['billBuildNum'] === false) {
-            echo "<script> alert(\"Billing building number is invalid, please try again.\"); </script>";
-            $isError = true;
-        }
-
-        # Sanitizes and creates variable for the addrStrName.
-        $userInput['billStrName'] = sanitizeAlphaNumString($_REQUEST['billStrName']);
-        if ($userInput['billStrName'] === false) {
-            echo "<script> alert(\"Billing street name is invalid, please try again.\"); </script>";
-            $isError = true;
-        }
-
-        # Sanitizes and creates variable for the addrCity.
+        $userInput['billStrName'] = sanitizeAlphaNumString($_REQUEST['billBuildNum']);
         $userInput['billCity'] = sanitizeAlphaString($_REQUEST['billCity']);
-        if ($userInput['billCity'] === false) {
-            echo "<script> alert(\"Billing city name is invalid, please try again.\"); </script>";
-            $isError = true;
-        }
-
-        # Sanitizes and creates variable for the addrZip.
         $userInput['billZip'] = sanitizeNumString($_REQUEST['billZip']);
-        if ($userInput['billZip'] === false) {
-            echo "<script> alert(\"Billing ZIP code is invalid, please try again.\"); </script>";
-            $isError = true;
-        }
-
-        # Sanitizes and creates variable for the Provence/State.
         $userInput['billProvence'] = sanitizeAlphaString($_REQUEST['billProvence']);
-        if ($userInput['billProvence'] === false) {
-            echo "<script> alert(\"Billing state/provence is invalid, please try again.\"); </script>";
-            $isError = true;
-        }
-
-        # Sets the country of the user. (currently set to ONLY the US!)
-        $userInput['billCountry'] = "United States";
-
-        # Sanitizes and creates variable for the optional apartment number.
+        $userInput['billCountry'] = sanitizeAlphaString("United States");
         $userInput['billAptNum'] = sanitizeAlphaNumString($_REQUEST['billAptNum']);
-        if ($userInput['billAptNum'] === false) {
-            echo "<script> alert(\"Billing apartment number is invalid, please try again.\"); </script>";
-            $isError = true;
-        }
 
-        # If member's mailing address is the same as their billing address. Simply use the same values as before.
+    # If member's mailing address is the SAME as their billing address. Simply use the same values as before.
     } else {
         $userInput['billBuildNum'] = $userInput['buildNum'];
         $userInput['billStrName'] = $userInput['strName'];
@@ -186,105 +69,98 @@ if (sizeof($_REQUEST) > 0) {
     }
 
 
-    # Checks if there where any errors while parsing though the user input.
-    if ($isError === true) {
-
-    } else {
-        ###### Tries to connect to the MySQL database using PDO (rather then MySQLi) #####
-        try {
-            $conn = new PDO("mysql:host=$dbAddress;dbname=$dbLocation", $dbUsername, $dbPassword);
-            # Set the PDO error mode to exception
-            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    ###### Tries to connect to the MySQL database using PDO (rather then MySQLi) #####
+    try {
+        $conn = new PDO("mysql:host=$dbAddress;dbname=$dbLocation", $dbUsername, $dbPassword);
+        # Set the PDO error mode to exception
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 
-            #Check if username/email address already exists.
-            $checkUsernameStmt = $conn->prepare("SELECT memEmail FROM Member WHERE memEmail=:memEmail");
-            $checkUsernameStmt->bindParam(':memEmail', $userInput['email'], PDO::PARAM_STR, 254);
-            $checkUsernameStmt->execute();
+        #Check if username/email address already exists.
+        $checkUsernameStmt = $conn->prepare("SELECT memEmail FROM Member WHERE memEmail=:memEmail");
+        $checkUsernameStmt->bindParam(':memEmail', $userInput['email'], PDO::PARAM_STR, 254);
+        $checkUsernameStmt->execute();
+        if ($checkUsernameStmt->rowCount() > 0) {
+            echo '<script src="/displayError.js"></script>';
+            echo("<script> usernameTakenMsg(); </script>");
+        }
 
-            if($checkUsernameStmt->rowCount() > 0) {
-                echo "<script> alert(\"Username is already taken!\"); </script>";
-            }
 
+        # Begins transaction before inserting any new data into the database.
+        $conn->beginTransaction();
 
-            # Begins transaction before inserting any new data into the database.
-            $conn->beginTransaction();
-
-            # Creates prepared SQL statement for the member.
-            $userInput['activationLink'] = random_int(1, 999999999);
-            $memStmt = $conn->prepare("INSERT INTO Member (memEmail, memPasswd, memFname, memLname, memDob, memPhone, memActivationLink) 
+        # Creates prepared SQL statement for the member.
+        $userInput['activationLink'] = random_int(1, 999999999);
+        $memStmt = $conn->prepare("INSERT INTO Member (memEmail, memPasswd, memFname, memLname, memDob, memPhone, memActivationLink) 
               VALUES (:memEmail, :memPasswd, :memFname, :memLname, :memDob, :memPhone, :memActivationLink)");
-            $memStmt->bindParam(':memEmail', $userInput['email'], PDO::PARAM_STR, 254);
-            $memStmt->bindParam(':memPasswd', $userInput['password'], PDO::PARAM_STR, 64);
-            $memStmt->bindParam(':memFname', $userInput['fName'], PDO::PARAM_STR, 64);
-            $memStmt->bindParam(':memLname', $userInput['lName'], PDO::PARAM_STR, 64);
-            $memStmt->bindParam(':memDob', $userInput['dob']);
-            $memStmt->bindParam(':memPhone', $userInput['phoneNum']);
-            $memStmt->bindParam(':memActivationLink', $userInput['activationLink']);
+        $memStmt->bindParam(':memEmail', $userInput['email'], PDO::PARAM_STR, 254);
+        $memStmt->bindParam(':memPasswd', $userInput['password'], PDO::PARAM_STR, 64);
+        $memStmt->bindParam(':memFname', $userInput['fName'], PDO::PARAM_STR, 64);
+        $memStmt->bindParam(':memLname', $userInput['lName'], PDO::PARAM_STR, 64);
+        $memStmt->bindParam(':memDob', $userInput['dob']);
+        $memStmt->bindParam(':memPhone', $userInput['phoneNum']);
+        $memStmt->bindParam(':memActivationLink', $userInput['activationLink']);
+        $memStmt->execute();
 
-            # Gets the memID of the newly created member.
-            $memStmt->execute();
-            $userInput['memID'] = $conn->lastInsertId();
+        # Gets the memID of the newly created member.
+        $userInput['memID'] = $conn->lastInsertId();
 
-            # Creates prepared SQL statement for the Member's mailing address.
-            $mailAddrStmt = $conn->prepare("INSERT INTO Address (addressType, memID, addressBuildNum, addressStreetName, addressCity, addressZip, addressProvence, addressCountry, addressAptNum) 
+        # Creates prepared SQL statement for the Member's mailing address.
+        $mailAddrStmt = $conn->prepare("INSERT INTO Address (addressType, memID, addressBuildNum, addressStreetName, addressCity, addressZip, addressProvence, addressCountry, addressAptNum) 
               VALUES ('mailing', :memID, :addressBuildNum, :addressStreetName, :addressCity, :addressZip, :addressProvence, :addressCountry, :addressAptNum)");
-            $mailAddrStmt->bindParam(':memID', $userInput['memID']);
-            $mailAddrStmt->bindParam(':addressBuildNum', $userInput['buildNum'], PDO::PARAM_INT, 8);
-            $mailAddrStmt->bindParam(':addressStreetName', $userInput['strName'], PDO::PARAM_STR, 64);
-            $mailAddrStmt->bindParam(':addressCity', $userInput['city'], PDO::PARAM_STR, 64);
-            $mailAddrStmt->bindParam(':addressZip', $userInput['zip'], PDO::PARAM_INT, 7);
-            $mailAddrStmt->bindParam(':addressProvence', $userInput['provence'], PDO::PARAM_STR, 32);
-            $mailAddrStmt->bindParam(':addressCountry', $userInput['country'], PDO::PARAM_STR, 64);
-            $mailAddrStmt->bindParam(':addressAptNum', $userInput['aptNum'], PDO::PARAM_INT, 7);
+        $mailAddrStmt->bindParam(':memID', $userInput['memID']);
+        $mailAddrStmt->bindParam(':addressBuildNum', $userInput['buildNum'], PDO::PARAM_INT, 8);
+        $mailAddrStmt->bindParam(':addressStreetName', $userInput['strName'], PDO::PARAM_STR, 64);
+        $mailAddrStmt->bindParam(':addressCity', $userInput['city'], PDO::PARAM_STR, 64);
+        $mailAddrStmt->bindParam(':addressZip', $userInput['zip'], PDO::PARAM_INT, 7);
+        $mailAddrStmt->bindParam(':addressProvence', $userInput['provence'], PDO::PARAM_STR, 32);
+        $mailAddrStmt->bindParam(':addressCountry', $userInput['country'], PDO::PARAM_STR, 64);
+        $mailAddrStmt->bindParam(':addressAptNum', $userInput['aptNum'], PDO::PARAM_INT, 7);
+        $mailAddrStmt->execute();
 
-            # Gets the AddressID of the mailing Address.
-            $mailAddrStmt->execute();
-            $userInput['mailAddressID'] = $conn->lastInsertId();
+        # Gets the AddressID of the mailing Address.
+        $userInput['mailAddressID'] = $conn->lastInsertId();
 
-            # Creates prepared SQL statement for the Member's billing address.
-            $billAddrStmt = $conn->prepare("INSERT INTO Address (addressType, memID, addressBuildNum, addressStreetName, addressCity, addressZip, addressProvence, addressCountry, addressAptNum) 
+        # Creates prepared SQL statement for the Member's billing address.
+        $billAddrStmt = $conn->prepare("INSERT INTO Address (addressType, memID, addressBuildNum, addressStreetName, addressCity, addressZip, addressProvence, addressCountry, addressAptNum) 
               VALUES ('billing', :memID, :addressBuildNum, :addressStreetName, :addressCity, :addressZip, :addressProvence, :addressCountry, :addressAptNum)");
-            $billAddrStmt->bindParam(':memID', $userInput['memID']);
-            $billAddrStmt->bindParam(':addressBuildNum', $userInput['billBuildNum'], PDO::PARAM_INT, 8);
-            $billAddrStmt->bindParam(':addressStreetName', $userInput['billStrName'], PDO::PARAM_STR, 64);
-            $billAddrStmt->bindParam(':addressCity', $userInput['billCity'], PDO::PARAM_STR, 64);
-            $billAddrStmt->bindParam(':addressZip', $userInput['billZip'], PDO::PARAM_INT, 7);
-            $billAddrStmt->bindParam(':addressProvence', $userInput['billProvence'], PDO::PARAM_STR, 32);
-            $billAddrStmt->bindParam(':addressCountry', $userInput['billCountry'], PDO::PARAM_STR, 64);
-            $billAddrStmt->bindParam(':addressAptNum', $userInput['billAptNum'], PDO::PARAM_INT, 7);
+        $billAddrStmt->bindParam(':memID', $userInput['memID']);
+        $billAddrStmt->bindParam(':addressBuildNum', $userInput['billBuildNum'], PDO::PARAM_INT, 8);
+        $billAddrStmt->bindParam(':addressStreetName', $userInput['billStrName'], PDO::PARAM_STR, 64);
+        $billAddrStmt->bindParam(':addressCity', $userInput['billCity'], PDO::PARAM_STR, 64);
+        $billAddrStmt->bindParam(':addressZip', $userInput['billZip'], PDO::PARAM_INT, 7);
+        $billAddrStmt->bindParam(':addressProvence', $userInput['billProvence'], PDO::PARAM_STR, 32);
+        $billAddrStmt->bindParam(':addressCountry', $userInput['billCountry'], PDO::PARAM_STR, 64);
+        $billAddrStmt->bindParam(':addressAptNum', $userInput['billAptNum'], PDO::PARAM_INT, 7);
+        $billAddrStmt->execute();
 
-            # Gets the AddressID of the billing address.
-            $billAddrStmt->execute();
-            $userInput['billAddressID'] = $conn->lastInsertId();
+        # Gets the AddressID of the billing address.
+        $userInput['billAddressID'] = $conn->lastInsertId();
 
-            # Commits the changes to the database and closes the database connection.
-            $conn->commit();
-            $conn = null;
+        # Commits the changes to the database and closes the database connection.
+        $conn->commit();
+        $conn = null;
 
 
-            # Sends an email out to the customer (if administrators allow it).
-            if ($sendEmails === true) {
-                if (accountActivate($userInput['email']) === true) {
-                    # Sends a JavaScript alert message back to the user notifying them of successful account creation.
-                    echo "<script> alert(\"Account created successfully! Please check your email inbox in order to activate your account!\"); </script>";
-                    header('Location: signUp.php');
-                    exit;
-                }
-            }
+        # Sends an email out to the customer (if administrators allow it).
+        if (accountActivate($userInput['email'])) {
+            echo '<script src="/displayError.js"></script>';
+            echo("<script> emailAccountActivationMsg(); </script>");
 
-            // If for some reason the email server fail to load or sendEmails is set to administratively be set to "off" activate the user's account.
+        // If for some reason the email server fails to respond (or sendEmails is administratively set to "off") activate the user's account without it.
+        } else {
             $email = $userInput['email'];
             $activationId = $userInput['activationLink'];
-            echo "<script> alert(\"Account has been created successfully! Activating your account...\"); </script>";
-            header("Location: activate.php?user=$email&activationId=$activationId");
-
-
-
-        } catch (PDOException $e) {
-            # Sends a JavaScript alert message back to the user notifying them that there was an error processing their request.
-            echo "<script> alert(\"We are sorry. There was a problem processing your request. Please try again, if problem persists please call TCI at 651-222-2020.\"); </script>";
+            $link = "http://localhost:8080/activate.php?user=$email&activationId=$activationId";
+            echo '<script src="/displayError.js"></script>';
+            echo("<script> noEmailAccountActivationMsg($link); </script>");
         }
+
+
+    } catch (PDOException $e) {
+        // If there is an error with the database tell user to try again.
+        echo '<script src="/displayError.js"></script>';
+        echo("<script> databaseError(); </script>");
     }
 }
 ?>
@@ -359,13 +235,9 @@ if (sizeof($_REQUEST) > 0) {
                  minlength="8"
                  maxlength="254"
                  placeholder="Desired Password"
-                 title="Passwords must be:
-                 - Between 8 at 254 characters long.
-                 - Contain at least ONE capital letter.
-                 - Contain at least ONE lowercase letter.
-                 - Contain at least ONE number.
-                 - Contain at least ONE special character."
-                 pattern=<?php echo($passwordComplexityRequirements); ?> >
+                 title='
+                 Invalid password characters detected! Passwords must be: Between 8 - 254 characters long, Contain at least ONE capital letter, Contain at least ONE lowercase letter, Contain at least ONE number, and Contain at least ONE special character.'
+                 pattern=<?php echo ($passwordComplexityRequirements); ?>>
         <script>
             checkInput('memPasswd', 'Passwords must be:\n' +
                 '- Between 8 at 254 characters long.\n' +
@@ -386,7 +258,7 @@ if (sizeof($_REQUEST) > 0) {
                  maxlength="254"
                  placeholder="Confirm Password"
                  title="Passwords must match!"
-                 pattern=<?php echo($passwordComplexityRequirements); ?> >
+                 pattern=<?php echo ($passwordComplexityRequirements); ?>>
         <br>
         <br>
 
@@ -401,7 +273,7 @@ if (sizeof($_REQUEST) > 0) {
                  minlength="2"
                  maxlength="64"
                  autocorrect="on"
-                 pattern="[A-Za-z\-\h]"
+                 pattern="[A-Za-z\-\h]{2,64}"
                  required>
         <script>checkInput('memFname', 'Please enter a valid first name!');</script>
         <br>
@@ -416,7 +288,7 @@ if (sizeof($_REQUEST) > 0) {
                  maxlength="64"
                  autocorrect="on"
                  placeholder="Last Name"
-                 pattern="[A-Za-z\-\h]">
+                 pattern="[A-Za-z\-\h]{2,64}">
         <script>checkInput('memLname', 'Please enter a valid last name!');</script>
         <br>
         <br>
@@ -430,8 +302,8 @@ if (sizeof($_REQUEST) > 0) {
                  name="memDob"
                  required
                  autocomplete="bday"
-                 min=<?php echo($oldestBirthDate); ?>
-                 max=<?php echo($youngestBirthDate); ?>
+                 min=<?php echo ($oldestBirthDate); ?>
+                 max=<?php echo ($youngestBirthDate); ?>
                  placeholder="Date Of Birth">
         <script>checkInput('memDob', 'Please enter a valid date of birth!');</script>
         <br>
@@ -463,7 +335,7 @@ if (sizeof($_REQUEST) > 0) {
                  min="1"
                  maxlength="8"
                  placeholder="Building/House Number"
-                 pattern="[0-9]">
+                 pattern="[0-9]{1,8}">
         <script>checkInput('buildNum', 'Please enter a valid home or building number!');</script>
         <br>
         <br>
@@ -477,7 +349,7 @@ if (sizeof($_REQUEST) > 0) {
                  maxlength="64"
                  spellcheck="true"
                  placeholder="Street Address"
-                 pattern="[A-Za-z0-9\.\-\h]">
+                 pattern="[A-Za-z0-9\.\-\h]{2,64}">
         <script>checkInput('strName', 'Please enter a valid street name!');</script>
         <br>
         <br>
@@ -491,7 +363,7 @@ if (sizeof($_REQUEST) > 0) {
                  autocomplete="on"
                  spellcheck="true"
                  placeholder="City"
-                 pattern="[A-Za-z\-\h]">
+                 pattern="[A-Za-z\-\h]{2,64}">
         <script>checkInput('city', 'Please enter a valid city!');</script>
         <br>
         <br>
@@ -504,7 +376,7 @@ if (sizeof($_REQUEST) > 0) {
                 min="1"
                 maxlength="7"
                 placeholder="Zip Code"
-                pattern="[0-9]">
+                pattern="[0-9]{1,7}">
         <script>checkInput('zip', 'Please enter a zip code!');</script>
         <br>
         <br>
@@ -573,7 +445,7 @@ if (sizeof($_REQUEST) > 0) {
                min="1"
                maxlength="7"
                placeholder="Apartment Number"
-               pattern="[a-zA-Z0-9\-\h]">
+               pattern="[a-zA-Z0-9\-\h]{1,7}">
         <script>checkInput('aptNum', 'Please enter a valid apartment number!');</script>
         <br>
         <br>
@@ -618,7 +490,7 @@ if (sizeof($_REQUEST) > 0) {
                     maxlength="8"
                     autocomplete="on"
                     placeholder="Building/House Number"
-                    pattern="[0-9]">
+                    pattern="[0-9]{1,8}">
             <script>checkInput('billBuildNum', 'Please enter a valid building number!');</script>
             <br>
             <br>
@@ -632,7 +504,7 @@ if (sizeof($_REQUEST) > 0) {
                      spellcheck="true"
                      autocomplete="on"
                      placeholder="Street Address"
-                     pattern="[A-Za-z0-9\.\-\h]">
+                     pattern="[A-Za-z0-9\.\-\h]{2,64}">
             <script>checkInput('billStrName', 'Please enter a valid street name!');</script>
             <br>
             <br>
@@ -645,7 +517,7 @@ if (sizeof($_REQUEST) > 0) {
                      spellcheck="true"
                      autocomplete="on"
                      placeholder="City"
-                     pattern="[A-Za-z\-\h]">
+                     pattern="[A-Za-z\-\h]{2,64}">
             <script>checkInput('billCity', 'Please enter a valid city name!');</script>
             <br>
             <br>
@@ -657,7 +529,7 @@ if (sizeof($_REQUEST) > 0) {
                      maxlength="7"
                      autocomplete="on"
                      placeholder="Zip Code"
-                     pattern="[0-9]">
+                     pattern="[0-9]{1,7}">
             <script>checkInput('billZip', 'Please enter a valid Zip code!');</script>
             <br>
             <br>
@@ -726,7 +598,7 @@ if (sizeof($_REQUEST) > 0) {
                    min="1"
                    maxlength="7"
                    placeholder="Apartment Number"
-                   pattern="[a-zA-Z0-9\-\h]">
+                   pattern="[a-zA-Z0-9\-\h]{1,7}">
             <script>checkInput('billAptNum', 'Please enter a valid apartment number!');</script>
             <br>
             <br>

@@ -8,13 +8,12 @@ require_once "bin/inputSanitization.php";
 $user = sanitizeEmail($_REQUEST['user']);
 $activationId = sanitizeNumString($_REQUEST['activationId']);
 
-// Stops loading the page if any bad input is used.
+// Stops loading the page if any bad (or no) input is used.
 if ($user === false || $activationId === false) {
     $user = null;
     $activationId = null;
-    echo "<script> alert(\"Invalid input detected. Please try again\"); </script>";
-    header('Location: signIn.php');
-    exit;
+    echo '<script src="/displayError.js"></script>';
+    echo("<script> invalidActivationTokenMsg(); </script>");
 }
 
 
@@ -49,26 +48,20 @@ try {
         $conn = null;
 
         # Congratulates the member for becoming an official member of TCI.
-        echo "<script> alert(\"Congratulations! You are have successfully activated your account and have become member of TCI! Click OK to continue to your personalized membership page.\"); </script>";
+        echo'<script src="/displayError.js"></script>';
+        echo("<script> activationSuccessfulMsg(); </script>");
 
-
-        # Creates a new session with the user.
-        $_SESSION['username'] = $user;
-        $_SESSION['loggedIn'] = true;
-
-        # Redirects user to the members page.
-        header('Location: membersPage.php');
-
+    # If activation credentials don't match the account. Display meesage and send them to the index page.
     } else {
-        echo "<script> alert(\"Incorrect account credentials specified, account NOT activated!\"); </script>";
-
+        echo '<script src="/displayError.js"></script>';
+        echo("<script> invalidActivationTokenMsg(); </script>");
     }
 
 
 } catch (PDOException $e) {
-    # Sends a JavaScript alert message back to the user notifying them that there was an error processing their request.
-    echo "<script> alert(\"We are sorry, there seems to be a problem with our systems. Please try again. If problems still persist, please notify TCI at 651-222-2020.\"); </script>";
-}
+    # Sends user database error message.
+    echo'<script src="/displayError.js"></script>';
+    echo("<script> databaseError(); </script>");}
 
 
 

@@ -8,8 +8,8 @@ require_once "bin/inputSanitization.php";
 
 # If member is NOT already signed in (loggedIn is false) then redirect them to the SignIn page IMMEDIATELY.
 if (array_key_exists('loggedIn', $_SESSION) === false)  {
-    echo "<script> alert(\"Your session has timed out, please sign in again.\"); </script>";
-    header('Location: signIn.php');
+    echo'<script src="/displayError.js"></script>';
+    echo("<script>sessionTimeoutError(); </script>");
 
 # Otherwise (loggedIn is true) continue on with the code and the creation of the webpage.
 } else {
@@ -59,10 +59,9 @@ if (array_key_exists('loggedIn', $_SESSION) === false)  {
 
 
     } catch (PDOException $e) {
-        # Sends a JavaScript alert message back to the user notifying them that there was an error processing their request.
-        echo "<script> alert(\"We are sorry, there seems to be a problem with our systems. Please try again. If problems still persist, please notify TCI at 651-222-2020.\"); </script>";
-
-        header('Location: membersPage.php');
+        # Sends user database error message.
+        echo'<script src="/displayError.js"></script>';
+        echo("<script> databaseError(); </script>");
     }
 
 }

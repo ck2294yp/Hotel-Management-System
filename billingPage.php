@@ -4,20 +4,18 @@ session_start();
 
 require_once "settings/settings.php";
 require_once "bin/inputSanitization.php";
-
+echo '<script src="/displayError.js"></script>';        // Up here because this gets referenced by the HTML.
 
 // Stops if the room Type ID is not set in either the session or the POST request.
 if ((array_key_exists('roomTypeID', $_REQUEST) === false) && (array_key_exists('roomTypeID', $_SESSION) === false) ) {
-    echo "<script> alert(\"Invalid room type specified please select a room and try again.\"); </script>";
-    header('Location: searchRooms.php');
-    exit;
+    echo'<script src="/displayError.js"></script>';
+    echo("<script>invalidRoomTypeMsg(); </script>");
 }
 
 // Stops if user is not logged in.
 if (array_key_exists('loggedIn', $_SESSION) === false) {
-    echo "<script> alert(\"Your session has timed out, please sign in again.\"); </script>";
-    header('Location: signIn.php');
-    exit;
+    echo'<script src="/displayError.js"></script>';
+    echo("<script>sessionTimeoutError(); </script>");
 }
 
 $_SESSION['username'] = @sanitizeEmail($_SESSION['username']);
@@ -69,10 +67,9 @@ try {
     $roomInfo = $roomInfoStmt->fetch(PDO::FETCH_ASSOC);
 
 } catch (PDOException $e) {
-    # Sends a JavaScript alert message back to the user notifying them that there was an error processing their request.
-    echo "<script> alert(\"We are sorry, there seems to be a problem with our systems. Please try again. If problems still persist, please notify TCI at 651-222-2020.\"); </script>";
-    header('Location: searchRooms.php');
-    exit;
+    # Sends user database error message.
+    echo'<script src="/displayError.js"></script>';
+    echo("<script> databaseError(); </script>");
 }
 
 ?>
@@ -339,7 +336,7 @@ try {
 
             <br>
             <button class="button" type="button" onclick="hideShowAddCardForm()">Add New Card</button>
-            <button class="button" type="submit" class="process-btn" onclick="processingMessage()">Pay Now</button>
+            <button class="button" type="submit" class="process-btn" onclick="warnBeforeProcessingOrderMsg()">Pay Now</button>
         </form>
     </div>
     <div class="column right" id="newCardEntry">
@@ -447,11 +444,6 @@ try {
         integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="
         crossorigin="anonymous"></script>
 <script>
-    function processingMessage() {
-        alert("Please wait patiently while your order processes. DO NOT NAVIGATE AWAY WHILE ORDER IS PROCESSING! It will be done soon. Please click 'OK' to continue...");
-
-    }
-
     function hideShowAddCardForm() {
 
         var newCardEntry = document.getElementById("newCardEntry");

@@ -15,25 +15,18 @@ $maxEndDate = $maxStartDate = date_format(date_add($todayDate, date_interval_cre
 // If the user chooses a variable in the calenders ON THIS PAGE. Sanitize and do a "Sanity check" on it. If all is well, store dates as a $_SESSION variable.
 if (sizeof($_REQUEST) > 0) {
 
+    // Sanitizes the inputs
     $checkInDate = @sanitizeDateString($_REQUEST['checkInDate']);
     $checkOutDate = @sanitizeDateString($_REQUEST['checkOutDate']);
 
-    // If bad data is entered, stop it here.
-    if ($checkInDate === false || $checkOutDate === false) {
-        echo "<script> alert(\"Invalid date values entered. Please try again.\"); </script>";
-        $_REQUEST = "";
-        $checkInDate = "";
-        $checkOutDate = "";
+    // Throws out any ending dates that come BEFORE the starting dates (as that wouldn't make any sense).
+    if (strtotime($checkInDate) >= strtotime($checkOutDate)) {
+        echo'<script src="/displayError.js"></script>';
+        echo("<script> outOfOrderBookingDatesMsg(); </script>");
 
-        // Throws out any ending dates that come BEFORE the starting dates (as that wouldn't make any sense).
-    } elseif (strtotime($checkInDate) >= strtotime($checkOutDate)) {
-        echo "<script> alert(\"Your ending reservation date must come AFTER the starting date!\"); </script>";
-        $_REQUEST = "";
-        $checkInDate = "";
-        $checkOutDate = "";
 
-        // If There are no problems. Then set the session to hold the values. Send the user to the "Searching rooms" page. (which will redirect
-        // them to the sign in page if user is not already logged in).
+
+    // If There are no problems. Then set the session to hold the values. Send the user to the "Searching rooms" page. (which will redirect them to the sign in page if user is not already logged in).
     } else {
         $_SESSION['checkInDate'] = $checkInDate;
         $_SESSION['checkOutDate'] = $checkOutDate;

@@ -7,9 +7,8 @@ require_once "bin/inputSanitization.php";
 
 // Stops if no session exists.
 if (array_key_exists('loggedIn', $_SESSION) === false) {
-    echo "<script> alert(\"Your session has timed out, please sign in again.\"); </script>";
-    header('Location: signIn.php');
-    exit;
+    echo'<script src="/displayError.js"></script>';
+    echo("<script> sessionTimeoutError(); </script>");
 }
 
 $memInfo['username'] = @sanitizeEmail($_SESSION['username']);
@@ -51,9 +50,9 @@ try {
 
 
 } catch (PDOException $e) {
-    # Sends a JavaScript alert message back to the user notifying them that there was an error processing their request.
-    echo "<script> alert(\"We are sorry, there seems to be a problem with our systems. Please try again. If problems still persist, please notify TCI at 651-222-2020.\"); </script>";
-    header('Location: membersPage.php');
+    # Sends user database error message.
+    echo'<script src="/displayError.js"></script>';
+    echo("<script> databaseError(); </script>");
 }
 
 ?>
@@ -176,12 +175,7 @@ try {
                        required
                        minlength="8"
                        maxlength="254"
-                       title="Passwords must be:
-                 - Between 8 at 254 characters long.
-                 - Contain at least ONE capital letter.
-                 - Contain at least ONE lowercase letter.
-                 - Contain at least ONE number.
-                 - Contain at least ONE special character.">
+                       pattern=<?php echo($passwordComplexityRequirements); ?> >
                 <br>
                 <br>
 
@@ -295,7 +289,7 @@ try {
 <script language="javascript">
     function deleteAccount() {
         if (confirm("Are you sure you want to delete your account?")) {
-            alert("Account deleted");
+            // TODO: Create account deletion file.
             return true;
         }
     }

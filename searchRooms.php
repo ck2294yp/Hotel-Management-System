@@ -5,17 +5,16 @@ require_once "bin/inputSanitization.php";
 
 // Stops if no session exists.
 if (array_key_exists('loggedIn', $_SESSION) === false) {
-    echo "<script> alert(\"Your session has timed out, please sign in again.\"); </script>";
-    header('Location: signIn.php');
-    exit;
+    echo'<script src="/displayError.js"></script>';
+    echo("<script> sessionTimeoutError(); </script>");
 }
 
 // Checks if session (or POST request) contains checkindate/checkoutdate.
 if ((array_key_exists('checkInDate', $_SESSION) === false) || (array_key_exists('checkOutDate', $_SESSION) === false)) {
-    echo "<script> alert(\"Check in or check out dates not found, please try again.\"); </script>";
-    header('Location: booking.php');
-    exit;
+    echo'<script src="/displayError.js"></script>';
+    echo("<script> noBookingDatesProvidedMsg(); </script>");
 }
+
 
 // Create array to hold the client's information.
 $roomInfo = array();
@@ -54,10 +53,9 @@ try {
     $roomInformation = $allRoomInfoStmt->fetchAll(PDO::FETCH_ASSOC);
 
 } catch (PDOException $e) {
-    # Sends a JavaScript alert message back to the user notifying them that there was an error processing their request.
-    echo "<script> alert(\"We are sorry, there seems to be a problem with our systems. Please try again. If problems still persist, please notify TCI at 651-222-2020.\"); </script>";
-    header('Location: membersPage.php');
-    exit;
+    # Sends user database error message.
+    echo'<script src="/displayError.js"></script>';
+    echo("<script> databaseError(); </script>");
 }
 ?>
 

@@ -1,3 +1,12 @@
+<?php
+// Stops if no session exists.
+if (array_key_exists('loggedIn', $_SESSION) === false) {
+    echo'<script src="/displayError.js"></script>';
+    echo("<script>sessionTimeoutError(); </script>");
+}
+?>
+
+
 <!DOCTYPE html>
 <html>
 <head>

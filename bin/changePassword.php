@@ -14,9 +14,8 @@ require_once "bin/sendEmail.php";
 
 // Stops if user is not logged in.
 if (array_key_exists('loggedIn', $_SESSION) === false) {
-    echo "<script> alert(\"Your session has timed out, please sign in again.\"); </script>";
-    header('Location: signIn.php');
-    exit;
+    echo'<script src="/displayError.js"></script>';
+    echo("<script>sessionTimeoutError(); </script>");
 }
 
 
@@ -30,14 +29,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $oldPassword = sanitizePassword($_REQUEST['oldPassword'], $_REQUEST['oldPassword'], $passwdHashAlgo, $beginingSalt, $endingSalt);
     $newPassword = sanitizePassword($_REQUEST['newPassword'], $_REQUEST['newPasswordConfirm'], $passwdHashAlgo, $beginingSalt, $endingSalt);
 
+    # Checks if new password matches required complexity requirements.
+    if ($newPassword === false ){
+        echo'<script src="/displayError.js"></script>';
+        echo("<script>unacceptibleNewPasswordMsg('http://localhost:8080/accountInformationPage.php'); </script>");
+    }
 
     # Checks if old and new password hashes are the same.
     if ($oldPassword === $newPassword) {
-        echo "<script> alert(\"Password is the same!\"); </script>";
-        # Return user to previous page.
-        header('Location: ' . $_SERVER['HTTP_REFERER']);
-        exit;
+        echo'<script src="/displayError.js"></script>';
+        echo("<script>newPasswordMatchesOldMsg(); </script>");
     }
+
+    // No need to check if new password matches confirmation password, sanitizePassword takes care of that on it's own.
+
 
     # Updates the database.
     try {
@@ -53,20 +58,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $chPasswordStmt->execute();
         $conn->commit();
 
-        # Tells the user that their email/username has been changed.
-        echo "<script> alert(\"Username/email address successfully changed.\"); </script>";
-
-        # Return user to previous page.
-        header('Location: ' . $_SERVER['HTTP_REFERER']);
+        # Tells user that their password has been changed successfully
+        echo'<script src="/displayError.js"></script>';
+        echo("<script>passwordChangeSuccessfulMsg(); </script>");
 
 
 
     // Catch any sort of failure.
     } catch (PDOException $e) {
-        # Sends a JavaScript alert message back to the user notifying them that there was an error processing their request.
-        echo "<script> alert(\"We are sorry, there seems to be a problem with our systems. Please try again. If problems still persist, please notify TCI at 651-222-2020.\"); </script>";
-        header('Location: ' . $_SERVER['HTTP_REFERER']);
-        exit;
+        # Sends user database error message.
+        echo'<script src="/displayError.js"></script>';
+        echo("<script> databaseError(); </script>");
     }
 
 

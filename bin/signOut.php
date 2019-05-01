@@ -24,6 +24,6 @@ if (ini_get("session.use_cookies")) {
 session_destroy();
 
 // Sends the user back to the homepage.
-echo "<script> alert(\"You have successfully logged out!\"); </script>";
-header('Location: /index.php');
+echo '<script src="/displayError.js"></script>';
+echo("<script> logoutSuccessMsg(); </script>");
 

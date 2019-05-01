@@ -12,20 +12,10 @@ $_REQUEST['roomTypeID'] = sanitizeNumString($_REQUEST['roomTypeID']);
 $_REQUEST['checkInDate'] = sanitizeDateString($_REQUEST['checkInDate']);
 $_REQUEST['checkOutDate'] = sanitizeDateString($_REQUEST['checkOutDate']);
 
-// Checks if there are any false (invalid) data coming into the database.
-if (in_array(false, $_REQUEST)) {
-    echo"";
-    echo "<script> alert(\"Invalid data entered, please try again.\"); </script>";
-    header('Location: billingPage.php');
-    exit;
-}
-
 // Stops if no session exists.
 if (array_key_exists('loggedIn', $_SESSION) === false) {
-    echo"";
-    echo "<script> alert(\"Your session has timed out, please sign in again.\"); </script>";
-    header('Location: signIn.php');
-    exit;
+    echo'<script src="/displayError.js"></script>';
+    echo("<script> sessionTimeoutError(); </script>");
 }
 
 
@@ -51,10 +41,8 @@ try {
     $roomInfo = $roomInfoStmt->fetch(PDO::FETCH_ASSOC);
     if ($numRoomsBooked > $roomInfo['numOfRooms']) {
         $conn = null;
-        echo "";
-        echo "<script> alert(\"Sorry, Someone seems to have snatched this room before your order could be placed. Please choose another one and try again.\"); </script>";
-        header('Location: searchRooms.php');
-        exit;
+        echo'<script src="/displayError.js"></script>';
+        echo("<script> roomSnatchedMsg(); </script>");
     }
 
 # Otherwise, Book the room, commit the changes and close connection with the database.
@@ -78,27 +66,19 @@ VALUES (:cardNum, :memID, :roomTypeID, :invoiceStartDate, :invoiceEndDate)");
     $conn->commit();
     $conn = null;
 
-
-
-
-// Send order notification email out to the user.
+    // Send order notification email out to the user.
     orderProcess($_REQUEST['memID'], $orderNumber);
 
 
-# Notify user that reservation has been processed.
-    echo"";
-    echo "<script> alert(\"Your reservation has been placed successfully!\"); </script>";
-    echo "Reservation processed successfully! Thank you for booking with TCI! <br>";
-    echo "You should be automatically redirected to the member's page. If that doesn't work, please click <a
-        href=\"membersPage.php\">here</a>.";
-    header("Location: membersPage.php");
+    # Notify user that the reservation has been processed successfully.
+    echo'<script src="/displayError.js"></script>';
+    echo("<script> bookingSuccessfulMsg(); </script>");
 
 
 } catch (PDOException $e) {
-# Sends a JavaScript alert message back to the user notifying them that there was an error processing their request.
-    echo "<script> alert(\"We are sorry, there seems to be a problem with our systems. Please try again. If problems still persist, please notify TCI at 651-222-2020.\"); </script>";
-    header('Location: billingPage.php');
-    exit;
+# Sends user database error message.
+    echo'<script src="/displayError.js"></script>';
+    echo("<script> databaseError(); </script>");
 }
 
 
