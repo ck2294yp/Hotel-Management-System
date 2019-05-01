@@ -357,7 +357,7 @@ div.navButton button {
 
 .details {
     position: absolute;
-    width: 400px;
+    width: 250px;
     height: 300px;
     display: flex;
     justify-content: center;
