@@ -127,7 +127,7 @@ function roomSnatchedMsg() {
 // Displays when user successfully books and pays for a room.
 function bookingSuccessfulMsg() {
     alert("Your purchase has completed successfully! Thank you for choosing to stay at TCI!");
-    window.location.href="http://localhost:8080/searchRooms.php";
+    window.location.href="http://localhost:8080/membersPage.php";
 }
 
 
