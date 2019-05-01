@@ -302,7 +302,7 @@ try {
 <div class="row">
     <div class="column left">
         <h2>Checkout Details</h2>
-        <form action="processOrder.php" method="post">
+        <form action="processOrder.php" method="post" >
             <input type="hidden" name="memID" id="memID" value="<?php echo($memInfo['memID']); ?>" />
             <input type="hidden" name="roomTypeID" id="roomTypeID" value="<?php echo($roomInfo['roomTypeID']); ?>" />
             <input type="hidden" name="checkInDate" id="checkInDate" value="<?php echo($_SESSION['checkInDate']); ?>" />
@@ -439,6 +439,7 @@ try {
         </form>
     </div>
 </div>
+
 <script
         src="https://code.jquery.com/jquery-3.4.0.min.js"
         integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="

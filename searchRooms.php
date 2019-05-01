@@ -189,7 +189,7 @@ try {
         <br><br>
         <button onclick="allRooms()" style="width: 60%">Show All</button>
     </div>
-    <div style="float: right; height: 700px ;width:80%;">
+    <div id="parent" style="float: right; height: 700px ;width:80%;">
         <h2 style="text-align: left;">Currently Available Rooms: </h2>
 
         <?php
@@ -198,7 +198,7 @@ try {
             if ((array_key_exists($currentRoom['roomTypeID'], $bookedRooms) === true) && ($currentRoom['numOfRooms'] <= $bookedRooms[$currentRoom['roomTypeID']])) {
 
             } else { ?>
-                <div class="gridMember roomBox" id="<?php echo($currentRoom['roomNumBeds'] . 'bed' . $currentRoom['roomCatagory']); ?>"   style="display: inline-block;">
+                <div class="gridMember roomBox <?php echo($currentRoom['roomNumBeds'] . 'bed' . $currentRoom['roomCatagory']); ?>" id="<?php echo($currentRoom['roomNumBeds'] . 'bed' . $currentRoom['roomCatagory']); ?>"   style="display: inline-block;">
                     <!-- Room details -->
                     <div style="float:left; text-align:left; padding-left:5%; ">
                         <br> <h2> <?php echo($currentRoom['roomNumBeds'] . "-bed " . ucfirst($currentRoom['roomCatagory']) . " Room"); ?> </h2>
@@ -292,7 +292,8 @@ try {
         var h = document.getElementById("3bedfamily");
         var i = document.getElementById("1bedgaming");
         var j = document.getElementById("2bedgaming");
-        var k = document.getElementById("3bedfamily");
+        var parentDOM = document.getElementById("parent");
+        var k = parentDOM.getElementsByClassName("3bedfamily")[10];
 
 
 

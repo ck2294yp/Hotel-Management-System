@@ -24,20 +24,20 @@
         <div><p style="text-align: center; font-size: 2em">Chef</p></div>
         <div><p style="text-align: center; font-size: 2em">Gaming</p></div>
         <div>
-            <img src="https://cdn.pixabay.com/photo/2016/12/13/05/15/puppy-1903313_960_720.jpg" style="width:350px;height:200px;padding-left: 60px"alt="pet photo">
+            <img src="https://cdn.cnn.com/cnnnext/dam/assets/190222152554-14-pet-friendly-hotels-kimpton-hotel.jpg" style="width:350px;height:200px;padding-left: 60px"alt="pet photo">
         </div>
         <div>
             <img src="https://images.pexels.com/photos/1580287/pexels-photo-1580287.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" style="width:350px;height:200px;padding-left:60px;"alt="chef photo">
         </div>
         <div>
-            <img src="https://cdn.pixabay.com/photo/2016/01/12/16/38/video-games-1136046_960_720.jpg" style="width:350px;height:200px;float:left;padding-left:60px;"alt="gaming photo">
+            <img src="http://www.homecrux.com/wp-content/uploads/2018/04/Hilton-Panama-Alienware-Room-Gaming-hotel-room_35.jpg" style="width:350px;height:200px;float:left;padding-left:60px;"alt="gaming photo">
         </div>
     </div>
     <br/><br/>
     <div class="sr">
         <ul>
-            <li><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCO_RxwUGHY-T5r6nO5MkVs5KQeTluFZBAJt4RFHvbcc4yazWP" style="width:350px;height:200px;"alt="pet photo"</li>
-            <li><img src="https://cdn.pixabay.com/photo/2016/05/14/03/10/fat-cat-1391358_960_720.jpg" style="width:350px;height:200px;"alt="pet photo"</li>
+            <li><img src="https://www.rosenplaza.com/wp-content/uploads/pet-policy.jpg" style="width:350px;height:200px;"alt="pet photo"</li>
+            <li><img src="https://njnext.com/wp-content/uploads/Dog-Hotel-1.jpg" style="width:350px;height:200px;"alt="pet photo"</li>
             <li><div style="width:400px;height:200px;float:right;text-align:left;padding-left: 10px"><h2>Pet Room</h2><p>Twin Cities Inn is pet friendly!</p>
                 <p>All house pets are welcome.</p>
                 <p>Pets are only allowed in pet rooms.</p>
