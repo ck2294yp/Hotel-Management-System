@@ -289,8 +289,7 @@ try {
 <script language="javascript">
     function deleteAccount() {
         if (confirm("Are you sure you want to delete your account?")) {
-            // TODO: Create account deletion file.
-            return true;
+            window.location.href="http://localhost:8080/bin/deleteUser.php";
         }
     }
 </script>
