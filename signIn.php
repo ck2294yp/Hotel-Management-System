@@ -115,11 +115,7 @@ try {
             # If user enters an INVALID username and password. Log the user's IP Address and return them back to this login page.
         } else {
             # Record the client IP in the database.
-            $recordIpStmt = $conn->prepare('INSERT INTO `FailedLogins` (failLoginIP) VALUES (:failLoginIP)');
-            $recordIpStmt->bindParam(':failLoginIP', $clientIp);
-            $conn->beginTransaction();
-            $recordIpStmt->execute();
-            $conn->commit();
+            logIP($clientIp, $conn);
 
             # Closes the database connection.
             $conn = null;
@@ -173,8 +169,7 @@ try {
                id="password"
                name="password"
                required
-               maxlength="254"
-               pattern=<?php echo($passwordComplexityRequirements); ?>>
+               maxlength="254">
         <br/>
         <br/>
         <a href="#" style="color: gray">Forgot Password?</a><br/>

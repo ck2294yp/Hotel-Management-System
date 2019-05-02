@@ -268,18 +268,6 @@ try {
         //
     </script>
 
-    <!--search rooms section end-->
-    <!--<section class="sec3" style="overflow: hidden;"></section>-->
-    <!--<footer class="foot">
-        <nav>
-            <ul>
-                <li><a href="#">Facebook</a> </li>
-                <li><a href="#">Twitter</a> </li>
-                <li><a href="#">Google+</a> </li>
-                <li><a href="#">© 2019 Twin Cities Inn</a> </li>
-            </ul>
-        </nav>
-    </footer>-->
 
     <script>
         var a = document.getElementById("1bednormal");

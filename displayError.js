@@ -36,7 +36,7 @@ function loginSuccessMsg() {
 
 // Successful Member Logout message
 function logoutSuccessMsg() {
-    alert("You have securely logged out! Have a nice day!!");
+    alert("You have securely logged out! Have a nice day!");
     window.location.href="http://localhost:8080/index.php";
 }
 
@@ -85,7 +85,7 @@ function activationSuccessfulMsg() {
 // Account deletion complete message (shown if user chooses to delete his/her account).
 function accountDeletionCompletedMsg() {
     alert("Account has been deleted successfully!");
-    window.location = "http://localhost:8080/bin/signOut.php";
+    window.location.href = "http://localhost:8080/bin/signOut.php";
 }
 
 
@@ -170,4 +170,12 @@ function newPasswordMatchesOldMsg() {
 function passwordChangeSuccessfulMsg() {
     alert("Password changed successfully!");
     window.location.href="http://localhost:8080/membersPage.php";
+}
+
+
+
+// If that username doesn't exist (passwordReset.php).
+function nonExistantUsernameMsg() {
+    alert("No user with that username/email address exists!");
+    window.location.href="http://localhost:8080/passwordReset.php";
 }

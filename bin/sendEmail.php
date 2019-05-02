@@ -185,3 +185,87 @@ function orderProcess($memID, $invoiceID)
 
 
 
+
+
+// Sends email when changeUsername new user account is created.
+function passwordReset($userEmail, $newPassword)
+{
+    # Imports the required files needed to ensure program page works properly.
+    $dependecy1 = "settings/settings.php";
+    $dependecy2 = "bin/inputSanitization.php";
+    $dependecy3 = "vendor/autoload.php";
+    if (is_file($dependecy1) && is_file($dependecy2) && is_file($dependecy3)) {
+        ob_start();
+        include $dependecy1;
+        #include $dependecy2;
+        include $dependecy3;
+    }
+
+    // Sanitize user input.
+    $userEmail = sanitizeEmail($userEmail);
+
+    // If user's Email address is not valid or administrators don't want emails to be sent return false.
+    if (sanitizeEmail($userEmail) === false || $sendEmails === false) {
+        return false;
+    }
+
+    # Connects to the SQL database.
+    try {
+        $conn = new PDO("mysql:host=$dbAddress;dbname=$dbLocation", $dbUsername, $dbPassword);
+        # Set the PDO error mode to exception
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        # Queries the database to get the user info of the user.
+        $userInfoStmt = $conn->prepare('SELECT memEmail, memFname, memLname, memActivationLink FROM `Member` WHERE `memEmail`=:email');
+        $userInfoStmt->bindParam(':email', $userEmail, PDO::PARAM_STR, 254);
+
+        # Begins a transaction, if there are any changes (which there shouldn't be) rollback the changes.
+        $conn->beginTransaction();
+        $userInfoStmt->execute();
+        $conn->rollBack();
+
+        # Closes the database connection.
+        $conn = null;
+
+        # Gets the member's account details from out of the database query.
+        $userInfoStmt->setFetchMode(PDO::FETCH_ASSOC);
+        $memInfo = $userInfoStmt->fetch(PDO::FETCH_ASSOC);
+
+    } catch (PDOException $e) {
+        # If database connection fails for whatever reason, return false.
+        return false;
+    }
+
+
+    // Sets the body of the email
+    $body = '
+        <center> Your password on TCI has been reset, ' . $memInfo['memFname'].'!
+        <p> Click <a href="http://localhost:8080/signIn.php">here</a> to login with your new password.
+        <p>
+        <br>
+        <br>
+        Your new password is: <b> ' . $newPassword . '</b>.
+        <br>
+        <br>
+        <br> Use this to login to your change your password to something else. 
+        ';
+
+
+    // Create the Transport
+    $transport = (new Swift_SmtpTransport($emailSvrAddress, $emailSvrSMTPPort, 'ssl'))
+        ->setUsername($adminEmailAddress)
+        ->setPassword($adminEmailPassword);
+
+    // Create the Mailer using your created Transport
+    $mailer = new Swift_Mailer($transport);
+
+    // Create a message
+    $message = (new Swift_Message("TCI Password Reset Request!"))
+        ->setFrom([$adminEmailAddress => 'TCI Account Manager'])
+        ->setTo([$memInfo['memEmail'] => $memInfo['memFname'] . " " . $memInfo['memLname']])
+        ->setBody($body, 'text/html');
+
+    // Attempts to email the user and returns true if email was sent successfully. false if a failure occurred.
+    return $mailer->send($message);
+
+}

@@ -7,7 +7,7 @@ chdir('..');
 // Starts the session with the user
 session_start();
 
-require_once "../settings/settings.php";
+require_once "settings/settings.php";
 require_once "inputSanitization.php";
 
 
