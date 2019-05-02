@@ -8,9 +8,9 @@ session_start();
 // Creates minimum and maximum allowable dates upon booking.
 $todayDate = date_create('now');
 $minStartDate = date_format(date_add($todayDate, date_interval_create_from_date_string('+1 day')), 'Y-m-d');
-$maxStartDate = date_format(date_add($todayDate, date_interval_create_from_date_string('+5 years')), 'Y-m-d');
+$maxStartDate = date_format(date_add($todayDate, date_interval_create_from_date_string('+1 year')), 'Y-m-d');
 $minEndDate = date_format(date_add($todayDate, date_interval_create_from_date_string('+2 days')), 'Y-m-d');
-$maxEndDate = $maxStartDate = date_format(date_add($todayDate, date_interval_create_from_date_string('+5 years +1 day')), 'Y-m-d');
+$maxEndDate = date_format(date_add($todayDate, date_interval_create_from_date_string('+1 year +1 day')), 'Y-m-d');
 
 // If the user chooses a variable in the calenders ON THIS PAGE. Sanitize and do a "Sanity check" on it. If all is well, store dates as a $_SESSION variable.
 if (sizeof($_REQUEST) > 0) {
@@ -142,7 +142,6 @@ if (sizeof($_REQUEST) > 0) {
 <!--Navigation Bar-->
 <?php include 'bin/nav.php'; ?>
 
-<h2>Welcome To Twin Cities Inn Booking Page</h2>
 <hr>
 <div class="details">
     <form action="booking.php" method="post">
