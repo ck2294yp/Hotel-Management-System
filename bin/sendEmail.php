@@ -244,7 +244,7 @@ function passwordReset($userEmail, $newPassword)
         <p>
         <br>
         <br>
-        Your new password is: <b> ' . $newPassword . '</b>.
+        Your new password is:   <b> ' . $newPassword . '</b>
         <br>
         <br>
         <br> Use this to login to your change your password to something else. 

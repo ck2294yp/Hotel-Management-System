@@ -56,10 +56,10 @@ try {
 
 
     # Otherwise, if member has entered a valid member email account.
-    if (isset($_REQUEST['username'])) {
+    if (isset($_REQUEST['email'])) {
 
         // Create connection to the database.
-        $userInput['username'] = sanitizeEmail($_REQUEST['username']);
+        $userInput['username'] = ucfirst(sanitizeEmail($_REQUEST['email']));
 
         // If the username contain harmful strings, stop here!
         if ($userInput === false) {
@@ -85,16 +85,16 @@ try {
         // This code is complementary of Yoga on GitHub Gist: https://gist.github.com/yoga-/8c2c196173be3d4aff56
         # Reset password if input MATCHES an account.
         if ($checkValidStmt->rowCount() === 1) {
-            //enforce min length 8
-            if($len < 8)
-                $len = 8;
+
+            //Enforce min length 8
+            $len = 8;
 
             //define character libraries - remove ambiguous characters like iIl|1 0oO
             $sets = array();
             $sets[] = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
             $sets[] = 'abcdefghjkmnpqrstuvwxyz';
             $sets[] = '23456789';
-            $sets[]  = '~!@#$%^&*(){}[],/?';
+            $sets[]  = '~!@#$%^&*(){}[]/?';
 
             $newPassword = '';
 
@@ -118,9 +118,9 @@ try {
 
             // Update the user's password and remove all instances where his/her IP has failed logon.
             $conn->beginTransaction();
-            $updatePasswdStmt = $conn->prepare('UPDATE `Member` SET `memPasswd`=:hashPasswd WHERE `memEmail`=:email `isMember`=1');
+            $updatePasswdStmt = $conn->prepare('UPDATE `Member` SET `memPasswd`=:hashPasswd WHERE `memEmail`=:email AND `isMember`=1');
             $updatePasswdStmt->bindParam(':email', $userInput['username'], PDO::PARAM_STR, 254);
-            $updatePasswdStmt->bindParam(':newPassword', $hashNewPassword, PDO::PARAM_STR, 64);
+            $updatePasswdStmt->bindParam(':hashPasswd', $hashNewPassword, PDO::PARAM_STR, 64);
             $numFailedStmt = $conn->prepare('DELETE FROM `FailedLogins` WHERE (failLoginIP=:IP)');
             $numFailedStmt->bindParam(':IP', $clientIp);
             $updatePasswdStmt->execute();
@@ -129,9 +129,9 @@ try {
             $conn = null;
 
             # Sends an email out to the customer (administrators MUST allow emails for this to work!).
-            if (accountActivate($userInput['email'])) {
+            if (passwordReset($userInput['username'], $newPassword)) {
                 echo '<script src="/displayError.js"></script>';
-                echo("<script> emailAccountActivationMsg(); </script>");
+                echo("<script> passwordResetSuccessfulMsg(); </script>");
             }
 
 
@@ -150,9 +150,12 @@ try {
         }
     }
 } catch (PDOException $e) {
+    echo($e->getMessage());
+
     # Sends user database error message.
-    echo'<script src="/displayError.js"></script>';
-    echo("<script> databaseError(); </script>");}
+    //echo'<script src="/displayError.js"></script>';
+    //echo("<script> databaseError(); </script>");
+}
 
 ?>
 
@@ -175,10 +178,11 @@ try {
 <!--Navigation Bar-->
 <?php include 'bin/nav.php'; ?>
 
+<center>
 <section class="sec2">
     <h2>Password Reset Request</h2>
     <p> Please enter the address of the email account that you have registered to your TCI account. An email will be sent to you with your temporary password enclosed. </p>
-    <form>
+    <form action="passwordReset.php" method="post">
         <input
             type="email"
             name="email"
@@ -189,10 +193,13 @@ try {
             max="64"
             maxlength="64"
             title="Enter your email address.">
+        <br>
+        <br>
         <button type="submit">Reset Password</button>
     </form>
-
 </section>
+</center>
+
 </body>
 </html>
 

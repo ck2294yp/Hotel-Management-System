@@ -182,6 +182,6 @@ function nonExistantUsernameMsg() {
 
 // Successful password reset.
 function passwordResetSuccessfulMsg() {
-    alert("Password reset! Please check your email for your new password!");
+    alert("Password reset successfully! Please check your email for your new password!");
     window.location.href="http://localhost:8080/signIn.php";
 }
