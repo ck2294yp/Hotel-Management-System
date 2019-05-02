@@ -136,7 +136,6 @@ try {
 
 
 
-
         # If user enters an INVALID username. Log the user's IP Address and return them back to this login page.
         } else {
             # Record the client IP in the database.
@@ -156,3 +155,49 @@ try {
     echo("<script> databaseError(); </script>");}
 
 ?>
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Password Reset</title>
+    <link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+<header>
+    <img src="https://tbncdn.freelogodesign.org/4fc3ec1c-1e7a-4304-b812-4b6b0bdb6b68.png?1553471553913">
+    <h1> Twin Cities Inn</h1>
+</header>
+
+<!--Navigation Bar-->
+<?php include 'bin/nav.php'; ?>
+
+<section class="sec2">
+    <h2>Password Reset Request</h2>
+    <p> Please enter the address of the email account that you have registered to your TCI account. An email will be sent to you with your temporary password enclosed. </p>
+    <form>
+        <input
+            type="email"
+            name="email"
+            id="email"
+            required
+            min="3"
+            minlength="3"
+            max="64"
+            maxlength="64"
+            title="Enter your email address.">
+        <button type="submit">Reset Password</button>
+    </form>
+
+</section>
+</body>
+</html>
+
+
+
+
+
+

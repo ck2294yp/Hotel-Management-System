@@ -30,13 +30,6 @@ try {
     $userIDStmt->setFetchMode(PDO::FETCH_ASSOC);
     $userID = $userIDStmt->fetch(PDO::FETCH_ASSOC);
 
-
-
-    //TODO: DEBUG.
-    echo ($userID['memID']);
-
-
-
     // Deletes all of the data in the tables using a transaction statement.
     $conn->beginTransaction();
     $removeInvoicesStmt = $conn->prepare('DELETE FROM `InvoiceReservation` WHERE `memID`=:memID');

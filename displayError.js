@@ -173,9 +173,15 @@ function passwordChangeSuccessfulMsg() {
 }
 
 
-
 // If that username doesn't exist (passwordReset.php).
 function nonExistantUsernameMsg() {
     alert("No user with that username/email address exists!");
     window.location.href="http://localhost:8080/passwordReset.php";
+}
+
+
+// Successful password reset.
+function passwordResetSuccessfulMsg() {
+    alert("Password reset! Please check your email for your new password!");
+    window.location.href="http://localhost:8080/signIn.php";
 }

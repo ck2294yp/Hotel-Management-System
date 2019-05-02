@@ -172,7 +172,7 @@ try {
                maxlength="254">
         <br/>
         <br/>
-        <a href="#" style="color: gray">Forgot Password?</a><br/>
+        <a href="passwordReset.php" style="color: gray">Forgot Password?</a><br/>
         <br/>
 
         <button type="submit" style="width: 25%">Login</button>
