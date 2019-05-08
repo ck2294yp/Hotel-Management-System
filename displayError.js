@@ -1,3 +1,31 @@
+// Function for Disclaimer regarding website use.
+function disclaimerMsg() {
+    alert("This website is for educational and demonstration purposes ONLY! " +
+        " \r\n " +
+        " \r\n " +
+        " By visiting this website you are indicating that you will not enter any personal, " +
+        " financial, valid or invalid credit/debit card credentials, or any other sensitive information into this website!" +
+        " the hotel on this website does not depict an actual hotel in the Twin Cities area. Bookings, reservations, purchases," +
+        " and other services mentioned on this website will not be fulfilled and payment information (valid or invalid) will not be charged." +
+        " \r\n " +
+        " \r\n " +
+        " This website is not PCI DSS compliant, and does not provide any warranties of any kind (implied or otherwise). The owners of this " +
+        " website will not be held liable for damages of any kind!" +
+        " \r\n " +
+        " \r\n " +
+        " \r\n " +
+        " \r\n " +
+        " By continuing to visit this website, you are indicating that you accept and will abide by these terms of use. " +
+        " \r\n " +
+        " \r\n " +
+        " If you do not accept these terms, please close your browser window (or this browser tab) now.");
+}
+
+
+
+
+
+
 // Function for errors relating to the member not being logged in.
 function sessionTimeoutError() {
     alert("Your session has timed out, please sign in again.");

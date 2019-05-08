@@ -143,4 +143,8 @@ if (array_key_exists('loggedIn', $_SESSION) === false)  {
 </section>
 
 </body>
+
+<br><b> WARNING: </b> This website is for educational and demonstration purposes ONLY! Do not enter any sensitive information into this website! The images on this website are the property of their respective owners. By using this website you are acknowledging that creators of the website are not liable for damages of any kind! </br>
+
+
 </html>

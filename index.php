@@ -1,4 +1,10 @@
 <?php
+
+// Sends user the disclaimer message.
+echo'<script src="/displayError.js"></script>';
+echo("<script> disclaimerMsg(); </script>");
+
+
 // Starts a session with the user just as soon as they enter the page.
 session_start();
 
@@ -59,7 +65,6 @@ if (sizeof($_REQUEST) > 0) {
     <img src="https://tbncdn.freelogodesign.org/4fc3ec1c-1e7a-4304-b812-4b6b0bdb6b68.png?1553471553913">
     <h1 class="headOne"> Twin Cities Inn</h1>
 </header>
-
 
 <!--Navigation Bar-->
 <?php include 'bin/nav.php'; ?>
@@ -194,4 +199,8 @@ if (sizeof($_REQUEST) > 0) {
 </script>
 
 </body>
+
+<br><b> WARNING: </b> This website is for educational and demonstration purposes ONLY! Do not enter any sensitive information into this website! The images on this website are the property of their respective owners. By using this website you are acknowledging that creators of the website are not liable for damages of any kind! </br>
+
+
 </html>
